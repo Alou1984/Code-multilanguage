@@ -1,0 +1,9 @@
+'''Écrire un programme qui implémente une alternative. (facile)
+Le programme vous demande votre age et affiche si vous pouvez lire « Tintin » (le journal des jeunes
+de 7 à 77 ans).'''
+print("quelle est votre age?")
+age= input( )
+if age in range (7,77,1):
+    print( "vous pouvez lire « Tintin »")
+else :
+    print( "vous ne pouvez pas lire « Tintin »")
