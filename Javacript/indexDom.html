@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>DOM</title>
+</head>
+<body>
+     <H1>DOM Selectors </H1>
+     <div id ="hello">Hello world</div>
+     <div> Hi there </div>
+     <ul>
+        <li class="green">item 1</li>
+        <li>item 1</li>
+        <li class="green">item 1</li>
+        <li>item 1</li>
+     </ul>
+     <script>
+        //Get Element by Id 
+        //console.log(document.getElementById('hello'));
+
+        //Get Element by name 
+       // let items = document.getElementsByClassName("green");
+        //console.log(items);
+
+        //Get Element by tagname 
+        //let items = document.getElementsByTagName("li");
+        //console.log(items);
+
+        //Get Element by query selector 
+        //let items = document.querySelector(".green");
+        //console.log(items);
+
+        //Get Element by query selector 
+        let items = document.querySelectorAll(".green");
+        console.log(items);
+
+     </script>
+
+</body>
+</html>

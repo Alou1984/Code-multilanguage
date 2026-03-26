@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Dom event and listener</title>
+</head>
+<body>
+
+    <!--button id="MyButton">Click me !</button-->
+    <input id="searchBox" type="text"/>
+    <script>
+        // Click event
+           /*
+        const button =document.querySelector('#MyButton')
+        button.addEventListener ('click',()=>{
+            alert("Hello world")
+        })
+            */
+        // Key event
+        const searchBox =document.querySelector('#searchBox')
+        searchBox.addEventListener('keyup', () => {
+            console.log("event trigered")
+        }
+        )
+
+    </script>
+</body>
+</html>

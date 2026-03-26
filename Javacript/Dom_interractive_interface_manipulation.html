@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Creating interractive user interfaces</title>
+</head>
+<body>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: grey;
+        }
+    </style>
+    <h1>Todo list </h1>
+    <ul>
+        <li>Buy grossery</li>
+        <li>Do laundry</li>
+        <li>Clean house</li>
+
+    </ul>
+    <script>
+        const listItems= document.querySelectorAll('li')
+        listItems.forEach(item=>{
+            item.addEventListener('click',()=>{
+                item.classList.toggle ('completed')
+
+            } )
+        })
+    </script>
+</body>
+</html>
