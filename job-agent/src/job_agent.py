@@ -474,96 +474,83 @@ def build_email_html(jobs, date_str):
         return "#f1efe8"
 
     cards_html = ""
-    for j in jobs[:25]:  # max 25 offres dans le mail
+    for j in jobs[:25]:
         score = j.get("score", 0)
-        cards_html += f"""
-        <div style="background:#ffffff;border:1px solid #e5e3db;border-radius:10px;
-                    padding:16px;margin-bottom:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;
-                      margin-bottom:6px;">
-            <strong style="font-size:15px;color:#1a1a18;">{j['titre']}</strong>
-            <span style="background:{score_bg(score)};color:{score_color(score)};
-                         font-size:11px;font-weight:600;padding:3px 8px;
-                         border-radius:12px;white-space:nowrap;margin-left:8px;">
-              Score {score}/100
-            </span>
-          </div>
-          <p style="margin:0 0 6px;font-size:13px;color:#5f5e5a;">
-            🏢 {j['entreprise']} &nbsp;·&nbsp; 📍 {j['lieu']}
-            {f"&nbsp;·&nbsp; 💶 {j['salaire']}" if j.get('salaire') else ""}
-          </p>
-          <p style="margin:0 0 10px;font-size:12px;color:#73726c;font-style:italic;">
-            {j.get('raison_ia','')[:120]}
-          </p>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <span style="background:#f1efe8;color:#5f5e5a;font-size:11px;
-                         padding:2px 8px;border-radius:10px;">{j['source']}</span>
-            <a href="{j['lien']}" style="font-size:12px;color:#185fa5;
-               text-decoration:none;font-weight:500;">
-              Voir l'offre →
-            </a>
-          </div>
-        </div>"""
+        salaire_html = "&nbsp;·&nbsp; 💶 " + j['salaire'] if j.get('salaire') else ""
+        raison = j.get('raison_ia', '')[:120]
+        titre = j['titre']
+        entreprise = j['entreprise']
+        lieu = j['lieu']
+        source = j['source']
+        lien = j['lien']
+        sc = score_color(score)
+        sb = score_bg(score)
+        cards_html += (
+            '<div style="background:#ffffff;border:1px solid #e5e3db;border-radius:10px;'
+            'padding:16px;margin-bottom:12px;">'
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;'
+            'margin-bottom:6px;">'
+            '<strong style="font-size:15px;color:#1a1a18;">' + titre + '</strong>'
+            '<span style="background:' + sb + ';color:' + sc + ';'
+            'font-size:11px;font-weight:600;padding:3px 8px;'
+            'border-radius:12px;white-space:nowrap;margin-left:8px;">'
+            'Score ' + str(score) + '/100'
+            '</span></div>'
+            '<p style="margin:0 0 6px;font-size:13px;color:#5f5e5a;">'
+            '🏢 ' + entreprise + ' &nbsp;·&nbsp; 📍 ' + lieu + salaire_html +
+            '</p>'
+            '<p style="margin:0 0 10px;font-size:12px;color:#73726c;font-style:italic;">'
+            + raison +
+            '</p>'
+            '<div style="display:flex;gap:8px;align-items:center;">'
+            '<span style="background:#f1efe8;color:#5f5e5a;font-size:11px;'
+            'padding:2px 8px;border-radius:10px;">' + source + '</span>'
+            '<a href="' + lien + '" style="font-size:12px;color:#185fa5;'
+            'text-decoration:none;font-weight:500;">Voir l\'offre →</a>'
+            '</div></div>'
+        )
 
-    return f"""<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Veille emploi — {date_str}</title>
-</head>
-<body style="margin:0;padding:0;background:#f5f3ee;font-family:Arial,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:20px;">
+    no_offer = '<p style="text-align:center;color:#888;padding:40px 0;">Aucune offre trouvee aujourd\'hui.</p>'
+    content = cards_html if cards_html else no_offer
 
-    <!-- Header -->
-    <div style="background:#1a1a18;border-radius:12px;padding:24px;
-                margin-bottom:20px;text-align:center;">
-      <h1 style="color:#ffffff;font-size:20px;margin:0 0 6px;">
-        🔍 Veille Emploi — {date_str}
-      </h1>
-      <p style="color:#9c9a92;font-size:13px;margin:0;">
-        Chef de projet technique · Directeur technique · {len(jobs)} offre(s) sélectionnée(s)
-      </p>
-    </div>
+    score_80 = len([j for j in jobs if j.get('score', 0) >= 80])
+    score_60 = len([j for j in jobs if 60 <= j.get('score', 0) < 80])
+    total = len(jobs)
 
-    <!-- Stats bar -->
-    <div style="display:flex;gap:10px;margin-bottom:20px;">
-      <div style="flex:1;background:#d1fae5;border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:#0a6b3d;">
-          {len([j for j in jobs if j.get('score',0)>=80])}
-        </div>
-        <div style="font-size:11px;color:#0a6b3d;">Score 80+</div>
-      </div>
-      <div style="flex:1;background:#fef3c7;border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:#856404;">
-          {len([j for j in jobs if 60<=j.get('score',0)<80])}
-        </div>
-        <div style="font-size:11px;color:#856404;">Score 60-79</div>
-      </div>
-      <div style="flex:1;background:#e6f1fb;border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:#185fa5;">{len(jobs)}</div>
-        <div style="font-size:11px;color:#185fa5;">Total</div>
-      </div>
-    </div>
-
-    <!-- Offres -->
-    {cards_html if cards_html else
-      '<p style="text-align:center;color:#888;padding:40px 0;">Aucune offre trouvée aujourd\'hui.</p>'}
-
-    <!-- Footer -->
-    <div style="text-align:center;padding:20px 0;border-top:1px solid #e5e3db;
-                margin-top:20px;">
-      <p style="font-size:11px;color:#9c9a92;margin:0;">
-        Généré automatiquement par votre agent IA · GitHub Actions<br>
-        Plateformes : LinkedIn · Indeed · APEC · France Travail · HelloWork · Randstad
-      </p>
-    </div>
-
-  </div>
-</body>
-</html>"""
-
-# ── Envoi email ───────────────────────────────────────────────────────────────
+    html = (
+        '<!DOCTYPE html><html lang="fr"><head>'
+        '<meta charset="UTF-8">'
+        '<meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>Veille emploi — ' + date_str + '</title>'
+        '</head>'
+        '<body style="margin:0;padding:0;background:#f5f3ee;font-family:Arial,sans-serif;">'
+        '<div style="max-width:600px;margin:0 auto;padding:20px;">'
+        '<div style="background:#1a1a18;border-radius:12px;padding:24px;'
+        'margin-bottom:20px;text-align:center;">'
+        '<h1 style="color:#ffffff;font-size:20px;margin:0 0 6px;">'
+        '🔍 Veille Emploi — ' + date_str + '</h1>'
+        '<p style="color:#9c9a92;font-size:13px;margin:0;">'
+        'Chef de projet technique · Directeur technique · ' + str(total) + ' offre(s)</p>'
+        '</div>'
+        '<div style="display:flex;gap:10px;margin-bottom:20px;">'
+        '<div style="flex:1;background:#d1fae5;border-radius:8px;padding:10px;text-align:center;">'
+        '<div style="font-size:20px;font-weight:700;color:#0a6b3d;">' + str(score_80) + '</div>'
+        '<div style="font-size:11px;color:#0a6b3d;">Score 80+</div></div>'
+        '<div style="flex:1;background:#fef3c7;border-radius:8px;padding:10px;text-align:center;">'
+        '<div style="font-size:20px;font-weight:700;color:#856404;">' + str(score_60) + '</div>'
+        '<div style="font-size:11px;color:#856404;">Score 60-79</div></div>'
+        '<div style="flex:1;background:#e6f1fb;border-radius:8px;padding:10px;text-align:center;">'
+        '<div style="font-size:20px;font-weight:700;color:#185fa5;">' + str(total) + '</div>'
+        '<div style="font-size:11px;color:#185fa5;">Total</div></div>'
+        '</div>'
+        + content +
+        '<div style="text-align:center;padding:20px 0;border-top:1px solid #e5e3db;margin-top:20px;">'
+        '<p style="font-size:11px;color:#9c9a92;margin:0;">'
+        'Genere automatiquement par votre agent IA · GitHub Actions<br>'
+        'Plateformes : LinkedIn · Indeed · APEC · France Travail · HelloWork · Randstad'
+        '</p></div></div></body></html>'
+    )
+    return html
 
 def send_email(jobs, date_str):
     """Envoie le digest via SMTP (Gmail App Password ou Yahoo)."""
