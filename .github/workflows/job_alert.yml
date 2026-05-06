@@ -1,20 +1,24 @@
+# Réécrire le fichier workflow corrigé
+$content = @'
 name: Veille Emploi Quotidienne
 
 on:
   schedule:
-    # 08h00 heure de Paris = 06h00 UTC (hiver) / 07h00 UTC (été)
-    # On utilise 06:00 UTC pour couvrir les deux saisons
     - cron: '0 6 * * *'
-  workflow_dispatch:  # Permet de lancer manuellement depuis GitHub
+  workflow_dispatch:
 
 jobs:
   job-search:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -24,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r job-agent/requirements.txt
 
       - name: Run job search agent
         env:
@@ -32,4 +36,7 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           EMAIL_DEST: ${{ secrets.EMAIL_DEST }}
-        run: python src/job_agent.py
+        run: python job-agent/src/job_agent.py
+'@
+
+Set-Content -Path "C:\Users\SECK TOURE\Documents\Code-multilanguage\.github\workflows\job_alert.yml" -Value $content -Encoding UTF8
