@@ -548,7 +548,7 @@ def build_email_html(jobs, date_str):
 
     <!-- Offres -->
     {cards_html if cards_html else
-      '<p style="text-align:center;color:#888;padding:40px 0;">Aucune offre trouvée aujourd\'hui.</p>'}
+      '<p style="text-align:center;color:#888;padding:40px 0;">Aucune offre trouvée aujourd'hui.</p>'}
 
     <!-- Footer -->
     <div style="text-align:center;padding:20px 0;border-top:1px solid #e5e3db;
