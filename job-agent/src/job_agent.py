@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 job_agent.py — Agent IA de veille emploi quotidienne
 Scrape les offres, filtre par IA (Claude), envoie un digest par mail.
@@ -626,3 +626,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
