@@ -1,0 +1,35 @@
+name: Veille Emploi Quotidienne
+
+on:
+  schedule:
+    # 08h00 heure de Paris = 06h00 UTC (hiver) / 07h00 UTC (été)
+    # On utilise 06:00 UTC pour couvrir les deux saisons
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # Permet de lancer manuellement depuis GitHub
+
+jobs:
+  job-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run job search agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_DEST: ${{ secrets.EMAIL_DEST }}
+        run: python src/job_agent.py
