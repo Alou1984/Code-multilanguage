@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-# Réécrire le fichier workflow corrigé
-$content = @'
 name: Veille Emploi Quotidienne
-=======
-﻿name: Veille Emploi Quotidienne
->>>>>>> 576c694 (Fix workflow yml)
 
 on:
   schedule:
@@ -19,14 +13,10 @@ jobs:
       contents: read
 
     steps:
-<<<<<<< HEAD
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-=======
-      - uses: actions/checkout@v4
->>>>>>> 576c694 (Fix workflow yml)
 
       - uses: actions/setup-python@v5
         with:
@@ -44,9 +34,3 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           EMAIL_DEST: ${{ secrets.EMAIL_DEST }}
         run: python job-agent/src/job_agent.py
-<<<<<<< HEAD
-'@
-
-Set-Content -Path "C:\Users\SECK TOURE\Documents\Code-multilanguage\.github\workflows\job_alert.yml" -Value $content -Encoding UTF8
-=======
->>>>>>> 576c694 (Fix workflow yml)
