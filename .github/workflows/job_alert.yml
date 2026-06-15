@@ -1,3 +1,4 @@
+$correctedYaml = @'
 name: Veille Emploi Quotidienne
 
 on:
@@ -34,3 +35,6 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           EMAIL_DEST: ${{ secrets.EMAIL_DEST }}
         run: python job-agent/src/job_agent.py
+'@
+
+Set-Content -Path "C:\Users\SECK TOURE\Documents\Code-multilanguage\.github\workflows\job_alert.yml" -Value $correctedYaml -Encoding UTF8
