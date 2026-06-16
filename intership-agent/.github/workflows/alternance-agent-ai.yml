@@ -1,0 +1,79 @@
+name: Daily Alternance Cyber Agent
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions utilise UTC.
+    # 06:00 UTC = 08:00 Paris en heure d'été.
+    # 07:00 UTC = 08:00 Paris en heure d'hiver.
+    - cron: "0 6,7 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  run-alternance-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r alternance-agent-ai/requirements.txt
+
+      - name: Check email secrets
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          if [ -z "$EMAIL_USER" ]; then
+            echo "ERROR: EMAIL_USER is missing in GitHub Secrets"
+            exit 1
+          fi
+
+          if [ -z "$EMAIL_PASSWORD" ]; then
+            echo "ERROR: EMAIL_PASSWORD is missing in GitHub Secrets"
+            exit 1
+          fi
+
+          if [ -z "$EMAIL_TO" ]; then
+            echo "ERROR: EMAIL_TO is missing in GitHub Secrets"
+            exit 1
+          fi
+
+          echo "Email secrets are configured"
+
+      - name: Run daily alternance search agent
+        env:
+          SMTP_HOST: smtp.mail.yahoo.com
+          SMTP_PORT: "465"
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          FORCE_SEND: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+        run: |
+          python alternance-agent-ai/src/job_agent.py
+
+      - name: Save seen jobs cache
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add alternance-agent-ai/data/seen_jobs.json || true
+
+          if git diff --cached --quiet; then
+            echo "No seen jobs cache update to commit"
+          else
+            git commit -m "Update seen alternance job links"
+            git push
+          fi
