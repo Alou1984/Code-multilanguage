@@ -1,0 +1,13 @@
+[project]
+name = "agent-alternance-ia-data"
+version = "1.0.0"
+description = "Agent GitHub Actions pour recherche stage alternance IA Data et envoi email quotidien"
+requires-python = ">=3.11"
+dependencies = [
+  "requests==2.32.3",
+  "PyYAML==6.0.2",
+  "python-dateutil==2.9.0.post0"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
