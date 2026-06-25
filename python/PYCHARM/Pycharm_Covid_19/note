@@ -1,0 +1,26 @@
+output values
+    SARS-COV-2 exam result  (nombre de tests sanguins realisé)
+form analyse
+    shape:
+        [5 rows x 111 columns]
+    variable type
+        float64    70
+        object     37
+        int64       4
+        Name: count, dtype: int64
+
+    form analysing
+        nan value : beaucoups 90%
+        2 groupes de données
+            76% -> test vrai
+            89% -> taux sanguins
+fond  analyse
+    target visu
+        -10%
+    Signification des variables
+        - variable continues standardisées , skewed(assymetics), test sangin
+        - Age quantile: difficile a interpreter
+        -variable quantitative: binaire (0, 1),viral, rhinoverus qui semble etre important
+Relation entre les variables / targets
+        -target/blood : rate monocytes, plaquete, leucocytes semble etre lié au covid-> hypothese à tester
+        - certain variable ont un taux de correlation :+0.9 ( à surveiller)

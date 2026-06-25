@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Lancer agent alternance IA data",
+      "type": "python",
+      "request": "launch",
+      "module": "agent_jobs.main",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src",
+        "FORCE_RUN": "true",
+        "DRY_RUN": "true"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}

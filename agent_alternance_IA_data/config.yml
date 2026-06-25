@@ -1,0 +1,102 @@
+profile:
+  target_program: "Mastère Spécialisé® Expert en Big Data et IA - rentrée septembre 2026"
+  target_role: "Expert Big Data Engineer"
+  recipient: "papalassane2003@yahoo.fr"
+
+contracts:
+  - alternance
+  - apprentissage
+  - stage
+  - internship
+  - intership
+  - graduate program
+
+roles:
+  - Expert Big Data Engineer
+  - Big Data Engineer
+  - Data Engineer
+  - Ingénieur Big Data
+  - Ingénieur Data
+  - Chef de projet data
+  - Project Manager Data
+  - MLOps Engineer
+  - Machine Learning Engineer
+  - Ingénieur IA
+  - Ingénieur systèmes embarqués data IA
+  - Ingénieur logiciel data
+  - Ingénieur intégration système
+
+skills:
+  - électronique hardware software
+  - systèmes embarqués
+  - intégration système
+  - logiciel
+  - intelligence artificielle
+  - IA générative
+  - MLOps
+  - MLflow
+  - Docker Kubernetes
+  - Hadoop MapReduce Spark
+  - SQL NoSQL
+  - data warehouse
+  - cloud sécurité gouvernance RGPD
+  - robotique
+  - HVAC
+  - oil and gas
+  - mining industry
+
+locations:
+  france:
+    - France
+    - Île-de-France
+    - Paris
+    - Centre-Val de Loire
+    - Bourgogne-Franche-Comté
+    - Aube
+    - Troyes
+  suisse:
+    - Suisse romande
+    - Genève
+    - Vaud
+    - Lausanne
+    - Neuchâtel
+    - Fribourg
+    - Valais
+
+sources:
+  - name: LinkedIn
+    domain_query: "site:linkedin.com/jobs"
+    search_url: "https://www.linkedin.com/jobs/search/?keywords={query}&location={location}"
+  - name: Glassdoor
+    domain_query: "site:glassdoor.fr/Emploi OR site:glassdoor.ch/Emploi"
+    search_url: "https://www.glassdoor.fr/Emploi/jobs.htm?sc.keyword={query}&locT=N&locId=86&locKeyword={location}"
+  - name: Indeed
+    domain_query: "site:fr.indeed.com OR site:ch.indeed.com"
+    search_url: "https://fr.indeed.com/jobs?q={query}&l={location}"
+  - name: APEC
+    domain_query: "site:apec.fr/candidat/recherche-emploi.html"
+    search_url: "https://www.apec.fr/candidat/recherche-emploi.html/emploi?motsCles={query}&lieux={location}"
+  - name: HelloWork
+    domain_query: "site:hellowork.com/fr-fr/emplois"
+    search_url: "https://www.hellowork.com/fr-fr/emploi/recherche.html?k={query}&l={location}"
+  - name: Teamtailor
+    domain_query: "site:teamtailor.com/jobs"
+    search_url: "https://www.google.com/search?q=site%3Ateamtailor.com%2Fjobs+{query}+{location}"
+  - name: Jobup Suisse romande
+    domain_query: "site:jobup.ch"
+    search_url: "https://www.jobup.ch/fr/emplois/?term={query}&location={location}"
+  - name: France Travail
+    domain_query: "site:francetravail.fr/accueil"
+    search_url: "https://candidat.francetravail.fr/offres/recherche?motsCles={query}&lieux={location}"
+  - name: Randstad
+    domain_query: "site:randstad.fr/emploi OR site:randstad.ch/jobs"
+    search_url: "https://www.randstad.fr/emploi/s-{query}/{location}/"
+  - name: TotalEnergies Careers
+    domain_query: "site:careers.totalenergies.com"
+    search_url: "https://careers.totalenergies.com/fr/recherche-d-offres?keywords={query}&location={location}"
+  - name: Safran Careers
+    domain_query: "site:safran-group.com/fr/offres"
+    search_url: "https://www.safran-group.com/fr/offres?keyword={query}&location={location}"
+  - name: Framatome Careers
+    domain_query: "site:framatome.com/careers"
+    search_url: "https://www.google.com/search?q=site%3Aframatome.com%2Fcareers+{query}+{location}"

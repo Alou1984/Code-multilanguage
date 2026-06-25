@@ -1,0 +1,29 @@
+------------------------------------------------
+Installer:
+------------------------------------------------
+Pyinstaller (https://pyinstaller.org/en/stable/)
+Nuitka (https://nuitka.net/)
+
+------------------------------------------------
+Gestionaire de paquets python
+------------------------------------------------
+pip
+conda
+
+------------------------------------------------
+depot python
+------------------------------------------------
+Pypi
+
+------------------------------------------------
+DB
+------------------------------------------------
+DB_API->interface  avec la dtata base
+
+------------------------------------------------
+QA Test
+------------------------------------------------
+unittest -> test unitaire
+Pytest-> test unitaire 
+Pytest.mock -> test fonctionnel 
+Pytest-cov -> test de couverture 

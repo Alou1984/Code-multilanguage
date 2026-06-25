@@ -1,0 +1,16 @@
+try:
+    x = input("x ? ")
+    print( 3 / int(x) )
+    print(“OK”)
+except ValueError:
+    print(“Value Error")
+    '''
+except ZeroDivisionError:
+print("Division by zero")
+except Exception as e:
+print("???“, e)
+else:
+print("Pas d'erreur")
+finally:
+print("Bye")
+'''
