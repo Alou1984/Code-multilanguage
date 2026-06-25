@@ -1,66 +1,35 @@
 name: agent_alternance_IA_data
 
 on:
-  # GitHub Actions cron est en UTC.
-  # 08:00 Europe/Paris = 06:00 UTC en heure d'été, 07:00 UTC en heure d'hiver.
-  # Le script vérifie l'heure Europe/Paris pour éviter le double envoi.
-  schedule:
-    - cron: "0 6 * * *"
-    - cron: "0 7 * * *"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-env:
-  PYTHON_VERSION: "3.11"
-  EMAIL_TO: papalassane2003@yahoo.fr
-  MAX_RESULTS_PER_QUERY: "5"
+  schedule:
+    # 08h Paris approximatif : 06h UTC en heure d'été, 07h UTC en heure d'hiver.
+    - cron: "0 6 * 3-10 *"
+    - cron: "0 7 * 11,12,1,2 *"
 
 jobs:
-  recherche_et_email:
+  run-agent:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: "pip"
-
+          python-version: "3.11"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Restore sent links cache
-        id: restore-sent-links
-        uses: actions/cache/restore@v4
-        with:
-          path: data/sent_links.json
-          key: sent-links-${{ github.run_id }}
-          restore-keys: |
-            sent-links-
-
       - name: Run job search agent
         env:
-          PYTHONPATH: src
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO: ${{ env.EMAIL_TO }}
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
-          FORCE_RUN: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
         run: python -m agent_jobs.main
-
-      - name: Save sent links cache
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: data/sent_links.json
-          key: sent-links-${{ github.run_id }}
