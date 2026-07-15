@@ -1,155 +1,99 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
-from itertools import product
-from urllib.parse import quote_plus
 import os
-import re
+import time
+from urllib.parse import quote_plus
+
 import requests
 
-
-@dataclass(frozen=True)
-class JobResult:
-    title: str
-    company: str
-    location: str
-    source: str
-    url: str
-    snippet: str
-    published: str | None = None
+from .models import JobOffer
+from .settings import CONTRACT_TERMS, ROLE_TERMS, SECTOR_TERMS, PRIORITY_COMPANIES, TARGET_SITES
 
 
-def normalize_space(text: str) -> str:
-    return re.sub(r"\s+", " ", text or "").strip()
+def _queries() -> list[str]:
+    contracts = " OR ".join([f'"{t}"' for t in CONTRACT_TERMS])
+    roles = " OR ".join([f'"{t}"' for t in ROLE_TERMS[:16]])
+    sectors = " OR ".join([f'"{t}"' for t in SECTOR_TERMS[:14]])
+    locations = '"Sens" OR "89100" OR "Yonne" OR "Auxerre" OR "Troyes" OR "Montereau" OR "Fontainebleau" OR "Paris" OR "Ile-de-France" OR "Centre-Val de Loire" OR "Bourgogne-Franche-Comté" OR "Suisse romande"'
 
-
-def build_core_queries(config: dict) -> list[str]:
-    contracts = config["contracts"]
-    roles = config["roles"]
-    skills = config["skills"]
-    # On limite volontairement les combinaisons pour éviter trop d'appels/API.
-    main_roles = roles[:8]
-    main_skills = skills[:10]
     queries: list[str] = []
-    for contract, role in product(contracts, main_roles):
-        queries.append(f'"{contract}" "{role}"')
-    for contract, skill in product(contracts[:4], main_skills):
-        queries.append(f'"{contract}" "{skill}" data IA')
-    # Déduplication en conservant l'ordre.
-    return list(dict.fromkeys(queries))
+    for site in TARGET_SITES:
+        queries.append(f'site:{site} ({contracts}) ({roles}) ({sectors}) ({locations})')
+
+    # Requêtes larges mais ciblées pour ne pas dépendre uniquement des sites.
+    queries.extend([
+        f'({contracts}) ("data engineer" OR "big data" OR "MLOps" OR "IA") ({locations}) offre emploi',
+        f'({contracts}) ("oil and gas" OR énergie OR nucléaire OR minier OR mining) (data OR IA OR logiciel OR embarqué) ({locations})',
+        f'({contracts}) ({" OR ".join([quote_plus(c) for c in PRIORITY_COMPANIES[:10]])}) (data OR IA OR software OR ingénieur) France',
+    ])
+    return queries
 
 
-def build_locations(config: dict) -> list[str]:
-    locations: list[str] = []
-    for values in config["locations"].values():
-        locations.extend(values)
-    return list(dict.fromkeys(locations))
+def _serpapi_search(query: str, api_key: str, limit: int = 10) -> list[dict]:
+    params = {
+        "engine": "google",
+        "q": query,
+        "google_domain": "google.fr",
+        "gl": "fr",
+        "hl": "fr",
+        "num": limit,
+        "api_key": api_key,
+    }
+    response = requests.get("https://serpapi.com/search.json", params=params, timeout=35)
+    response.raise_for_status()
+    data = response.json()
+    return data.get("organic_results", []) or []
 
 
-def build_direct_search_links(config: dict, limit: int = 120) -> list[JobResult]:
-    """Fallback sans clé API : génère des liens de recherche ciblés par site."""
-    results: list[JobResult] = []
-    queries = build_core_queries(config)
-    locations = build_locations(config)
-    sources = config["sources"]
-
-    for source in sources:
-        for query in queries[:8]:
-            for location in locations[:5]:
-                url = source["search_url"].format(
-                    query=quote_plus(query),
-                    location=quote_plus(location),
-                )
-                results.append(
-                    JobResult(
-                        title=f"Recherche ciblée: {query}",
-                        company="Recherche directe",
-                        location=location,
-                        source=source["name"],
-                        url=url,
-                        snippet=(
-                            "Lien de recherche prêt à cliquer. Ajoute une clé SERPAPI_API_KEY "
-                            "pour récupérer automatiquement des offres individuelles."
-                        ),
-                        published=None,
-                    )
-                )
-                if len(results) >= limit:
-                    return results
-    return results
+def _source_from_url(url: str) -> str:
+    for site in TARGET_SITES:
+        base = site.replace("www.", "")
+        if base.split("/")[0] in url:
+            return site
+    return "web"
 
 
-def serpapi_search(config: dict, max_results_per_query: int = 5) -> list[JobResult]:
-    """Recherche d'offres via SerpApi Google Search.
+def _parse_offer(result: dict) -> JobOffer | None:
+    title = (result.get("title") or "").strip()
+    url = (result.get("link") or "").strip()
+    snippet = (result.get("snippet") or result.get("rich_snippet", {}).get("top", {}).get("detected_extensions", {}) or "")
+    if not title or not url:
+        return None
+    if isinstance(snippet, dict):
+        snippet = " ".join(f"{k}: {v}" for k, v in snippet.items())
+    snippet = str(snippet).strip()
+    company = ""
+    location = ""
 
-    Nécessite le secret GitHub SERPAPI_API_KEY. Cette méthode évite de scraper directement
-    LinkedIn/Indeed/Glassdoor et s'appuie sur une API de recherche.
-    """
+    # Heuristique simple depuis le titre : "Poste - Entreprise - Ville"
+    parts = [p.strip() for p in title.replace("|", "-").split("-") if p.strip()]
+    if len(parts) >= 2:
+        company = parts[-2] if len(parts) > 2 else ""
+        location = parts[-1]
+
+    return JobOffer(title=title, company=company, location=location, url=url, source=_source_from_url(url), snippet=snippet)
+
+
+def search_offers() -> list[JobOffer]:
     api_key = os.getenv("SERPAPI_API_KEY", "").strip()
     if not api_key:
+        # Sans API, on ne renvoie pas de liens vides ou de fausses offres.
         return []
 
-    queries = build_core_queries(config)[:20]
-    locations = build_locations(config)[:10]
-    sources = config["sources"]
-    output: list[JobResult] = []
-
-    session = requests.Session()
-    for source in sources:
-        for query in queries:
-            location_filter = " OR ".join([f'"{loc}"' for loc in locations[:6]])
-            q = f'{source["domain_query"]} {query} ({location_filter})'
-            params = {
-                "engine": "google",
-                "q": q,
-                "api_key": api_key,
-                "hl": "fr",
-                "gl": "fr",
-                "num": max_results_per_query,
-            }
-            try:
-                resp = session.get("https://serpapi.com/search.json", params=params, timeout=25)
-                resp.raise_for_status()
-                data = resp.json()
-            except Exception as exc:  # noqa: BLE001 - on continue les autres sources
-                output.append(
-                    JobResult(
-                        title=f"Erreur recherche {source['name']}",
-                        company="SerpApi",
-                        location="",
-                        source=source["name"],
-                        url=source["search_url"].format(query=quote_plus(query), location="France"),
-                        snippet=f"Erreur temporaire: {exc}",
-                    )
-                )
-                continue
-
-            for item in data.get("organic_results", [])[:max_results_per_query]:
-                url = item.get("link")
-                if not url:
+    offers: list[JobOffer] = []
+    seen: set[str] = set()
+    for query in _queries():
+        try:
+            for result in _serpapi_search(query, api_key, limit=10):
+                offer = _parse_offer(result)
+                if not offer:
                     continue
-                output.append(
-                    JobResult(
-                        title=normalize_space(item.get("title", "Offre potentielle")),
-                        company=normalize_space(item.get("source", "")) or source["name"],
-                        location="France / Suisse romande",
-                        source=source["name"],
-                        url=url,
-                        snippet=normalize_space(item.get("snippet", "")),
-                        published=datetime.utcnow().strftime("%Y-%m-%d"),
-                    )
-                )
-    # Déduplication par URL.
-    unique: dict[str, JobResult] = {}
-    for item in output:
-        unique.setdefault(item.url, item)
-    return list(unique.values())
-
-
-def collect_jobs(config: dict) -> list[JobResult]:
-    max_results = int(os.getenv("MAX_RESULTS_PER_QUERY", "5"))
-    api_results = serpapi_search(config, max_results_per_query=max_results)
-    if api_results:
-        return api_results
-    return build_direct_search_links(config)
+                key = offer.url.split("?")[0].rstrip("/").lower()
+                if key in seen:
+                    continue
+                seen.add(key)
+                offers.append(offer)
+        except Exception as exc:
+            print(f"WARN search failed: {exc} | query={query[:120]}")
+        time.sleep(0.25)
+    return offers
