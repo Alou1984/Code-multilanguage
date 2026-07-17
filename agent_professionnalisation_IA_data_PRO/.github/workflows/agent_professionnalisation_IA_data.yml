@@ -1,86 +1,54 @@
 name: agent_professionnalisation_IA_data
 
 on:
+
   schedule:
-    # Exécution quotidienne 08h00 Europe/Paris
-    # GitHub Actions utilise UTC
+    # Tous les jours à 08h00 Europe/Paris
+    # GitHub utilise UTC
     - cron: "0 6 * * *"
 
   workflow_dispatch:
 
+
 jobs:
-  recherche-offres:
+
+  agent_execute:
 
     runs-on: ubuntu-latest
 
+
     steps:
 
-      # Récupération du code
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
 
-      # Installation Python
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
 
-      # Installation dépendances
       - name: Install dependencies
         run: |
+
           python -m pip install --upgrade pip
+
           pip install -r requirements.txt
 
 
-      # Vérification des secrets
-      - name: Verify GitHub secrets
+
+      ##################################################
+      # TEST DES SECRETS
+      ##################################################
+
+      - name: Test GitHub Secrets
+
         env:
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
-
-        run: |
-
-          echo "Vérification configuration..."
-
-          if [ -z "$SERPAPI_API_KEY" ]; then
-            echo "ERREUR : SERPAPI_API_KEY absent"
-            exit 1
-          else
-            echo "SERPAPI_API_KEY OK"
-          fi
-
-
-          if [ -z "$SMTP_USER" ]; then
-            echo "ERREUR : SMTP_USER absent"
-            exit 1
-          else
-            echo "SMTP_USER OK"
-          fi
-
-
-          if [ -z "$EMAIL_TO" ]; then
-            echo "ERREUR : EMAIL_TO absent"
-            exit 1
-          else
-            echo "EMAIL_TO OK"
-          fi
-
-
-
-      # Lancement agent Python
-      - name: Run agent professionnalisation IA Data
-        env:
-
-          PYTHONPATH: src
 
           SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
 
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
-
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
 
           SMTP_USER: ${{ secrets.SMTP_USER }}
 
@@ -91,27 +59,86 @@ jobs:
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
 
 
-          # Paramètres recherche
+        run: |
+
+          echo "===== TEST CONFIGURATION ====="
+
+
+          if [ -z "$SERPAPI_API_KEY" ]
+          then
+              echo "❌ SERPAPI_API_KEY absent"
+          else
+              echo "✅ SERPAPI_API_KEY présent"
+          fi
+
+
+
+          if [ -z "$SMTP_HOST" ]
+          then
+              echo "❌ SMTP_HOST absent"
+          else
+              echo "✅ SMTP_HOST présent"
+          fi
+
+
+
+          if [ -z "$SMTP_USER" ]
+          then
+              echo "❌ SMTP_USER absent"
+          else
+              echo "✅ SMTP_USER présent"
+          fi
+
+
+
+          if [ -z "$EMAIL_TO" ]
+          then
+              echo "❌ EMAIL_TO absent"
+          else
+              echo "✅ EMAIL_TO présent"
+          fi
+
+
+
+          echo "=============================="
+
+
+
+      ##################################################
+      # EXECUTION AGENT
+      ##################################################
+
+      - name: Run agent professionnalisation IA Data
+
+        env:
+
+          PYTHONPATH: src
+
+
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+
+
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
+
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+
+
+
           SEARCH_LOCATION: "Sens 89100 France"
 
           SEARCH_RADIUS_KM: "80"
 
-          CONTRACT_TYPE: "Contrat de professionnalisation"
 
 
         run: |
-
-          echo "Lancement agent..."
 
           python -m agent_jobs.main
-
-
-
-      # Conservation des logs
-      - name: Save execution logs
-        if: always()
-        run: |
-
-          echo "Workflow terminé"
-
-          python --version
