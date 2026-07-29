@@ -7,24 +7,46 @@ on:
 
 jobs:
   run_agent:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: agent_professionnalisation_IA_data_PRO
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
 
-      - name: Run agent
+      - name: Check executed folder
+        run: |
+          pwd
+          ls
+          find . -name "main.py"
+
+      - name: Run professionnalisation agent
         env:
           PYTHONPATH: src
+
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
+
           SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
-        run: python -m agent_jobs.main
+
+        run: |
+          python -m agent_jobs.main

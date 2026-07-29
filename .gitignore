@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Rust
+target/
+
+# Node
+node_modules/
+
+# ROS2
+**/build/
+**/install/
+**/log/
+
+# Environnements
+.env
+
+# IDE
+.vscode/
+.idea/
