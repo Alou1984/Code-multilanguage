@@ -2,51 +2,85 @@ name: agent_professionnalisation_IA_data
 
 on:
   schedule:
+    # GitHub utilise UTC
+    # 06:00 UTC = environ 08:00 France en été
     - cron: "0 6 * * *"
+
   workflow_dispatch:
+
 
 jobs:
   run_agent:
 
+    name: Recherche contrats professionnalisation IA Data
     runs-on: ubuntu-latest
+
 
     defaults:
       run:
         working-directory: agent_professionnalisation_IA_data_PRO
 
+
     steps:
 
+      # Récupération du dépôt
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+
+      # Python
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+
+      # Installation dépendances
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Check executed folder
-        run: |
-          pwd
-          ls
-          find . -name "main.py"
 
-      - name: Run professionnalisation agent
+      # Vérification du bon dossier
+      - name: Verify execution path
+        run: |
+          echo "===== DOSSIER EXECUTION ====="
+          pwd
+
+          echo "===== FICHIERS ====="
+          ls -la
+
+          echo "===== STRUCTURE AGENT ====="
+          find src/agent_jobs -maxdepth 2 -type f
+
+
+      # Test Python
+      - name: Test Python module
         env:
           PYTHONPATH: src
+        run: |
+          python -c "import agent_jobs; print('agent_jobs OK')"
 
+
+      # Lancement agent
+      - name: Run professionnalisation IA Data agent
+        env:
+
+          PYTHONPATH: src
+
+          # Recherche offres
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+
+          # SMTP
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
+          # Email
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
-
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
 
         run: |
           python -m agent_jobs.main
