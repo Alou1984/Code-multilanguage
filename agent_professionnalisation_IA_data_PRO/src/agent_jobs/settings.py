@@ -69,7 +69,8 @@ TARGET_COMPANIES = [
     "BHP",
     "BP",
     "Prysmian",
-    "Alstom"
+    "Alstom",
+    "NVIDIA"
 ]
 
 
@@ -83,6 +84,10 @@ LOCATIONS = [
     "Bourgogne-Franche-Comté",
     "France",
     "Suisse Romande",
-    "Luxembourg"
+    "Luxembourg",
+    "Arabie Saoudite",
+    "Émirats arabes unis",
+    "belgique"
+
 
 ]
