@@ -1,104 +1,95 @@
 from datetime import datetime
 
 
+
 def render_email(jobs):
 
-    date = datetime.now().strftime("%d/%m/%Y")
+
+    date = datetime.now().strftime(
+        "%d/%m/%Y"
+    )
+
 
     subject = (
-        f"Offres professionnalisation IA Data "
-        f"Big Data Engineer - {date}"
+
+        "Agent professionnalisation IA Data - "
+
+        + date
+
     )
+
 
 
     if not jobs:
 
+
         html = """
-        <html>
-        <body>
 
-        <h2>
-        Aucune offre exploitable trouvée aujourd'hui.
-        </h2>
+<h2>
+Aucune offre reçue
+</h2>
 
-        <p>
-        Critères recherchés :
-        </p>
+<p>
+Le moteur SERPAPI n'a retourné aucune annonce.
+</p>
 
-        <ul>
-            <li>Expert Big Data Engineer</li>
-            <li>AI Engineer</li>
-            <li>Data Engineer</li>
-            <li>MLOps Engineer</li>
-            <li>LLM Engineer</li>
-            <li>Machine Learning</li>
-            <li>Deep Learning</li>
-            <li>Energie</li>
-            <li>Oil & Gas</li>
-            <li>Mining</li>
-            <li>Aéronautique</li>
-        </ul>
+<ul>
 
-        </body>
-        </html>
-        """
+<li>Vérifier SERPAPI_API_KEY</li>
+
+<li>Vérifier quota SERPAPI</li>
+
+<li>Vérifier Google Jobs API</li>
+
+</ul>
+
+"""
+
 
         return subject, html
 
 
 
+
     html = """
-    <html>
-    <body>
 
-    <h2>
-    Offres ciblées IA Data Big Data Engineer
-    </h2>
+<h2>
+Offres IA Data trouvées
+</h2>
 
-    """
+"""
+
 
 
     for job in jobs:
 
+
         html += f"""
 
-        <hr>
+<hr>
 
-        <h3>
-        ⭐ Score : {job.get('score','')}
-        </h3>
+<h3>
+{job.get('title')}
+</h3>
 
-        <b>
-        {job.get('title','')}
-        </b>
+Entreprise :
+{job.get('company')}
 
-        <br>
+<br>
 
-        Entreprise :
-        {job.get('company','')}
+Lieu :
+{job.get('location')}
 
-        <br>
+<br>
 
-        Localisation :
-        {job.get('location','')}
+<a href="{job.get('link')}">
+Voir l'offre
+</a>
 
-        <br><br>
+<br>
 
-        <a href="{job.get('link','')}">
-        Voir l'offre
-        </a>
-
-        <br>
-
-        """
+"""
 
 
-
-    html += """
-
-    </body>
-    </html>
-
-    """
 
     return subject, html

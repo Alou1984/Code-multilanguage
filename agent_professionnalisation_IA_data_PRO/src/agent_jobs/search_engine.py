@@ -5,151 +5,36 @@ import requests
 SERP_URL = "https://serpapi.com/search"
 
 
-# =====================================================
-# DOMAINES DE RECHERCHE
-# =====================================================
-
 LOCATIONS = [
 
-    # France
     "France",
     "Paris France",
     "Ile-de-France",
-    "Sens France",
-    "Bourgogne-Franche-Comté",
-    "Centre-Val de Loire",
-    "Lyon France",
-    "Toulouse France",
-    "Grenoble France",
-
-    # Suisse / Luxembourg
     "Switzerland",
-    "Geneva Switzerland",
-    "Lausanne Switzerland",
-    "Zurich Switzerland",
     "Luxembourg",
-
-    # UK
     "United Kingdom",
-    "London UK",
-    "Manchester UK",
-
-    # USA
-    "United States",
     "USA",
-    "New York USA",
-    "California USA",
-    "San Francisco USA",
-    "Seattle USA",
-    "Texas USA",
-
-    # UAE
     "United Arab Emirates",
-    "Dubai UAE",
-    "Abu Dhabi UAE",
-
-    # Saudi Arabia
     "Saudi Arabia",
-    "Riyadh Saudi Arabia",
-    "Jeddah Saudi Arabia",
-
-    # Remote
-    "Remote",
-    "Full Remote",
-    "Remote Worldwide"
+    "Remote"
 
 ]
 
-
-
-# =====================================================
-# REQUETES EMPLOI
-# =====================================================
 
 QUERIES = [
 
-    # Big Data / Data Engineering
-
-    "Big Data Engineer",
-    "Expert Big Data Engineer",
     "Data Engineer",
-    "Senior Data Engineer",
-    "Cloud Data Engineer",
-    "Data Platform Engineer",
-
-
-    # IA
-
+    "Big Data Engineer",
     "AI Engineer",
-    "Artificial Intelligence Engineer",
     "Machine Learning Engineer",
-    "Deep Learning Engineer",
     "MLOps Engineer",
     "LLM Engineer",
-    "Generative AI Engineer",
-
-
-    # GPU / Hardware IA
-
-    "AI Engineer GPU",
-    "Machine Learning GPU Engineer",
-    "NVIDIA CUDA AI Engineer",
-    "AI Hardware Engineer",
-    "AWS Neuron AI Engineer",
-    "TPU Machine Learning Engineer",
-
-
-    # Formation / Graduate
-
-    "Graduate Program Data Engineer",
-    "Graduate Program Artificial Intelligence",
-    "Junior Data Engineer",
-    "Junior AI Engineer",
-    "Contrat professionnalisation Data Engineer",
-    "Professionalization contract Data Engineer",
-    "Apprenticeship Data Engineer",
-
-
-    # Industrie
-
-    "EDF Data Engineer",
-    "TotalEnergies Data Engineer",
-    "Safran AI Engineer",
-    "Framatome Data Engineer",
-    "Airbus AI Engineer",
-    "Eramet Data Engineer",
-    "Prysmian Data Engineer",
-
-
-    # Energie Oil Gas Mining
-
-    "Energy Data Engineer",
-    "Oil Gas Data Engineer",
-    "Mining Data Engineer",
-    "Industrial AI Engineer",
-
-
-    # Systèmes embarqués
-
-    "Embedded AI Engineer",
-    "Robotics AI Engineer",
-    "Autonomous Systems Engineer",
-
-
-    # Remote international
-
-    "Remote AI Engineer",
-    "Remote Data Engineer",
-    "Remote Machine Learning Engineer",
-    "Remote LLM Engineer"
+    "Deep Learning Engineer",
+    "Graduate Program Data",
+    "Data Engineer Remote",
+    "AI Engineer Remote"
 
 ]
-
-
-
-# =====================================================
-# RECHERCHE SERPAPI
-# =====================================================
 
 
 def search_jobs():
@@ -163,7 +48,7 @@ def search_jobs():
     if not api_key:
 
         print(
-            "SERPAPI_API_KEY absent"
+            "ERREUR : SERPAPI_API_KEY absent"
         )
 
         return []
@@ -173,15 +58,15 @@ def search_jobs():
     jobs = []
 
 
-
-    seen = set()
-
-
-
     for location in LOCATIONS:
 
 
         for query in QUERIES:
+
+
+            print(
+                f"Recherche : {query} / {location}"
+            )
 
 
             params = {
@@ -192,15 +77,13 @@ def search_jobs():
 
                 "location": location,
 
-                "hl": "en",
-
                 "api_key": api_key
 
             }
 
 
-            try:
 
+            try:
 
                 response = requests.get(
 
@@ -217,6 +100,24 @@ def search_jobs():
 
 
 
+                print(
+                    "REPONSE SERPAPI KEYS :",
+                    data.keys()
+                )
+
+
+
+                if "error" in data:
+
+                    print(
+                        "ERREUR SERPAPI :",
+                        data["error"]
+                    )
+
+                    continue
+
+
+
                 results = data.get(
 
                     "jobs_results",
@@ -229,7 +130,9 @@ def search_jobs():
 
                 print(
 
-                    f"{location} | {query} | {len(results)} offres"
+                    "RESULTATS TROUVES :",
+
+                    len(results)
 
                 )
 
@@ -238,124 +141,58 @@ def search_jobs():
                 for job in results:
 
 
-
-                    title = job.get(
-
-                        "title",
-
-                        ""
-
-                    )
-
-
-                    company = job.get(
-
-                        "company_name",
-
-                        ""
-
-                    )
-
-
-                    link = job.get(
-
-                        "share_link",
-
-                        ""
-
-                    )
-
-
-
-                    # suppression doublons
-
-                    key = (
-
-                        title,
-
-                        company,
-
-                        location
-
-                    )
-
-
-                    if key in seen:
-
-                        continue
-
-
-
-                    seen.add(key)
-
-
-
                     jobs.append({
 
-                        "country":
-
-                        location,
-
-
                         "title":
-
-                        title,
-
-
-                        "company":
-
-                        company,
-
-
-                        "location":
-
                         job.get(
-
-                            "location",
-
-                            location
-
+                            "title",
+                            ""
                         ),
 
+                        "company":
+                        job.get(
+                            "company_name",
+                            ""
+                        ),
+
+                        "location":
+                        job.get(
+                            "location",
+                            location
+                        ),
 
                         "link":
-
-                        link,
-
+                        job.get(
+                            "share_link",
+                            ""
+                        ),
 
                         "description":
-
                         job.get(
-
                             "description",
-
                             ""
-
                         )
 
                     })
 
 
 
-            except Exception as error:
+            except Exception as e:
 
 
                 print(
 
-                    "Erreur SERPAPI :",
+                    "Erreur connexion SERPAPI :",
 
-                    error
+                    e
 
                 )
 
 
 
     print(
-
         "TOTAL OFFRES BRUTES :",
-
         len(jobs)
-
     )
 
 
