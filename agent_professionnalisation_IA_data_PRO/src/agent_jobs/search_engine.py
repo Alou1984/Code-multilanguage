@@ -2,69 +2,287 @@ import os
 import requests
 
 
-from .config import (
-    LOCATIONS,
-    TARGET_ROLES,
-    TARGET_COMPANIES
-)
-
-
 SERP_URL = "https://serpapi.com/search"
 
 
+SOURCES = [
 
-def build_queries():
+    "linkedin.com/jobs",
+    "indeed.com",
+    "hellowork.com",
+    "apec.fr",
+    "francetravail.fr",
+    "free-work.com",
+    "glassdoor.fr",
+    "teamtailor.com"
+
+]
 
 
-    queries = []
+LOCATIONS = [
+
+    "France",
+    "Ile-de-France",
+    "Centre-Val de Loire",
+    "Bourgogne-Franche-Comté",
+    "Suisse",
+    "Luxembourg"
+
+]
 
 
-    # Métiers
+QUERIES = [
 
-    for role in TARGET_ROLES:
+    "Data Engineer",
 
-        queries.append(
-            role
+    "Big Data Engineer",
+
+    "AI Engineer",
+
+    "Machine Learning Engineer",
+
+    "MLOps Engineer",
+
+    "LLM Engineer",
+
+    "Deep Learning Engineer",
+
+    "AWS Neuron AI",
+
+    "GPU Machine Learning",
+
+    "Embedded AI Engineer",
+
+    "Robotics AI Engineer"
+
+]
+
+
+
+def serpapi_search(params):
+
+    key = os.getenv(
+        "SERPAPI_API_KEY"
+    )
+
+
+    if not key:
+
+        print(
+            "SERPAPI_API_KEY absent"
+        )
+
+        return []
+
+
+
+    params["api_key"] = key
+
+
+    try:
+
+        r = requests.get(
+
+            SERP_URL,
+
+            params=params,
+
+            timeout=30
+
         )
 
 
-    # Entreprises
+        data = r.json()
 
-    for company in TARGET_COMPANIES:
 
-        queries.append(
+        if "error" in data:
 
-            f"{company} Data Engineer"
+            print(
+                "ERREUR SERPAPI :",
+                data["error"]
+            )
 
+            return []
+
+
+
+        return data
+
+
+
+    except Exception as e:
+
+
+        print(
+            "Erreur connexion :",
+            e
         )
 
-        queries.append(
-
-            f"{company} AI Engineer"
-
-        )
+        return []
 
 
-    # Contrats
-
-    queries.extend([
-
-        "contrat professionnalisation Data Engineer",
-
-        "graduate program Data",
-
-        "junior AI Engineer",
-
-        "alternance Machine Learning",
-
-        "MLOps Engineer junior",
-
-        "LLM Engineer"
-
-    ])
 
 
-    return queries
+def search_google_jobs():
+
+    jobs = []
+
+
+    for location in LOCATIONS:
+
+
+        for query in QUERIES:
+
+
+            print(
+                "GOOGLE JOBS:",
+                query,
+                location
+            )
+
+
+            data = serpapi_search({
+
+                "engine":
+                "google_jobs",
+
+                "q":
+                query,
+
+                "location":
+                location
+
+            })
+
+
+
+            for job in data.get(
+                "jobs_results",
+                []
+            ):
+
+
+                jobs.append({
+
+                    "title":
+                    job.get(
+                        "title",
+                        ""
+                    ),
+
+                    "company":
+                    job.get(
+                        "company_name",
+                        ""
+                    ),
+
+                    "location":
+                    job.get(
+                        "location",
+                        ""
+                    ),
+
+                    "description":
+                    job.get(
+                        "description",
+                        ""
+                    ),
+
+                    "link":
+                    job.get(
+                        "share_link",
+                        ""
+                    )
+
+                })
+
+
+    return jobs
+
+
+
+
+
+def search_web_jobs():
+
+    jobs = []
+
+
+    for location in LOCATIONS:
+
+
+        for query in QUERIES:
+
+
+            for site in SOURCES:
+
+
+                q = (
+
+                    f"{query} "
+
+                    f"{location} "
+
+                    f"site:{site}"
+
+                )
+
+
+                print(
+                    "WEB:",
+                    q
+                )
+
+
+
+                data = serpapi_search({
+
+                    "engine":
+                    "google",
+
+                    "q":
+                    q
+
+                })
+
+
+
+                for result in data.get(
+                    "organic_results",
+                    []
+                ):
+
+
+                    jobs.append({
+
+                        "title":
+                        result.get(
+                            "title",
+                            ""
+                        ),
+
+                        "company":
+                        site,
+
+                        "location":
+                        location,
+
+                        "description":
+                        result.get(
+                            "snippet",
+                            ""
+                        ),
+
+                        "link":
+                        result.get(
+                            "link",
+                            ""
+                        )
+
+                    })
+
+
+    return jobs
 
 
 
@@ -72,243 +290,41 @@ def build_queries():
 def search_jobs():
 
 
-    api_key = os.getenv(
-        "SERPAPI_API_KEY"
+    print(
+        "=== DEBUT RECHERCHE ==="
     )
-
-
-    if not api_key:
-
-
-        print(
-            "ERREUR : SERPAPI_API_KEY absent"
-        )
-
-
-        return []
-
 
 
     jobs = []
 
-    seen = set()
 
-
-
-    queries = build_queries()
-
-
-
-    print(
-        f"Nombre de requêtes : {len(queries)}"
+    jobs.extend(
+        search_google_jobs()
     )
 
 
+    print(
+        "Google Jobs :",
+        len(jobs)
+    )
 
-    for location in LOCATIONS:
 
+    if len(jobs) == 0:
 
-        for query in queries:
 
+        print(
+            "Passage recherche web"
+        )
 
-            print(
-                f"Recherche : {query} | {location}"
-            )
 
-
-
-            params = {
-
-
-                "engine":
-
-                "google_jobs",
-
-
-                "q":
-
-                query,
-
-
-                "location":
-
-                location,
-
-
-                "api_key":
-
-                api_key
-
-            }
-
-
-
-            try:
-
-
-                response = requests.get(
-
-                    SERP_URL,
-
-                    params=params,
-
-                    timeout=30
-
-                )
-
-
-                data = response.json()
-
-
-
-                if "error" in data:
-
-
-                    print(
-
-                        "Erreur SerpAPI :",
-
-                        data["error"]
-
-                    )
-
-
-                    continue
-
-
-
-                results = data.get(
-
-                    "jobs_results",
-
-                    []
-
-                )
-
-
-
-                print(
-
-                    "Résultats :",
-
-                    len(results)
-
-                )
-
-
-
-                for job in results:
-
-
-
-                    title = job.get(
-
-                        "title",
-
-                        ""
-
-                    )
-
-
-                    company = job.get(
-
-                        "company_name",
-
-                        ""
-
-                    )
-
-
-
-                    key = (
-
-                        title,
-
-                        company
-
-                    )
-
-
-
-                    if key in seen:
-
-                        continue
-
-
-
-                    seen.add(key)
-
-
-
-                    jobs.append({
-
-
-                        "title":
-
-                        title,
-
-
-                        "company":
-
-                        company,
-
-
-                        "location":
-
-                        job.get(
-
-                            "location",
-
-                            location
-
-                        ),
-
-
-                        "description":
-
-                        job.get(
-
-                            "description",
-
-                            ""
-
-                        ),
-
-
-                        "link":
-
-                        job.get(
-
-                            "share_link",
-
-                            ""
-
-                        )
-
-
-                    })
-
-
-
-            except Exception as e:
-
-
-                print(
-
-                    "Erreur recherche :",
-
-                    e
-
-                )
-
+        jobs.extend(
+            search_web_jobs()
+        )
 
 
     print(
-
-        "TOTAL OFFRES TROUVEES :",
-
+        "TOTAL OFFRES :",
         len(jobs)
-
     )
 
 
