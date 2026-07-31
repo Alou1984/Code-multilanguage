@@ -1,18 +1,19 @@
 """
-Agent Professionnalisation IA Data
+Agent Recherche Emploi IA Data
 
-Package principal pour la recherche automatisée
-d'offres de contrats de professionnalisation,
-Graduate Program et postes Data / IA.
+Objectif :
+Recherche automatique d'opportunités :
+- Data Engineering
+- Big Data
+- Intelligence Artificielle
+- Machine Learning
+- LLM
+- MLOps
 
-Modules :
-- search_engine : recherche des offres via SERPAPI
-- filtering : scoring et filtrage des offres
-- render : génération du mail HTML
-- emailer : envoi email SMTP
-- settings : configuration des critères
+Cible :
+Mastère Spécialisé Expert Big Data et IA
+Septembre 2026
 """
 
-__version__ = "1.0.0"
 
-__author__ = "Seck Papaalassane"
+__version__ = "2.0.0"

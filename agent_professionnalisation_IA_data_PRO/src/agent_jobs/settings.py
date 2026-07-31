@@ -76,18 +76,48 @@ TARGET_COMPANIES = [
 
 LOCATIONS = [
 
-    "Sens France",
-    "Auxerre France",
-    "Troyes France",
-    "Ile-de-France",
-    "Centre-Val de Loire",
-    "Bourgogne-Franche-Comté",
+    # France
     "France",
-    "Suisse Romande",
-    "Luxembourg",
-    "Arabie Saoudite",
-    "Émirats arabes unis",
-    "belgique"
+    "Ile-de-France",
+    "Paris",
+    "Bourgogne-Franche-Comté",
+    "Centre-Val de Loire",
+    "Sens France",
+    "Lyon France",
+    "Toulouse France",
+    "Grenoble France",
 
+    # Europe
+    "Suisse",
+    "Suisse Romande",
+    "Genève Suisse",
+    "Lausanne Suisse",
+    "Luxembourg",
+    "Royaume-Uni",
+    "London UK",
+    "Manchester UK",
+
+    # Moyen-Orient
+    "United Arab Emirates",
+    "Dubai UAE",
+    "Abu Dhabi UAE",
+    "Saudi Arabia",
+    "Riyadh Saudi Arabia",
+    "Jeddah Saudi Arabia",
+
+    # Amérique du Nord
+    "United States",
+    "USA",
+    "New York USA",
+    "California USA",
+    "San Francisco USA",
+    "Seattle USA",
+    "Texas USA",
+
+    # Remote
+    "Remote",
+    "Full Remote",
+    "Remote Worldwide",
+    "Worldwide Remote"
 
 ]
