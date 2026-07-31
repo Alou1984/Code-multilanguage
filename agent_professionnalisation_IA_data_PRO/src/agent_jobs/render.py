@@ -12,7 +12,7 @@ def render_email(jobs):
 
     subject = (
 
-        "Agent professionnalisation IA Data - "
+        "Offres IA Data - "
 
         + date
 
@@ -20,42 +20,40 @@ def render_email(jobs):
 
 
 
-    if not jobs:
+    html = f"""
 
+<html>
 
-        html = """
+<body>
+
 
 <h2>
-Aucune offre reçue
+Offres IA / Big Data / Machine Learning
 </h2>
 
+
 <p>
-Le moteur SERPAPI n'a retourné aucune annonce.
+Recherche quotidienne pour Mastère Spécialisé Expert Big Data et IA
 </p>
 
-<ul>
 
-<li>Vérifier SERPAPI_API_KEY</li>
+<h3>
+Date : {date}
+</h3>
 
-<li>Vérifier quota SERPAPI</li>
-
-<li>Vérifier Google Jobs API</li>
-
-</ul>
 
 """
 
 
-        return subject, html
+
+    if not jobs:
 
 
+        html += """
 
-
-    html = """
-
-<h2>
-Offres IA Data trouvées
-</h2>
+<h3>
+Aucune offre trouvée aujourd'hui
+</h3>
 
 """
 
@@ -66,30 +64,74 @@ Offres IA Data trouvées
 
         html += f"""
 
+
 <hr>
 
+
 <h3>
-{job.get('title')}
+
+{job['title']}
+
 </h3>
 
+
+<b>
+
 Entreprise :
-{job.get('company')}
+
+</b>
+
+{job['company']}
+
 
 <br>
 
-Lieu :
-{job.get('location')}
+
+<b>
+
+Localisation :
+
+</b>
+
+{job['location']}
+
 
 <br>
 
-<a href="{job.get('link')}">
+
+<b>
+
+Score IA/Data :
+
+</b>
+
+{job.get('score',0)}/100
+
+
+<br><br>
+
+
+
+<a href="{job['link']}">
+
 Voir l'offre
+
 </a>
 
+
 <br>
+
 
 """
 
+
+    html += """
+
+</body>
+
+</html>
+
+"""
 
 
     return subject, html

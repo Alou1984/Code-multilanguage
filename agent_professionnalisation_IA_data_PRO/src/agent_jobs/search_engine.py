@@ -1,331 +1,134 @@
-import os
-import requests
+from .collectors.france_travail import search_france_travail
+from .collectors.greenhouse import search_greenhouse
+from .collectors.lever import search_lever
+from .collectors.remoteok import search_remoteok
 
 
-SERP_URL = "https://serpapi.com/search"
 
+def normalize_job(job):
 
-SOURCES = [
+    return {
 
-    "linkedin.com/jobs",
-    "indeed.com",
-    "hellowork.com",
-    "apec.fr",
-    "francetravail.fr",
-    "free-work.com",
-    "glassdoor.fr",
-    "teamtailor.com"
+        "title": job.get("title", "").strip(),
 
-]
+        "company": job.get("company", "").strip(),
 
+        "location": job.get("location", "").strip(),
 
-LOCATIONS = [
+        "description": job.get("description", "").strip(),
 
-    "France",
-    "Ile-de-France",
-    "Centre-Val de Loire",
-    "Bourgogne-Franche-Comté",
-    "Suisse",
-    "Luxembourg"
+        "link": job.get("link", "").strip(),
 
-]
-
-
-QUERIES = [
-
-    "Data Engineer",
-
-    "Big Data Engineer",
-
-    "AI Engineer",
-
-    "Machine Learning Engineer",
-
-    "MLOps Engineer",
-
-    "LLM Engineer",
-
-    "Deep Learning Engineer",
-
-    "AWS Neuron AI",
-
-    "GPU Machine Learning",
-
-    "Embedded AI Engineer",
-
-    "Robotics AI Engineer"
-
-]
-
-
-
-def serpapi_search(params):
-
-    key = os.getenv(
-        "SERPAPI_API_KEY"
-    )
-
-
-    if not key:
-
-        print(
-            "SERPAPI_API_KEY absent"
-        )
-
-        return []
-
-
-
-    params["api_key"] = key
-
-
-    try:
-
-        r = requests.get(
-
-            SERP_URL,
-
-            params=params,
-
-            timeout=30
-
-        )
-
-
-        data = r.json()
-
-
-        if "error" in data:
-
-            print(
-                "ERREUR SERPAPI :",
-                data["error"]
-            )
-
-            return []
-
-
-
-        return data
-
-
-
-    except Exception as e:
-
-
-        print(
-            "Erreur connexion :",
-            e
-        )
-
-        return []
-
-
-
-
-def search_google_jobs():
-
-    jobs = []
-
-
-    for location in LOCATIONS:
-
-
-        for query in QUERIES:
-
-
-            print(
-                "GOOGLE JOBS:",
-                query,
-                location
-            )
-
-
-            data = serpapi_search({
-
-                "engine":
-                "google_jobs",
-
-                "q":
-                query,
-
-                "location":
-                location
-
-            })
-
-
-
-            for job in data.get(
-                "jobs_results",
-                []
-            ):
-
-
-                jobs.append({
-
-                    "title":
-                    job.get(
-                        "title",
-                        ""
-                    ),
-
-                    "company":
-                    job.get(
-                        "company_name",
-                        ""
-                    ),
-
-                    "location":
-                    job.get(
-                        "location",
-                        ""
-                    ),
-
-                    "description":
-                    job.get(
-                        "description",
-                        ""
-                    ),
-
-                    "link":
-                    job.get(
-                        "share_link",
-                        ""
-                    )
-
-                })
-
-
-    return jobs
-
-
-
-
-
-def search_web_jobs():
-
-    jobs = []
-
-
-    for location in LOCATIONS:
-
-
-        for query in QUERIES:
-
-
-            for site in SOURCES:
-
-
-                q = (
-
-                    f"{query} "
-
-                    f"{location} "
-
-                    f"site:{site}"
-
-                )
-
-
-                print(
-                    "WEB:",
-                    q
-                )
-
-
-
-                data = serpapi_search({
-
-                    "engine":
-                    "google",
-
-                    "q":
-                    q
-
-                })
-
-
-
-                for result in data.get(
-                    "organic_results",
-                    []
-                ):
-
-
-                    jobs.append({
-
-                        "title":
-                        result.get(
-                            "title",
-                            ""
-                        ),
-
-                        "company":
-                        site,
-
-                        "location":
-                        location,
-
-                        "description":
-                        result.get(
-                            "snippet",
-                            ""
-                        ),
-
-                        "link":
-                        result.get(
-                            "link",
-                            ""
-                        )
-
-                    })
-
-
-    return jobs
-
+    }
 
 
 
 def search_jobs():
 
-
-    print(
-        "=== DEBUT RECHERCHE ==="
-    )
+    print("=== COLLECTE DES OFFRES ===")
 
 
     jobs = []
 
 
-    jobs.extend(
-        search_google_jobs()
-    )
+    collectors = [
+
+        search_france_travail,
+
+        search_greenhouse,
+
+        search_lever,
+
+        search_remoteok
+
+    ]
 
 
-    print(
-        "Google Jobs :",
-        len(jobs)
-    )
+
+    for collector in collectors:
 
 
-    if len(jobs) == 0:
+        try:
+
+            results = collector()
 
 
-        print(
-            "Passage recherche web"
+            print(
+                collector.__name__,
+                ":",
+                len(results),
+                "offres"
+            )
+
+
+            jobs.extend(results)
+
+
+
+        except Exception as e:
+
+
+            print(
+
+                "Erreur collecteur",
+
+                collector.__name__,
+
+                e
+
+            )
+
+
+
+    # Normalisation
+
+    normalized = [
+
+        normalize_job(job)
+
+        for job in jobs
+
+    ]
+
+
+
+    # Suppression doublons
+
+    unique = []
+
+
+    seen = set()
+
+
+
+    for job in normalized:
+
+
+        key = (
+
+            job["title"],
+
+            job["company"]
+
         )
 
 
-        jobs.extend(
-            search_web_jobs()
-        )
+        if key not in seen:
+
+
+            seen.add(key)
+
+            unique.append(job)
+
 
 
     print(
-        "TOTAL OFFRES :",
-        len(jobs)
+
+        "TOTAL OFFRES UNIQUES :",
+
+        len(unique)
+
     )
 
 
-    return jobs
+    return unique

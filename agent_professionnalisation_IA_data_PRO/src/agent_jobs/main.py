@@ -1,81 +1,65 @@
 from .search_engine import search_jobs
+
+from .scoring import score_jobs
+
 from .filtering import filter_jobs
+
 from .render import render_email
+
 from .emailer import send_email
+
 
 
 
 def main():
 
+
     print(
-        "=== AGENT PROFESSIONNALISATION IA DATA START ==="
+        "=== AGENT PROFESSIONNALISATION IA DATA ==="
     )
 
 
-    # Recherche SERPAPI
+
     jobs = search_jobs()
 
 
-    print("==============================")
-    print("DEBUG RECHERCHE")
-    print("==============================")
 
     print(
-        "Nombre offres brutes :",
+
+        "Offres collectées :",
+
         len(jobs)
+
     )
 
 
-    for job in jobs[:10]:
 
-        print(
-            job.get("title"),
-            "|",
-            job.get("company"),
-            "|",
-            job.get("location")
-        )
-
-
-
-    # Filtrage
-    filtered_jobs = filter_jobs(
+    jobs = score_jobs(
         jobs
     )
 
 
-    print("==============================")
-    print("DEBUG FILTRE")
-    print("==============================")
 
-    print(
-        "Nombre offres après filtre :",
-        len(filtered_jobs)
+    jobs = filter_jobs(
+        jobs
     )
 
 
 
-    # Sécurité :
-    # si le filtre supprime tout,
-    # on garde les meilleures offres brutes
+    print(
 
-    if len(filtered_jobs) == 0 and len(jobs) > 0:
+        "Offres envoyées :",
 
-        print(
-            "Aucune offre après filtre."
-        )
+        len(jobs)
 
-        print(
-            "Utilisation des offres brutes."
-        )
-
-        filtered_jobs = jobs[:10]
+    )
 
 
 
     subject, html = render_email(
-        filtered_jobs
+        jobs
     )
+
 
 
     send_email(
@@ -84,13 +68,8 @@ def main():
 
         html=html,
 
-        text=html
+        text="Voir version HTML"
 
-    )
-
-
-    print(
-        "=== AGENT FIN ==="
     )
 
 
