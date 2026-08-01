@@ -1,25 +1,25 @@
 from .collectors.france_travail import search_france_travail
-from .collectors.greenhouse import search_greenhouse
-from .collectors.lever import search_lever
-from .collectors.remoteok import search_remoteok
-from .collectors.teamtailor import search_teamtailor
-from .collectors.welcome_to_the_jungle import search_wttj
 from .collectors.apec import search_apec
+from .collectors.hellowork import search_hellowork
+from .collectors.jobup import search_jobup
+from .collectors.teamtailor import search_teamtailor
+from .collectors.company_careers import search_company_careers
 
 
-def normalize_job(job):
+
+def normalize(job):
 
     return {
 
-        "title": job.get("title", "").strip(),
+        "title": job.get("title",""),
 
-        "company": job.get("company", "").strip(),
+        "company": job.get("company",""),
 
-        "location": job.get("location", "").strip(),
+        "location": job.get("location",""),
 
-        "description": job.get("description", "").strip(),
+        "description": job.get("description",""),
 
-        "link": job.get("link", "").strip(),
+        "link": job.get("link","")
 
     }
 
@@ -27,30 +27,25 @@ def normalize_job(job):
 
 def search_jobs():
 
-    print("=== COLLECTE DES OFFRES ===")
-
 
     jobs = []
 
 
     collectors = [
 
-    search_france_travail,
+        search_france_travail,
 
-    search_greenhouse,
+        search_apec,
 
-    search_lever,
+        search_hellowork,
 
-    search_remoteok,
+        search_jobup,
 
-    search_teamtailor,
+        search_teamtailor,
 
-    search_wttj,
+        search_company_careers
 
-    search_apec
-
-]
-
+    ]
 
 
     for collector in collectors:
@@ -58,58 +53,33 @@ def search_jobs():
 
         try:
 
-            results = collector()
-
+            result = collector()
 
             print(
                 collector.__name__,
-                ":",
-                len(results),
-                "offres"
+                len(result)
             )
 
-
-            jobs.extend(results)
-
+            jobs.extend(result)
 
 
         except Exception as e:
 
-
             print(
-
-                "Erreur collecteur",
-
                 collector.__name__,
-
                 e
-
             )
 
 
-
-    # Normalisation
-
-    normalized = [
-
-        normalize_job(job)
-
-        for job in jobs
-
-    ]
-
-
-
-    # Suppression doublons
-
     unique = []
-
 
     seen = set()
 
 
+    for job in jobs:
 
-    for job in normalized:
+
+        job = normalize(job)
 
 
         key = (
@@ -123,7 +93,6 @@ def search_jobs():
 
         if key not in seen:
 
-
             seen.add(key)
 
             unique.append(job)
@@ -131,11 +100,8 @@ def search_jobs():
 
 
     print(
-
-        "TOTAL OFFRES UNIQUES :",
-
+        "TOTAL EUROPE:",
         len(unique)
-
     )
 
 

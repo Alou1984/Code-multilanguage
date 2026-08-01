@@ -1,58 +1,31 @@
 def filter_jobs(jobs):
 
 
-    jobs = sorted(
+    jobs.sort(
 
-        jobs,
-
-        key=lambda x:
-
-        x.get("score",0),
+        key=lambda x:x.get("score",0),
 
         reverse=True
 
     )
 
 
-    selected = []
-
+    result=[]
 
 
     for job in jobs:
 
 
-        title = job.get(
-            "title",
-            ""
-        ).lower()
+        if job["score"] >= 30:
+
+            result.append(job)
 
 
 
-        # éviter trop senior
+    if not result:
 
-        if any(word in title for word in [
-
-            "senior",
-            "staff",
-            "principal",
-            "director"
-
-        ]):
-
-            continue
+        result = jobs[:10]
 
 
 
-        selected.append(job)
-
-
-
-    # Sécurité
-
-    if not selected:
-
-        selected = jobs[:10]
-
-
-
-    return selected[:20]
+    return result[:20]

@@ -1,9 +1,3 @@
-"""
-Configuration Agent Recherche Emploi IA/Data Europe
-Mastère Spécialisé Expert Big Data et IA
-"""
-
-
 TARGET_ROLES = [
 
     "Data Engineer",
@@ -15,8 +9,7 @@ TARGET_ROLES = [
     "LLM Engineer",
     "Data Scientist",
     "Cloud AI Engineer",
-    "Embedded AI Engineer",
-    "Robotics AI Engineer"
+    "Embedded AI Engineer"
 
 ]
 
@@ -24,10 +17,9 @@ TARGET_ROLES = [
 TARGET_SKILLS = [
 
     "python",
+    "sql",
     "spark",
     "hadoop",
-    "sql",
-    "data pipeline",
 
     "machine learning",
     "deep learning",
@@ -38,31 +30,29 @@ TARGET_SKILLS = [
     "gpu",
     "cuda",
     "nvidia",
-    "aws neuron",
-    "tpu",
+
+    "aws",
+    "cloud",
 
     "mlops",
     "kubernetes",
-    "docker",
 
-    "robotics",
-    "embedded",
-    "edge ai",
+    "robotique",
+    "système embarqué",
 
     "hvac",
 
     "oil",
     "gas",
-    "energy",
     "mining",
 
-    "aerospace",
-    "aéronautique"
+    "aéronautique",
+    "aérospatial"
 
 ]
 
 
-EUROPE_LOCATIONS = [
+TARGET_LOCATIONS = [
 
     "France",
     "Paris",
@@ -72,21 +62,15 @@ EUROPE_LOCATIONS = [
     "Aube",
 
     "Suisse",
-    "Geneve",
+    "Genève",
     "Lausanne",
     "Zurich",
 
     "Luxembourg",
 
     "Belgique",
-
     "Allemagne",
-
-    "Pays-Bas",
-
-    "Europe",
-
-    "EMEA"
+    "Pays-Bas"
 
 ]
 
@@ -98,15 +82,13 @@ TARGET_CONTRACTS = [
     "contrat professionnalisation",
     "graduate program",
     "junior",
-    "entry level",
-    "trainee",
-    "internship",
-    "stage"
+    "stage",
+    "trainee"
 
 ]
 
 
-EUROPE_COMPANIES = [
+TARGET_COMPANIES = [
 
     "EDF",
     "TotalEnergies",
@@ -123,14 +105,8 @@ EUROPE_COMPANIES = [
 
     "Siemens",
 
-    "Bosch",
-
-    "ABB",
-
     "Alstom",
 
-    "Michelin",
-
-    "Renault"
+    "Michelin"
 
 ]

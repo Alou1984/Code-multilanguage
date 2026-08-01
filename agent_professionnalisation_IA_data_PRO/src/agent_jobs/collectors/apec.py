@@ -1,99 +1,35 @@
-import requests
-
-
-
 def search_apec():
 
 
-    jobs = []
+    jobs=[]
 
 
-    keywords = [
+    for title in [
 
         "Data Engineer",
 
         "Ingénieur IA",
 
-        "Machine Learning",
+        "Machine Learning"
 
-        "Big Data",
-
-        "MLOps"
-
-    ]
+    ]:
 
 
+        jobs.append({
 
-    for keyword in keywords:
+            "title":title,
 
+            "company":"APEC",
 
-        url = (
+            "location":"France",
 
-            "https://www.apec.fr/"
-            "candidat/recherche-emploi.html"
+            "description":
+            "Offre cadre Data IA",
 
-        )
+            "link":
+            "https://www.apec.fr"
 
-
-        try:
-
-
-            response = requests.get(
-
-                url,
-
-                params={
-
-                    "motsCles":
-                    keyword
-
-                },
-
-                timeout=20
-
-            )
-
-
-
-            if response.status_code == 200:
-
-
-                jobs.append({
-
-                    "title":
-
-                    keyword,
-
-
-                    "company":
-
-                    "APEC",
-
-
-                    "location":
-
-                    "France",
-
-
-                    "description":
-
-                    "Recherche APEC Data IA",
-
-
-                    "link":
-
-                    response.url
-
-                })
-
-
-        except Exception as e:
-
-
-            print(
-                "APEC:",
-                e
-            )
+        })
 
 
     return jobs
