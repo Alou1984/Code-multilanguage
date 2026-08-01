@@ -2,7 +2,9 @@ from .collectors.france_travail import search_france_travail
 from .collectors.greenhouse import search_greenhouse
 from .collectors.lever import search_lever
 from .collectors.remoteok import search_remoteok
-
+from .collectors.teamtailor import search_teamtailor
+from .collectors.welcome_to_the_jungle import search_wttj
+from .collectors.apec import search_apec
 
 
 def normalize_job(job):
@@ -33,15 +35,21 @@ def search_jobs():
 
     collectors = [
 
-        search_france_travail,
+    search_france_travail,
 
-        search_greenhouse,
+    search_greenhouse,
 
-        search_lever,
+    search_lever,
 
-        search_remoteok
+    search_remoteok,
 
-    ]
+    search_teamtailor,
+
+    search_wttj,
+
+    search_apec
+
+]
 
 
 
