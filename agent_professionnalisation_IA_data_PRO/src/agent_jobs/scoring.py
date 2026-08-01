@@ -1,62 +1,23 @@
-SKILLS_SCORE = {
+from .config import (
+    TARGET_SKILLS,
+    TARGET_CONTRACTS,
+    EUROPE_LOCATIONS,
+    EUROPE_COMPANIES
+)
 
 
-    "llm": 25,
 
-    "large language model": 25,
+SENIOR_WORDS = [
 
-    "generative ai": 20,
+    "senior",
+    "staff",
+    "principal",
+    "director",
+    "lead",
+    "architect",
+    "manager"
 
-    "gpu": 20,
-
-    "cuda": 20,
-
-    "nvidia": 20,
-
-
-    "machine learning": 15,
-
-    "deep learning": 15,
-
-
-    "python": 10,
-
-    "spark": 10,
-
-    "hadoop": 10,
-
-
-    "mlops": 15,
-
-    "kubernetes": 10,
-
-
-    "aws": 10,
-
-    "cloud": 10,
-
-
-    "robotique": 15,
-
-    "embedded": 15,
-
-    "système embarqué": 15,
-
-
-    "aéronautique": 15,
-
-    "aérospatial": 15,
-
-
-    "oil": 10,
-
-    "gas": 10,
-
-    "mining": 10,
-
-    "energy": 10
-
-}
+]
 
 
 
@@ -65,15 +26,19 @@ def score_offer(job):
 
     text = (
 
-        job["title"]
+        job.get("title","")
 
         + " "
 
-        + job["description"]
+        + job.get("description","")
 
         + " "
 
-        + job["company"]
+        + job.get("company","")
+
+        + " "
+
+        + job.get("location","")
 
     ).lower()
 
@@ -83,21 +48,75 @@ def score_offer(job):
 
 
 
-    for keyword, points in SKILLS_SCORE.items():
+    # Compétences IA/Data
+
+    for skill in TARGET_SKILLS:
 
 
-        if keyword in text:
+        if skill.lower() in text:
+
+            score += 10
 
 
-            score += points
+
+    # Contrats recherchés
+
+    for contract in TARGET_CONTRACTS:
+
+
+        if contract.lower() in text:
+
+            score += 30
 
 
 
-    job["score"] = score
+    # Europe
+
+    for location in EUROPE_LOCATIONS:
+
+
+        if location.lower() in text:
+
+            score += 25
+
+
+
+    # Entreprises ciblées
+
+    for company in EUROPE_COMPANIES:
+
+
+        if company.lower() in text:
+
+            score += 20
+
+
+
+    # Pénalité senior
+
+    for word in SENIOR_WORDS:
+
+
+        if word in text:
+
+            score -= 25
+
+
+
+    # Bonus Remote Europe
+
+    if "remote europe" in text:
+
+        score += 20
+
+
+
+    job["score"] = max(score,0)
 
 
 
     return job
+
 
 
 

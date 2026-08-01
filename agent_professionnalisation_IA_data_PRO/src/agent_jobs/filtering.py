@@ -14,27 +14,42 @@ def filter_jobs(jobs):
     )
 
 
-
-    selected = [
-
-        job
-
-        for job in jobs
-
-        if job.get(
-            "score",
-            0
-        ) >= 20
-
-    ]
+    selected = []
 
 
 
-    # Sécurité :
-    # toujours envoyer quelque chose
+    for job in jobs:
+
+
+        title = job.get(
+            "title",
+            ""
+        ).lower()
+
+
+
+        # éviter trop senior
+
+        if any(word in title for word in [
+
+            "senior",
+            "staff",
+            "principal",
+            "director"
+
+        ]):
+
+            continue
+
+
+
+        selected.append(job)
+
+
+
+    # Sécurité
 
     if not selected:
-
 
         selected = jobs[:10]
 

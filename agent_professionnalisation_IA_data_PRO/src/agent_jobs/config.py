@@ -1,200 +1,136 @@
-TARGET_TRAINING = """
-
-Mastère Spécialisé®
-Expert Big Data et IA
-
-Septembre 2026
-
 """
-
-
-TARGET_EMAIL = "papalassane2003@yahoo.fr"
-
-
-
-LOCATIONS = [
-
-    # France
-
-    "France",
-
-    "Ile-de-France",
-
-    "Centre-Val de Loire",
-
-    "Bourgogne-Franche-Comté",
-
-    "Aube",
-
-    "Paris",
-
-
-    # Europe
-
-    "Suisse",
-
-    "Luxembourg",
-
-
-    # International Remote
-
-    "Remote",
-
-    "Remote Worldwide"
-
-]
-
-
-
-CONTRACT_TYPES = [
-
-    "contrat professionnalisation",
-
-    "alternance",
-
-    "apprentissage",
-
-    "graduate program",
-
-    "stage",
-
-    "junior"
-
-]
-
+Configuration Agent Recherche Emploi IA/Data Europe
+Mastère Spécialisé Expert Big Data et IA
+"""
 
 
 TARGET_ROLES = [
 
     "Data Engineer",
-
     "Big Data Engineer",
-
-    "Expert Big Data Engineer",
-
     "AI Engineer",
-
     "Machine Learning Engineer",
-
     "Deep Learning Engineer",
-
     "MLOps Engineer",
-
     "LLM Engineer",
-
     "Data Scientist",
-
     "Cloud AI Engineer",
-
     "Embedded AI Engineer",
-
-    "Robotics Engineer"
+    "Robotics AI Engineer"
 
 ]
-
 
 
 TARGET_SKILLS = [
 
-    # IA
+    "python",
+    "spark",
+    "hadoop",
+    "sql",
+    "data pipeline",
 
-    "LLM",
+    "machine learning",
+    "deep learning",
+    "llm",
+    "large language model",
+    "generative ai",
 
-    "Large Language Model",
+    "gpu",
+    "cuda",
+    "nvidia",
+    "aws neuron",
+    "tpu",
 
-    "Generative AI",
+    "mlops",
+    "kubernetes",
+    "docker",
 
-    "Machine Learning",
+    "robotics",
+    "embedded",
+    "edge ai",
 
-    "Deep Learning",
+    "hvac",
 
+    "oil",
+    "gas",
+    "energy",
+    "mining",
 
-    # Accélérateurs
-
-    "GPU",
-
-    "CUDA",
-
-    "NVIDIA",
-
-    "AWS Neuron",
-
-    "TPU",
-
-
-    # Data
-
-    "Python",
-
-    "Spark",
-
-    "Hadoop",
-
-    "Data Pipeline",
-
-    "Cloud",
-
-
-    # Industrie
-
-    "Système embarqué",
-
-    "Electronique",
-
-    "Robotique",
-
-    "HVAC",
-
-    "Oil and Gas",
-
-    "Mining",
-
-    "Aéronautique",
-
-    "Aérospatial"
+    "aerospace",
+    "aéronautique"
 
 ]
 
 
+EUROPE_LOCATIONS = [
 
-TARGET_COMPANIES = [
+    "France",
+    "Paris",
+    "Ile-de-France",
+    "Centre-Val de Loire",
+    "Bourgogne-Franche-Comté",
+    "Aube",
 
-    "TotalEnergies",
+    "Suisse",
+    "Geneve",
+    "Lausanne",
+    "Zurich",
+
+    "Luxembourg",
+
+    "Belgique",
+
+    "Allemagne",
+
+    "Pays-Bas",
+
+    "Europe",
+
+    "EMEA"
+
+]
+
+
+TARGET_CONTRACTS = [
+
+    "alternance",
+    "apprentissage",
+    "contrat professionnalisation",
+    "graduate program",
+    "junior",
+    "entry level",
+    "trainee",
+    "internship",
+    "stage"
+
+]
+
+
+EUROPE_COMPANIES = [
 
     "EDF",
-
+    "TotalEnergies",
     "SAFRAN",
-
     "Framatome",
-
     "Eramet",
 
-    "BP",
-
-    "Prysmian Group",
-
-    "BHP",
+    "Airbus",
+    "Thales",
 
     "STMicroelectronics",
-
-    "NVIDIA",
-
-    "Airbus",
-
-    "Thales",
 
     "Schneider Electric",
 
     "Siemens",
 
+    "Bosch",
+
+    "ABB",
+
     "Alstom",
 
-    "Google",
+    "Michelin",
 
-    "Microsoft",
-
-    "Amazon AWS",
-
-    "IBM"
+    "Renault"
 
 ]

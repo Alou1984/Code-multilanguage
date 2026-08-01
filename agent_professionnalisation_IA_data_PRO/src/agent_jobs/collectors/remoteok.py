@@ -2,11 +2,24 @@ import requests
 
 
 
+EUROPE_WORDS = [
+
+    "europe",
+    "emea",
+    "france",
+    "germany",
+    "switzerland",
+    "luxembourg",
+    "uk"
+
+]
+
+
+
 def search_remoteok():
 
 
     jobs = []
-
 
 
     try:
@@ -19,6 +32,7 @@ def search_remoteok():
             headers={
 
                 "User-Agent":
+
                 "Mozilla/5.0"
 
             },
@@ -32,15 +46,21 @@ def search_remoteok():
         for job in data[1:]:
 
 
-            title = job.get(
-                "position",
-                ""
-            )
+            text = (
+
+                job.get("position","")
+
+                +
+
+                job.get("description","")
+
+            ).lower()
 
 
-            if any(
 
-                key in title.lower()
+            if not any(
+
+                key in text
 
                 for key in [
 
@@ -48,42 +68,46 @@ def search_remoteok():
 
                     "ai",
 
-                    "machine",
+                    "machine learning",
 
-                    "ml"
+                    "mlops",
+
+                    "llm"
 
                 ]
 
             ):
 
+                continue
 
-                jobs.append({
 
-                    "title":
-                    title,
 
-                    "company":
-                    job.get(
-                        "company",
-                        ""
-                    ),
+            # éviter USA pur
 
-                    "location":
-                    "Remote",
+            if "usa" in text:
 
-                    "description":
-                    job.get(
-                        "description",
-                        ""
-                    ),
+                continue
 
-                    "link":
-                    job.get(
-                        "url",
-                        ""
-                    )
 
-                })
+
+            jobs.append({
+
+                "title":
+                job.get("position",""),
+
+                "company":
+                job.get("company",""),
+
+                "location":
+                "Remote Europe",
+
+                "description":
+                job.get("description",""),
+
+                "link":
+                job.get("url","")
+
+            })
 
 
     except Exception as e:
