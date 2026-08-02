@@ -2,11 +2,15 @@ import requests
 
 
 
-COMPANIES = [
+COMPANIES=[
 
-    "anthropic",
+    "dataiku",
 
-    "scaleai"
+    "qonto",
+
+    "backmarket",
+
+    "mistral"
 
 ]
 
@@ -15,17 +19,16 @@ COMPANIES = [
 def search_lever():
 
 
-    jobs = []
-
+    jobs=[]
 
 
     for company in COMPANIES:
 
 
-        url = (
+        url=(
 
-            "https://api.lever.co/v0/postings/"
-            f"{company}"
+            f"https://api.lever.co/v0/postings/"
+            f"{company}?mode=json"
 
         )
 
@@ -33,9 +36,12 @@ def search_lever():
         try:
 
 
-            data = requests.get(
+            data=requests.get(
+
                 url,
-                timeout=20
+
+                timeout=15
+
             ).json()
 
 
@@ -80,11 +86,12 @@ def search_lever():
 
         except Exception as e:
 
+
             print(
-                "Lever:",
+                "Lever",
+                company,
                 e
             )
-
 
 
     return jobs

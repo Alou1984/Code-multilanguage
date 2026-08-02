@@ -5,31 +5,13 @@ from .collectors.france_travail import search_france_travail
 
 
 
-def normalize(job):
-
-    return {
-
-        "title": job.get("title","").strip(),
-
-        "company": job.get("company","").strip(),
-
-        "location": job.get("location","").strip(),
-
-        "description": job.get("description","").strip(),
-
-        "link": job.get("link","").strip()
-
-    }
-
-
-
 def search_jobs():
 
 
-    jobs = []
+    jobs=[]
 
 
-    collectors = [
+    collectors=[
 
         search_greenhouse,
 
@@ -48,14 +30,13 @@ def search_jobs():
 
         try:
 
-            result = collector()
+
+            result=collector()
 
 
             print(
 
                 collector.__name__,
-
-                "=>",
 
                 len(result)
 
@@ -70,69 +51,9 @@ def search_jobs():
 
 
             print(
-
-                "ERREUR",
-
                 collector.__name__,
-
                 e
-
             )
 
 
-
-    final=[]
-
-
-    seen=set()
-
-
-
-    for job in jobs:
-
-
-        job=normalize(job)
-
-
-
-        # obligation vraie URL
-
-        if not job["link"].startswith(
-            "http"
-        ):
-
-            continue
-
-
-
-        key=(
-
-            job["title"],
-
-            job["company"],
-
-            job["link"]
-
-        )
-
-
-
-        if key not in seen:
-
-
-            seen.add(key)
-
-            final.append(job)
-
-
-
-    print(
-
-        "TOTAL OFFRES VALIDES",
-
-        len(final)
-
-    )
-
-
-    return final
+    return jobs

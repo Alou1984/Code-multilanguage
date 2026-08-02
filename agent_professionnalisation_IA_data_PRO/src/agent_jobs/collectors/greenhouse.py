@@ -1,14 +1,19 @@
 import requests
 
 
-
 COMPANIES = [
 
-    "nvidia",
+    "airbus",
 
-    "openai",
+    "safran",
 
-    "databricks"
+    "thales",
+
+    "dataiku",
+
+    "qonto",
+
+    "backmarket"
 
 ]
 
@@ -17,8 +22,7 @@ COMPANIES = [
 def search_greenhouse():
 
 
-    jobs = []
-
+    jobs=[]
 
 
     for company in COMPANIES:
@@ -26,18 +30,31 @@ def search_greenhouse():
 
         url = (
 
-            "https://boards-api.greenhouse.io/"
-            f"v1/boards/{company}/jobs"
+            f"https://boards-api.greenhouse.io/v1/boards/"
+            f"{company}/jobs"
 
         )
 
 
         try:
 
-            data = requests.get(
+
+            response=requests.get(
+
                 url,
-                timeout=20
-            ).json()
+
+                timeout=15
+
+            )
+
+
+            if response.status_code != 200:
+
+                continue
+
+
+
+            data=response.json()
 
 
 
@@ -59,13 +76,16 @@ def search_greenhouse():
                     company,
 
                     "location":
-                    "",
-
-                    "description":
                     job.get(
-                        "content",
+                        "location",
+                        {}
+                    ).get(
+                        "name",
                         ""
                     ),
+
+                    "description":
+                    "",
 
                     "link":
                     job.get(
@@ -76,14 +96,14 @@ def search_greenhouse():
                 })
 
 
-
         except Exception as e:
 
+
             print(
-                "Greenhouse:",
+                "Greenhouse",
+                company,
                 e
             )
-
 
 
     return jobs

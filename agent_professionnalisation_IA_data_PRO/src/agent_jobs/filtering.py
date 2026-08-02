@@ -1,3 +1,7 @@
+from .config import BLOCKED_COMPANIES
+
+
+
 def filter_jobs(jobs):
 
 
@@ -7,13 +11,44 @@ def filter_jobs(jobs):
     for job in jobs:
 
 
-        if not job.get("title"):
+        company = job.get(
+            "company",
+            ""
+        ).lower()
+
+
+
+        if any(
+
+            bad in company
+
+            for bad in BLOCKED_COMPANIES
+
+        ):
 
             continue
 
 
 
-        if not job.get("link"):
+        if not job.get(
+            "title"
+        ):
+
+            continue
+
+
+
+        if not job.get(
+            "link"
+        ):
+
+            continue
+
+
+
+        if not job["link"].startswith(
+            "http"
+        ):
 
             continue
 
@@ -35,6 +70,7 @@ def filter_jobs(jobs):
         reverse=True
 
     )
+
 
 
     return result[:20]

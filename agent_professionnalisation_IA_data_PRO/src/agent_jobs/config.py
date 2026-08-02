@@ -4,7 +4,7 @@ TARGET_SKILLS = [
     "big data",
     "python",
     "spark",
-    "hadoop",
+    "sql",
 
     "machine learning",
     "deep learning",
@@ -18,24 +18,28 @@ TARGET_SKILLS = [
     "mlops",
     "kubernetes",
 
-    "robotics",
+    "robotique",
     "embedded",
 
+    "aéronautique",
+    "aérospatial",
+
+    "energy",
     "oil",
     "gas",
-    "energy",
-
-    "aerospace",
-    "aéronautique"
+    "mining"
 
 ]
 
 
-TARGET_LOCATIONS = [
+EUROPE_LOCATIONS = [
 
     "france",
     "paris",
     "ile-de-france",
+    "grenoble",
+    "toulouse",
+    "lyon",
 
     "suisse",
     "geneva",
@@ -43,6 +47,10 @@ TARGET_LOCATIONS = [
     "zurich",
 
     "luxembourg",
+
+    "germany",
+    "belgium",
+    "netherlands",
 
     "europe",
     "emea"
@@ -63,11 +71,51 @@ CONTRACT_WORDS = [
 ]
 
 
-BLOCKED_WORDS = [
+TARGET_COMPANIES = [
 
-    "senior",
-    "staff",
-    "principal",
-    "director"
+    "airbus",
+
+    "safran",
+
+    "thales",
+
+    "edf",
+
+    "framatome",
+
+    "eramet",
+
+    "totalenergies",
+
+    "stmicroelectronics",
+
+    "schneider",
+
+    "siemens",
+
+    "bosch",
+
+    "abb",
+
+    "alstom",
+
+    "michelin",
+
+    "dataiku",
+
+    "mistral"
+
+]
+
+
+BLOCKED_COMPANIES = [
+
+    "databricks",
+
+    "openai",
+
+    "anthropic",
+
+    "scale ai"
 
 ]

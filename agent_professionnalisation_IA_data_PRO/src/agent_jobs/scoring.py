@@ -1,4 +1,10 @@
-from .config import *
+from .config import (
+    TARGET_SKILLS,
+    EUROPE_LOCATIONS,
+    CONTRACT_WORDS,
+    TARGET_COMPANIES
+)
+
 
 
 def score_offer(job):
@@ -6,15 +12,19 @@ def score_offer(job):
 
     text=(
 
-        job["title"]
+        job.get("title","")
 
         +" "
 
-        +job["description"]
+        +job.get("description","")
 
         +" "
 
-        +job["location"]
+        +job.get("location","")
+
+        +" "
+
+        +job.get("company","")
 
     ).lower()
 
@@ -32,11 +42,11 @@ def score_offer(job):
 
 
 
-    for location in TARGET_LOCATIONS:
+    for location in EUROPE_LOCATIONS:
 
         if location in text:
 
-            score += 20
+            score += 25
 
 
 
@@ -44,20 +54,19 @@ def score_offer(job):
 
         if contract in text:
 
-            score += 30
+            score += 40
 
 
 
-    for bad in BLOCKED_WORDS:
+    for company in TARGET_COMPANIES:
 
-        if bad in text:
+        if company in text:
 
-            score -= 25
+            score += 20
 
 
 
-    job["score"]=max(score,0)
-
+    job["score"]=score
 
 
     return job
