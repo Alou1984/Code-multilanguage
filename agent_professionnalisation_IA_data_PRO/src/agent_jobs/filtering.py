@@ -1,31 +1,62 @@
 def filter_jobs(jobs):
 
 
-    jobs.sort(
+    valid = []
 
-        key=lambda x:x.get("score",0),
+
+
+    for job in jobs:
+
+
+        if len(job.get(
+            "title",
+            ""
+        )) < 3:
+
+            continue
+
+
+
+        if len(job.get(
+            "description",
+            ""
+        )) < 30:
+
+            continue
+
+
+
+        link = job.get(
+            "link",
+            ""
+        )
+
+
+
+        if not link.startswith(
+            "http"
+        ):
+
+            continue
+
+
+
+        valid.append(job)
+
+
+
+    valid.sort(
+
+        key=lambda x:
+
+        x.get(
+            "score",
+            0
+        ),
 
         reverse=True
 
     )
 
 
-    result=[]
-
-
-    for job in jobs:
-
-
-        if job["score"] >= 30:
-
-            result.append(job)
-
-
-
-    if not result:
-
-        result = jobs[:10]
-
-
-
-    return result[:20]
+    return valid[:20]

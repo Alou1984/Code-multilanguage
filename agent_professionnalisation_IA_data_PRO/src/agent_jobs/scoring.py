@@ -1,15 +1,25 @@
-from .config import *
+from .config import (
+    TARGET_SKILLS,
+    TARGET_LOCATIONS,
+    TARGET_CONTRACTS
+)
 
 
-SENIOR_WORDS = [
+
+BAD_WORDS = [
 
     "senior",
+
     "staff",
+
     "principal",
+
     "director",
-    "lead"
+
+    "manager"
 
 ]
+
 
 
 def score_offer(job):
@@ -19,17 +29,13 @@ def score_offer(job):
 
         job["title"]
 
-        +" "
+        + " "
 
-        +job["description"]
+        + job["description"]
 
-        +" "
+        + " "
 
-        +job["company"]
-
-        +" "
-
-        +job["location"]
+        + job["location"]
 
     ).lower()
 
@@ -41,39 +47,35 @@ def score_offer(job):
 
     for skill in TARGET_SKILLS:
 
+
         if skill.lower() in text:
 
             score += 10
 
 
 
-    for contract in TARGET_CONTRACTS:
-
-        if contract.lower() in text:
-
-            score += 40
-
-
-
     for location in TARGET_LOCATIONS:
+
 
         if location.lower() in text:
 
-            score += 30
+            score += 25
 
 
 
-    for company in TARGET_COMPANIES:
-
-        if company.lower() in text:
-
-            score += 20
+    for contract in TARGET_CONTRACTS:
 
 
+        if contract.lower() in text:
 
-    for word in SENIOR_WORDS:
+            score += 35
 
-        if word in text:
+
+
+    for bad in BAD_WORDS:
+
+
+        if bad in text:
 
             score -= 30
 
@@ -82,11 +84,14 @@ def score_offer(job):
     job["score"] = max(score,0)
 
 
+
     return job
 
 
 
+
 def score_jobs(jobs):
+
 
     return [
 

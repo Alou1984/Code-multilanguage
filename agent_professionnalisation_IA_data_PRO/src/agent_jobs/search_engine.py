@@ -1,9 +1,7 @@
 from .collectors.france_travail import search_france_travail
-from .collectors.apec import search_apec
-from .collectors.hellowork import search_hellowork
-from .collectors.jobup import search_jobup
+from .collectors.greenhouse import search_greenhouse
+from .collectors.lever import search_lever
 from .collectors.teamtailor import search_teamtailor
-from .collectors.company_careers import search_company_careers
 
 
 
@@ -11,15 +9,15 @@ def normalize(job):
 
     return {
 
-        "title": job.get("title",""),
+        "title": job.get("title","").strip(),
 
-        "company": job.get("company",""),
+        "company": job.get("company","").strip(),
 
-        "location": job.get("location",""),
+        "location": job.get("location","").strip(),
 
-        "description": job.get("description",""),
+        "description": job.get("description","").strip(),
 
-        "link": job.get("link","")
+        "link": job.get("link","").strip()
 
     }
 
@@ -35,15 +33,11 @@ def search_jobs():
 
         search_france_travail,
 
-        search_apec,
+        search_greenhouse,
 
-        search_hellowork,
+        search_lever,
 
-        search_jobup,
-
-        search_teamtailor,
-
-        search_company_careers
+        search_teamtailor
 
     ]
 
@@ -53,22 +47,35 @@ def search_jobs():
 
         try:
 
-            result = collector()
+            results = collector()
+
 
             print(
+
                 collector.__name__,
-                len(result)
+
+                len(results)
+
             )
 
-            jobs.extend(result)
+
+            jobs.extend(results)
+
 
 
         except Exception as e:
 
+
             print(
+
+                "Erreur",
+
                 collector.__name__,
+
                 e
+
             )
+
 
 
     unique = []
@@ -76,10 +83,20 @@ def search_jobs():
     seen = set()
 
 
+
     for job in jobs:
 
 
         job = normalize(job)
+
+
+
+        # obligation vrai lien
+
+        if not job["link"]:
+
+            continue
+
 
 
         key = (
@@ -91,6 +108,7 @@ def search_jobs():
         )
 
 
+
         if key not in seen:
 
             seen.add(key)
@@ -100,8 +118,11 @@ def search_jobs():
 
 
     print(
-        "TOTAL EUROPE:",
+
+        "OFFRES REELLES :",
+
         len(unique)
+
     )
 
 
