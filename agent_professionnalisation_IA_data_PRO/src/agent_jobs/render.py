@@ -11,12 +11,15 @@ def render_email(jobs):
 
         +
 
-        datetime.now().strftime("%d/%m/%Y")
+        datetime.now().strftime(
+            "%d/%m/%Y"
+        )
 
     )
 
 
-    html = """
+
+    html="""
 
 <h2>
 Offres IA / Big Data Europe
@@ -27,6 +30,7 @@ Mastère Spécialisé Expert Big Data et IA
 </p>
 
 """
+
 
 
     if not jobs:
@@ -48,10 +52,7 @@ Aucune offre réelle trouvée aujourd'hui
 
 <hr>
 
-<h3>
-{job['title']}
-</h3>
-
+<h3>{job['title']}</h3>
 
 Entreprise :
 {job['company']}
@@ -66,17 +67,13 @@ Lieu :
 Score :
 {job.get('score',0)}
 
-
 <br><br>
 
-
 <a href="{job['link']}">
-
-Candidater
-
+Voir l'offre
 </a>
 
 """
 
 
-    return subject, html
+    return subject,html

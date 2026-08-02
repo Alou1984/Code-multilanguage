@@ -9,7 +9,20 @@ from .emailer import send_email
 def main():
 
 
+    print(
+        "=== AGENT IA DATA START ==="
+    )
+
+
+
     jobs = search_jobs()
+
+
+    print(
+        "Collectées:",
+        len(jobs)
+    )
+
 
 
     jobs = score_jobs(jobs)
@@ -18,9 +31,18 @@ def main():
     jobs = filter_jobs(jobs)
 
 
-    subject, html = render_email(
+
+    print(
+        "Envoyées:",
+        len(jobs)
+    )
+
+
+
+    subject,html = render_email(
         jobs
     )
+
 
 
     send_email(
@@ -29,12 +51,12 @@ def main():
 
         html=html,
 
-        text="Offres IA Data"
+        text="Rapport quotidien IA Data"
 
     )
 
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
 
     main()

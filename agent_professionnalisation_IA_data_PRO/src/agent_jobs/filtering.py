@@ -1,51 +1,29 @@
 def filter_jobs(jobs):
 
 
-    valid = []
-
+    result=[]
 
 
     for job in jobs:
 
 
-        if len(job.get(
-            "title",
-            ""
-        )) < 3:
+        if not job.get("title"):
 
             continue
 
 
 
-        if len(job.get(
-            "description",
-            ""
-        )) < 30:
+        if not job.get("link"):
 
             continue
 
 
 
-        link = job.get(
-            "link",
-            ""
-        )
+        result.append(job)
 
 
 
-        if not link.startswith(
-            "http"
-        ):
-
-            continue
-
-
-
-        valid.append(job)
-
-
-
-    valid.sort(
+    result.sort(
 
         key=lambda x:
 
@@ -59,4 +37,4 @@ def filter_jobs(jobs):
     )
 
 
-    return valid[:20]
+    return result[:20]

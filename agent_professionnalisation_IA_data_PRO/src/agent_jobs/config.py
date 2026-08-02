@@ -1,77 +1,73 @@
 TARGET_SKILLS = [
 
-    "python",
-
-    "spark",
-
-    "sql",
-
     "data engineer",
-
     "big data",
+    "python",
+    "spark",
+    "hadoop",
 
     "machine learning",
-
     "deep learning",
-
     "llm",
+    "generative ai",
 
     "gpu",
-
     "cuda",
-
     "nvidia",
 
     "mlops",
-
-    "aws",
-
-    "cloud",
+    "kubernetes",
 
     "robotics",
-
     "embedded",
 
+    "oil",
+    "gas",
+    "energy",
+
+    "aerospace",
     "aéronautique"
 
 ]
 
 
-
 TARGET_LOCATIONS = [
 
-    "France",
+    "france",
+    "paris",
+    "ile-de-france",
 
-    "Paris",
+    "suisse",
+    "geneva",
+    "lausanne",
+    "zurich",
 
-    "Ile-de-France",
+    "luxembourg",
 
-    "Centre",
-
-    "Bourgogne",
-
-    "Suisse",
-
-    "Luxembourg",
-
-    "Europe"
+    "europe",
+    "emea"
 
 ]
 
 
-
-TARGET_CONTRACTS = [
+CONTRACT_WORDS = [
 
     "alternance",
-
     "apprentissage",
-
     "professionnalisation",
-
     "graduate",
-
     "junior",
-
+    "trainee",
     "intern"
+
+]
+
+
+BLOCKED_WORDS = [
+
+    "senior",
+    "staff",
+    "principal",
+    "director"
 
 ]

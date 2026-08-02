@@ -1,7 +1,7 @@
-from .collectors.france_travail import search_france_travail
 from .collectors.greenhouse import search_greenhouse
 from .collectors.lever import search_lever
 from .collectors.teamtailor import search_teamtailor
+from .collectors.france_travail import search_france_travail
 
 
 
@@ -31,15 +31,16 @@ def search_jobs():
 
     collectors = [
 
-        search_france_travail,
-
         search_greenhouse,
 
         search_lever,
 
-        search_teamtailor
+        search_teamtailor,
+
+        search_france_travail
 
     ]
+
 
 
     for collector in collectors:
@@ -47,19 +48,21 @@ def search_jobs():
 
         try:
 
-            results = collector()
+            result = collector()
 
 
             print(
 
                 collector.__name__,
 
-                len(results)
+                "=>",
+
+                len(result)
 
             )
 
 
-            jobs.extend(results)
+            jobs.extend(result)
 
 
 
@@ -68,7 +71,7 @@ def search_jobs():
 
             print(
 
-                "Erreur",
+                "ERREUR",
 
                 collector.__name__,
 
@@ -78,32 +81,37 @@ def search_jobs():
 
 
 
-    unique = []
+    final=[]
 
-    seen = set()
+
+    seen=set()
 
 
 
     for job in jobs:
 
 
-        job = normalize(job)
+        job=normalize(job)
 
 
 
-        # obligation vrai lien
+        # obligation vraie URL
 
-        if not job["link"]:
+        if not job["link"].startswith(
+            "http"
+        ):
 
             continue
 
 
 
-        key = (
+        key=(
 
             job["title"],
 
-            job["company"]
+            job["company"],
+
+            job["link"]
 
         )
 
@@ -111,19 +119,20 @@ def search_jobs():
 
         if key not in seen:
 
+
             seen.add(key)
 
-            unique.append(job)
+            final.append(job)
 
 
 
     print(
 
-        "OFFRES REELLES :",
+        "TOTAL OFFRES VALIDES",
 
-        len(unique)
+        len(final)
 
     )
 
 
-    return unique
+    return final
