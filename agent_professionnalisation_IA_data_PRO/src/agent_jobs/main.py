@@ -18,30 +18,43 @@ def main():
 
 
     print(
+
         "COLLECTE:",
+
         len(jobs)
+
     )
 
 
     jobs=score_jobs(jobs)
 
 
+
     jobs=filter_jobs(jobs)
 
 
+
     print(
+
         "OFFRES FINALES:",
+
         len(jobs)
+
     )
 
 
     for job in jobs[:10]:
 
+
         print(
 
             job["title"],
 
+            "|",
+
             job["company"],
+
+            "|",
 
             job["score"]
 
@@ -49,17 +62,21 @@ def main():
 
 
 
-    subject,html=render_email(jobs)
+    subject,html=render_email(
+
+        jobs
+
+    )
 
 
 
     send_email(
 
-        subject=subject,
+        subject,
 
-        html=html,
+        html,
 
-        text="Rapport IA Data"
+        "Rapport quotidien IA Data"
 
     )
 
@@ -68,3 +85,4 @@ def main():
 if __name__=="__main__":
 
     main()
+    

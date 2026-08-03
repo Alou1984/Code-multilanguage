@@ -1,7 +1,20 @@
+from .collectors.france_travail import search_france_travail
+from .collectors.apec import search_apec
+from .collectors.hellowork import search_hellowork
+from .collectors.welcome_to_jungle import search_wttj
+from .collectors.jobteaser import search_jobteaser
+
+from .collectors.jobup import search_jobup
+from .collectors.jobs_ch import search_jobs_ch
+
+from .collectors.moovijob import search_moovijob
+from .collectors.jobs_lu import search_jobs_lu
+
+from .collectors.company_careers import search_company_jobs
+from .collectors.workday import search_workday
+
 from .collectors.greenhouse import search_greenhouse
 from .collectors.lever import search_lever
-from .collectors.teamtailor import search_teamtailor
-from .collectors.france_travail import search_france_travail
 
 
 
@@ -9,23 +22,17 @@ def normalize(job):
 
     return {
 
-        "title":
-        job.get("title",""),
+        "title": job.get("title",""),
 
-        "company":
-        job.get("company",""),
+        "company": job.get("company",""),
 
-        "location":
-        job.get("location",""),
+        "location": job.get("location",""),
 
-        "description":
-        job.get("description",""),
+        "description": job.get("description",""),
 
-        "contract":
-        job.get("contract",""),
+        "contract": job.get("contract",""),
 
-        "link":
-        job.get("link","")
+        "link": job.get("link","")
 
     }
 
@@ -39,22 +46,45 @@ def search_jobs():
 
     collectors=[
 
+
         search_france_travail,
+
+        search_apec,
+
+        search_hellowork,
+
+        search_wttj,
+
+        search_jobteaser,
+
+
+        search_jobup,
+
+        search_jobs_ch,
+
+
+        search_moovijob,
+
+        search_jobs_lu,
+
+
+        search_company_jobs,
+
+        search_workday,
+
 
         search_greenhouse,
 
-        search_lever,
-
-        search_teamtailor
+        search_lever
 
     ]
+
 
 
     for collector in collectors:
 
 
         try:
-
 
             result = collector()
 
@@ -72,16 +102,6 @@ def search_jobs():
             )
 
 
-            for item in result[:3]:
-
-                print(
-                    "EXEMPLE:",
-                    item.get("title"),
-                    item.get("company"),
-                    item.get("location")
-                )
-
-
             jobs.extend(result)
 
 
@@ -91,7 +111,7 @@ def search_jobs():
 
             print(
 
-                "ERREUR",
+                "ERREUR:",
 
                 collector.__name__,
 
@@ -103,6 +123,9 @@ def search_jobs():
 
     final=[]
 
+    seen=set()
+
+
 
     for job in jobs:
 
@@ -110,8 +133,26 @@ def search_jobs():
         job=normalize(job)
 
 
+        key=(
 
-        if job["link"].startswith("http"):
+            job["title"],
+
+            job["company"],
+
+            job["link"]
+
+        )
+
+
+        if key in seen:
+
+            continue
+
+
+        seen.add(key)
+
+
+        if job["link"]:
 
             final.append(job)
 
@@ -119,7 +160,7 @@ def search_jobs():
 
     print(
 
-        "TOTAL OFFRES VALIDES:",
+        "TOTAL OFFRES UNIQUES:",
 
         len(final)
 
@@ -127,3 +168,5 @@ def search_jobs():
 
 
     return final
+
+    return cleaned

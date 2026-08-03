@@ -2,31 +2,26 @@ import os
 import requests
 
 
+SEARCH_TERMS = [
 
-TOKEN_URL = (
-    "https://entreprise.francetravail.fr/"
-    "connexion/oauth2/access_token"
-)
+    "Data Engineer",
+    "AI Engineer",
+    "Machine Learning Engineer",
+    "MLOps",
+    "Big Data",
+    "Intelligence Artificielle"
 
-
-
-API_URL = (
-    "https://api.francetravail.io/"
-    "partenaire/offresdemploi/v2/offres/search"
-)
+]
 
 
-
-def get_token():
-
+def search_france_travail():
 
     client_id = os.getenv(
-        "FT_CLIENT_ID"
+        "FRANCE_TRAVAIL_CLIENT_ID"
     )
 
-
     client_secret = os.getenv(
-        "FT_CLIENT_SECRET"
+        "FRANCE_TRAVAIL_CLIENT_SECRET"
     )
 
 
@@ -36,141 +31,136 @@ def get_token():
             "France Travail API non configurée"
         )
 
-        return None
-
-
-
-    response = requests.post(
-
-        TOKEN_URL,
-
-        data={
-
-            "grant_type":
-            "client_credentials",
-
-            "client_id":
-            client_id,
-
-            "client_secret":
-            client_secret,
-
-            "scope":
-            "api_offresdemploiv2 o2dsoffre"
-
-        }
-
-    )
-
-
-    return response.json().get(
-        "access_token"
-    )
-
-
-
-
-def search_france_travail():
-
-
-    token = get_token()
-
-
-    if not token:
-
         return []
 
 
-
-    headers = {
-
-        "Authorization":
-        f"Bearer {token}"
-
-    }
+    jobs=[]
 
 
+    try:
 
-    params = {
+        token=requests.post(
 
-        "motsCles":
-        "Data Engineer IA Machine Learning",
+            "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=/partenaire",
 
-        "commune":
-        "Sens"
+            data={
 
-    }
+                "grant_type":"client_credentials",
 
+                "client_id":client_id,
 
+                "client_secret":client_secret,
 
-    response = requests.get(
+                "scope":"api_offresdemploiv2 o2dsoffre"
 
-        API_URL,
+            }
 
-        headers=headers,
-
-        params=params
-
-    )
+        ).json()
 
 
 
-    data = response.json()
+        access_token=token.get(
+            "access_token"
+        )
 
 
-    jobs = []
+
+        headers={
+
+            "Authorization":
+            "Bearer "+access_token
+
+        }
 
 
 
-    for offer in data.get(
-        "resultats",
-        []
-    ):
+        for term in SEARCH_TERMS:
 
 
-        jobs.append({
+            response=requests.get(
 
-            "title":
-            offer.get(
-                "intitule",
-                ""
-            ),
+                "https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search",
 
-            "company":
-            offer.get(
-                "entreprise",
-                {}
-            ).get(
-                "nom",
-                ""
-            ),
+                params={
 
-            "location":
-            offer.get(
-                "lieuTravail",
-                {}
-            ).get(
-                "libelle",
-                ""
-            ),
+                    "motsCles":term,
 
-            "description":
-            offer.get(
-                "description",
-                ""
-            ),
+                    "range":"0-20"
 
-            "link":
-            offer.get(
-                "origineOffre",
-                {}
-            ).get(
-                "urlOrigine",
-                ""
+                },
+
+                headers=headers
+
             )
 
-        })
 
+            data=response.json()
+
+
+
+            for offer in data.get(
+                "resultats",
+                []
+            ):
+
+
+                jobs.append({
+
+                    "title":
+                    offer.get(
+                        "intitule",
+                        ""
+                    ),
+
+                    "company":
+                    offer.get(
+                        "entreprise",
+                        {}
+                    ).get(
+                        "nom",
+                        ""
+                    ),
+
+                    "location":
+                    offer.get(
+                        "lieuTravail",
+                        {}
+                    ).get(
+                        "libelle",
+                        ""
+                    ),
+
+                    "description":
+                    offer.get(
+                        "description",
+                        ""
+                    ),
+
+                    "contract":
+                    offer.get(
+                        "typeContrat",
+                        ""
+                    ),
+
+                    "link":
+                    offer.get(
+                        "origineOffre",
+                        {}
+                    ).get(
+                        "urlOrigine",
+                        ""
+                    )
+
+                })
+
+
+
+    except Exception as e:
+
+        print(
+            "France Travail:",
+            e
+        )
 
 
     return jobs

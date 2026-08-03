@@ -5,7 +5,9 @@ from datetime import datetime
 def render_email(jobs):
 
 
-    date=datetime.now().strftime("%d/%m/%Y")
+    date=datetime.now().strftime(
+        "%d/%m/%Y"
+    )
 
 
     subject=(
@@ -17,6 +19,7 @@ def render_email(jobs):
     )
 
 
+
     html=f"""
 
 <h2>
@@ -25,7 +28,7 @@ Recherche IA / Big Data Europe
 
 
 <p>
-Mastère Spécialisé Expert Big Data et IA
+<b>Mastère Spécialisé Expert Big Data et IA</b>
 </p>
 
 
@@ -33,7 +36,10 @@ Mastère Spécialisé Expert Big Data et IA
 Date : {date}
 </p>
 
+<hr>
+
 """
+
 
 
     if not jobs:
@@ -53,13 +59,13 @@ Le moteur a exécuté la recherche mais aucune offre IA/Data exploitable n'a ét
 
 
 
-    for job in jobs:
+    else:
 
 
-        html += f"""
+        for job in jobs:
 
-<hr>
 
+            html += f"""
 
 <h3>
 {job.get('title')}
@@ -69,20 +75,20 @@ Le moteur a exécuté la recherche mais aucune offre IA/Data exploitable n'a ét
 Entreprise :
 {job.get('company')}
 
-
 <br>
 
-
-Localisation :
+Lieu :
 {job.get('location')}
 
-
 <br>
 
+Contrat :
+{job.get('contract')}
+
+<br>
 
 Score :
 {job.get('score')}
-
 
 <br><br>
 
@@ -91,7 +97,11 @@ Score :
 Voir l'offre
 </a>
 
+
+<hr>
+
 """
 
 
-    return subject,html
+
+    return subject, html

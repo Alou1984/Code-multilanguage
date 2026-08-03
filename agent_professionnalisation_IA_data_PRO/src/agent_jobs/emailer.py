@@ -1,83 +1,98 @@
 import os
 import smtplib
 
-from email.message import EmailMessage
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
-def send_email(subject, html, text=None):
 
-    smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = int(os.getenv("SMTP_PORT", "465"))
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_password = os.getenv("SMTP_PASSWORD")
-
-    email_from = os.getenv("EMAIL_FROM")
-    email_to = os.getenv("EMAIL_TO")
+def send_email(
+    subject,
+    html,
+    text=""
+):
 
 
-    missing = []
+    sender=os.getenv(
+        "EMAIL_SENDER"
+    )
 
-    for name, value in {
+    password=os.getenv(
+        "EMAIL_PASSWORD"
+    )
 
-        "SMTP_HOST": smtp_host,
-        "SMTP_USER": smtp_user,
-        "SMTP_PASSWORD": smtp_password,
-        "EMAIL_FROM": email_from,
-        "EMAIL_TO": email_to
-
-    }.items():
-
-        if not value:
-            missing.append(name)
-
-
-    if missing:
-
-        raise RuntimeError(
-            "Secrets manquants: "
-            + ", ".join(missing)
-        )
-
-
-    msg = EmailMessage()
-
-    msg["Subject"] = subject
-    msg["From"] = email_from
-    msg["To"] = email_to
-
-
-    if text:
-
-        msg.set_content(text)
-
-    else:
-
-        msg.set_content(
-            "Voir la version HTML"
-        )
-
-
-    msg.add_alternative(
-        html,
-        subtype="html"
+    receiver=os.getenv(
+        "EMAIL_RECEIVER"
     )
 
 
+
+    msg=MIMEMultipart(
+        "alternative"
+    )
+
+
+    msg["Subject"]=subject
+
+    msg["From"]=sender
+
+    msg["To"]=receiver
+
+
+
+    msg.attach(
+
+        MIMEText(
+            text,
+            "plain"
+        )
+
+    )
+
+
+    msg.attach(
+
+        MIMEText(
+            html,
+            "html"
+        )
+
+    )
+
+
+
     with smtplib.SMTP_SSL(
-        smtp_host,
-        smtp_port
-    ) as smtp:
+
+        "smtp.gmail.com",
+
+        465
+
+    ) as server:
 
 
-        smtp.login(
-            smtp_user,
-            smtp_password
+        server.login(
+
+            sender,
+
+            password
+
         )
 
 
-        smtp.send_message(msg)
+        server.sendmail(
+
+            sender,
+
+            receiver,
+
+            msg.as_string()
+
+        )
+
 
 
     print(
+
         "Email envoyé avec succès"
+
     )

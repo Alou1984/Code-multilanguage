@@ -1,94 +1,97 @@
+# ==========================
+# Mastère Spécialisé Expert Big Data et IA
+# ==========================
+
+
 TARGET_ROLES = [
 
     "data engineer",
+
     "big data engineer",
+
     "data scientist",
 
     "ai engineer",
+
     "machine learning engineer",
+
     "machine learning",
 
+    "ml engineer",
+
     "mlops",
+
     "mlops engineer",
 
-    "llm",
+    "llm engineer",
+
     "large language model",
+
+    "generative ai",
 
     "deep learning",
 
     "computer vision",
 
-    "embedded ai",
+    "robotics",
 
-    "software engineer"
+    "embedded ai"
 
 ]
+
 
 
 TARGET_SKILLS = [
 
     "python",
+
     "sql",
+
     "spark",
 
+    "hadoop",
+
     "pytorch",
+
     "tensorflow",
 
-    "gpu",
     "cuda",
+
+    "gpu",
+
     "nvidia",
 
     "aws",
+
     "azure",
+
     "gcp",
 
-    "kubernetes"
+    "kubernetes",
+
+    "docker",
+
+    "data pipeline",
+
+    "cloud"
 
 ]
 
 
-EUROPE_KEYWORDS = [
 
-    "france",
-    "french",
-
-    "paris",
-    "grenoble",
-    "toulouse",
-    "lyon",
-
-    "switzerland",
-    "suisse",
-
-    "geneva",
-    "lausanne",
-    "zurich",
-
-    "luxembourg",
-
-    "germany",
-
-    "belgium",
-
-    "europe",
-    "emea"
-
-]
-
-
-CONTRACT_KEYWORDS = [
+TARGET_CONTRACTS = [
 
     "alternance",
 
-    "apprentice",
-
-    "apprenticeship",
-
     "apprentissage",
+
+    "apprentice",
 
     "professionnalisation",
 
     "graduate",
+
+    "graduate program",
 
     "junior",
 
@@ -105,17 +108,85 @@ CONTRACT_KEYWORDS = [
 ]
 
 
+
+TARGET_LOCATIONS = [
+
+    # France
+
+    "france",
+
+    "ile-de-france",
+
+    "paris",
+
+    "grenoble",
+
+    "lyon",
+
+    "toulouse",
+
+    "bordeaux",
+
+    "centre-val de loire",
+
+    "bourgogne",
+
+    "franche-comté",
+
+    "aube",
+
+
+    # Suisse
+
+    "switzerland",
+
+    "suisse",
+
+    "geneva",
+
+    "lausanne",
+
+    "zurich",
+
+
+    # Luxembourg
+
+    "luxembourg",
+
+
+    # Europe
+
+    "europe",
+
+    "emea",
+
+
+    # UK
+
+    "uk",
+
+    "united kingdom",
+
+
+    # USA
+
+    "usa",
+
+    "united states"
+
+]
+
+
+
 FORBIDDEN_KEYWORDS = [
 
     "marketing",
 
     "sales",
 
-    "business development",
-
     "account executive",
 
-    "customer success",
+    "business development",
 
     "customer support",
 
@@ -123,29 +194,90 @@ FORBIDDEN_KEYWORDS = [
 
     "accounting",
 
-    "human resources",
+    "legal",
 
     "hr",
 
-    "legal",
-
-    "audit"
+    "human resources"
 
 ]
 
 
-SENIOR_KEYWORDS = [
 
-    "senior",
+COMPANY_PRIORITY = [
 
-    "staff",
+    # IA
 
-    "principal",
+    "OpenAI",
 
-    "director",
+    "Anthropic",
 
-    "head",
+    "NVIDIA",
 
-    "manager"
+    "Mistral AI",
+
+    "Hugging Face",
+
+    "Dataiku",
+
+
+    # Industrie
+
+    "Airbus",
+
+    "Safran",
+
+    "Thales",
+
+    "EDF",
+
+    "Framatome",
+
+    "TotalEnergies",
+
+    "STMicroelectronics",
+
+    "Schneider Electric",
+
+    "Siemens",
+
+
+    # Energie Mining
+
+    "BP",
+
+    "Shell",
+
+    "BHP",
+
+    "Rio Tinto"
+
+]
+
+
+
+GLOBAL_SEARCH_TERMS = [
+
+    "Data Engineer",
+
+    "AI Engineer",
+
+    "Machine Learning Engineer",
+
+    "MLOps Engineer",
+
+    "LLM Engineer",
+
+    "Big Data Engineer",
+
+    "Deep Learning",
+
+    "Computer Vision",
+
+    "Graduate Data",
+
+    "AI Internship",
+
+    "Data Apprenticeship"
 
 ]

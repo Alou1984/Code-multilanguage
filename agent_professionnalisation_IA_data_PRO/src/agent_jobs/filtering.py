@@ -1,7 +1,6 @@
 from .config import (
     TARGET_ROLES,
-    FORBIDDEN_KEYWORDS,
-    SENIOR_KEYWORDS
+    FORBIDDEN_KEYWORDS
 )
 
 
@@ -13,19 +12,15 @@ def filter_jobs(jobs):
 
 
     print(
+
         "DEBUT FILTRE:",
+
         len(jobs)
+
     )
 
 
     for job in jobs:
-
-
-        title = job.get(
-            "title",
-            ""
-        ).lower()
-
 
 
         text=(
@@ -40,10 +35,6 @@ def filter_jobs(jobs):
 
             +job.get("company","")
 
-            +" "
-
-            +job.get("location","")
-
         ).lower()
 
 
@@ -54,45 +45,25 @@ def filter_jobs(jobs):
 
 
 
-        # Senior seulement si le titre commence par senior
-
         if any(
 
-            title.startswith(x)
+            bad in text
 
-            for x in SENIOR_KEYWORDS
+            for bad in FORBIDDEN_KEYWORDS
 
         ):
 
             print(
-                "REFUS SENIOR:",
+
+                "REFUS:",
+
                 job["title"]
+
             )
 
             continue
 
 
-
-        # Métiers interdits
-
-        if any(
-
-            word in text
-
-            for word in FORBIDDEN_KEYWORDS
-
-        ):
-
-            print(
-                "REFUS METIER:",
-                job["title"]
-            )
-
-            continue
-
-
-
-        # Poste IA/Data
 
         if not any(
 
@@ -103,8 +74,11 @@ def filter_jobs(jobs):
         ):
 
             print(
+
                 "REFUS ROLE:",
+
                 job["title"]
+
             )
 
             continue
