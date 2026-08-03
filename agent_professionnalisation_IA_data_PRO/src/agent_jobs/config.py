@@ -1,130 +1,169 @@
-from .config import (
-    TARGET_ROLES,
-    FORBIDDEN_KEYWORDS,
-    SENIOR_KEYWORDS
-)
+TARGET_ROLES = [
 
+    "data engineer",
+    "big data engineer",
+    "data scientist",
 
+    "ai engineer",
+    "machine learning engineer",
+    "machine learning",
 
-def filter_jobs(jobs):
+    "mlops engineer",
+    "mlops",
 
+    "llm engineer",
+    "llm",
 
-    results=[]
+    "generative ai",
 
+    "deep learning",
 
-    print(
-        "DEBUT FILTRE:",
-        len(jobs)
-    )
+    "computer vision",
 
+    "embedded ai",
 
-    for job in jobs:
+    "robotics"
 
+]
 
-        title = job.get(
-            "title",
-            ""
-        ).lower()
 
+TARGET_SKILLS = [
 
+    "python",
+    "sql",
+    "spark",
 
-        text=(
+    "pytorch",
+    "tensorflow",
 
-            job.get("title","")
+    "gpu",
+    "cuda",
+    "nvidia",
 
-            +" "
+    "aws",
+    "azure",
+    "gcp",
 
-            +job.get("description","")
+    "kubernetes",
 
-            +" "
+    "data pipeline",
 
-            +job.get("company","")
+    "big data"
 
-            +" "
+]
 
-            +job.get("location","")
 
-        ).lower()
+EUROPE_KEYWORDS = [
 
+    "france",
 
+    "french",
 
-        if not job.get("link"):
+    "paris",
 
-            continue
+    "ile-de-france",
 
+    "grenoble",
 
+    "toulouse",
 
-        # suppression senior
+    "lyon",
 
-        if any(
+    "suisse",
 
-            word in title
+    "switzerland",
 
-            for word in SENIOR_KEYWORDS
+    "geneva",
 
-        ):
+    "lausanne",
 
+    "zurich",
 
-            print(
-                "REFUS SENIOR:",
-                job.get("title")
-            )
+    "luxembourg",
 
-            continue
+    "germany",
 
+    "belgium",
 
+    "europe",
 
-        # suppression métiers hors sujet
+    "emea"
 
-        if any(
+]
 
-            word in text
 
-            for word in FORBIDDEN_KEYWORDS
+CONTRACT_KEYWORDS = [
 
-        ):
+    "alternance",
 
+    "apprentissage",
 
-            print(
-                "REFUS METIER:",
-                job.get("title")
-            )
+    "apprentice",
 
-            continue
+    "professionnalisation",
 
+    "graduate",
 
+    "graduate program",
 
-        # rôle IA/Data obligatoire
+    "junior",
 
-        if not any(
+    "entry level",
 
-            role in text
+    "early career",
 
-            for role in TARGET_ROLES
+    "trainee",
 
-        ):
+    "stage",
 
+    "intern"
 
-            print(
-                "REFUS ROLE:",
-                job.get("title")
-            )
+]
 
-            continue
 
+FORBIDDEN_KEYWORDS = [
 
+    "marketing",
 
-        results.append(job)
+    "sales",
 
+    "commercial",
 
+    "finance",
 
-    print(
+    "account executive",
 
-        "APRES FILTRE:",
+    "customer success",
 
-        len(results)
+    "customer support",
 
-    )
+    "human resources",
 
+    "hr",
 
-    return results
+    "audit",
+
+    "legal"
+
+]
+
+
+SENIOR_KEYWORDS = [
+
+    "senior",
+
+    "staff",
+
+    "principal",
+
+    "lead",
+
+    "director",
+
+    "head",
+
+    "manager",
+
+    "architect"
+
+]

@@ -12,6 +12,7 @@ def filter_jobs(jobs):
     results=[]
 
 
+
     print(
         "DEBUT FILTRE:",
         len(jobs)
@@ -22,26 +23,6 @@ def filter_jobs(jobs):
     for job in jobs:
 
 
-        text=(
-
-            job.get("title","")
-
-            +" "
-
-            +job.get("description","")
-
-            +" "
-
-            +job.get("company","")
-
-            +" "
-
-            +job.get("location","")
-
-        ).lower()
-
-
-
         title = job.get(
             "title",
             ""
@@ -49,7 +30,25 @@ def filter_jobs(jobs):
 
 
 
-        # URL obligatoire
+        text=(
+
+            job.get("title","")
+
+            + " "
+
+            + job.get("description","")
+
+            + " "
+
+            + job.get("company","")
+
+            + " "
+
+            + job.get("location","")
+
+        ).lower()
+
+
 
         if not job.get("link"):
 
@@ -57,7 +56,7 @@ def filter_jobs(jobs):
 
 
 
-        # suppression senior
+        # supprimer senior
 
         if any(
 
@@ -67,17 +66,16 @@ def filter_jobs(jobs):
 
         ):
 
-
             print(
                 "REFUS SENIOR:",
-                job.get("title")
+                job["title"]
             )
 
             continue
 
 
 
-        # suppression métiers hors cible
+        # supprimer hors domaine
 
         if any(
 
@@ -87,17 +85,16 @@ def filter_jobs(jobs):
 
         ):
 
-
             print(
                 "REFUS METIER:",
-                job.get("title")
+                job["title"]
             )
 
             continue
 
 
 
-        # rôle IA/Data obligatoire
+        # IA/Data obligatoire
 
         if not any(
 
@@ -107,10 +104,9 @@ def filter_jobs(jobs):
 
         ):
 
-
             print(
                 "REFUS ROLE:",
-                job.get("title")
+                job["title"]
             )
 
             continue

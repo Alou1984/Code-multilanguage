@@ -14,6 +14,7 @@ def main():
     )
 
 
+
     jobs = search_jobs()
 
 
@@ -23,15 +24,13 @@ def main():
     )
 
 
+
     jobs = score_jobs(jobs)
 
 
-    print(
-        "SCORE TERMINE"
-    )
-
 
     jobs = filter_jobs(jobs)
+
 
 
     print(
@@ -40,20 +39,27 @@ def main():
     )
 
 
+
     for job in jobs[:10]:
 
         print(
 
             job.get("title"),
 
+            "|",
+
             job.get("company"),
+
+            "|",
 
             job.get("score")
 
         )
 
 
+
     subject,html = render_email(jobs)
+
 
 
     send_email(
@@ -62,12 +68,12 @@ def main():
 
         html=html,
 
-        text="Rapport quotidien IA Data"
+        text="Rapport IA Data"
 
     )
 
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     main()
