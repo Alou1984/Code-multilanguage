@@ -1,34 +1,57 @@
+from .collectors.france_travail import search_france_travail
 from .collectors.greenhouse import search_greenhouse
 from .collectors.lever import search_lever
 from .collectors.teamtailor import search_teamtailor
-from .collectors.france_travail import search_france_travail
 
 
 
-def normalize(job):
+def enrich_contract(job):
 
 
-    return {
+    text=(
 
-        "title":
-        job.get("title",""),
+        job.get("title","")
 
-        "company":
-        job.get("company",""),
+        +" "
 
-        "location":
-        job.get("location",""),
+        +job.get("description","")
 
-        "description":
-        job.get("description",""),
+    ).lower()
 
-        "contract":
-        job.get("contract",""),
 
-        "link":
-        job.get("link","")
 
-    }
+    contracts=[
+
+        "alternance",
+
+        "apprentissage",
+
+        "professionnalisation",
+
+        "graduate",
+
+        "junior",
+
+        "stage"
+
+    ]
+
+
+
+    for contract in contracts:
+
+
+        if contract in text:
+
+            job["contract"]=contract
+
+            return job
+
+
+
+    job["contract"]=""
+
+    return job
 
 
 
@@ -37,7 +60,6 @@ def search_jobs():
 
 
     jobs=[]
-
 
 
     collectors=[
@@ -60,34 +82,17 @@ def search_jobs():
         try:
 
 
-            result = collector()
+            jobs.extend(
 
-
-            print(
-
-                collector.__name__,
-
-                len(result)
+                collector()
 
             )
-
-
-            jobs.extend(result)
-
 
 
         except Exception as e:
 
 
-            print(
-
-                "Erreur",
-
-                collector.__name__,
-
-                e
-
-            )
+            print(e)
 
 
 
@@ -98,29 +103,14 @@ def search_jobs():
     for job in jobs:
 
 
-        job = normalize(job)
+        job=enrich_contract(job)
 
 
 
-        if not job["link"].startswith(
-            "http"
-        ):
+        if job.get("link","").startswith("http"):
 
-            continue
+            final.append(job)
 
-
-
-        final.append(job)
-
-
-
-    print(
-
-        "Offres avant filtre:",
-
-        len(final)
-
-    )
 
 
     return final

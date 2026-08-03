@@ -1,8 +1,30 @@
-TARGET_SKILLS = [
+TARGET_ROLES = [
 
     "data engineer",
-    "big data",
-    "data science",
+    "big data engineer",
+
+    "ai engineer",
+
+    "machine learning engineer",
+
+    "ml engineer",
+
+    "mlops engineer",
+
+    "llm engineer",
+
+    "deep learning engineer",
+
+    "data scientist",
+
+    "cloud ai engineer",
+
+    "embedded ai engineer"
+
+]
+
+
+TARGET_SKILLS = [
 
     "python",
     "sql",
@@ -13,7 +35,6 @@ TARGET_SKILLS = [
 
     "llm",
     "large language model",
-    "generative ai",
 
     "gpu",
     "cuda",
@@ -21,16 +42,17 @@ TARGET_SKILLS = [
 
     "mlops",
 
+    "kubernetes",
+
     "robotics",
+
     "embedded",
 
-    "aéronautique",
-    "aérospatial",
+    "aws",
 
-    "energy",
-    "oil",
-    "gas",
-    "mining"
+    "data pipeline",
+
+    "big data"
 
 ]
 
@@ -38,27 +60,35 @@ TARGET_SKILLS = [
 EUROPE_LOCATIONS = [
 
     "france",
+
     "paris",
+
     "ile-de-france",
 
     "grenoble",
+
     "toulouse",
+
     "lyon",
 
+    "bordeaux",
+
     "suisse",
+
     "geneve",
+
     "lausanne",
+
     "zurich",
 
     "luxembourg",
 
     "europe",
+
     "emea"
 
 ]
 
-
-# Contrats acceptés UNIQUEMENT
 
 VALID_CONTRACTS = [
 
@@ -66,7 +96,7 @@ VALID_CONTRACTS = [
 
     "apprentissage",
 
-    "contrat de professionnalisation",
+    "contrat professionnalisation",
 
     "professionnalisation",
 
@@ -76,22 +106,37 @@ VALID_CONTRACTS = [
 
     "junior",
 
+    "early career",
+
     "entry level",
-
-    "trainee",
-
-    "intern",
-
-    "internship",
 
     "stage"
 
 ]
 
 
-# Termes interdits
+FORBIDDEN_ROLES = [
 
-FORBIDDEN_TERMS = [
+    "marketing",
+
+    "sales",
+
+    "commercial",
+
+    "business development",
+
+    "human resources",
+
+    "hr",
+
+    "finance",
+
+    "account manager"
+
+]
+
+
+FORBIDDEN_LEVELS = [
 
     "senior",
 
@@ -103,15 +148,9 @@ FORBIDDEN_TERMS = [
 
     "director",
 
-    "manager",
-
     "architect",
 
-    "expert",
-
-    "10 years",
-
-    "15 years"
+    "manager"
 
 ]
 

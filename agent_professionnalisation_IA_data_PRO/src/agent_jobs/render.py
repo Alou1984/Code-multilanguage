@@ -5,24 +5,20 @@ from datetime import datetime
 def render_email(jobs):
 
 
-    subject = (
+    subject=(
 
         "Alternance IA Data Europe - "
 
-        +
-
-        datetime.now().strftime(
-            "%d/%m/%Y"
-        )
+        +datetime.now().strftime("%d/%m/%Y")
 
     )
 
 
 
-    html = """
+    html="""
 
 <h2>
-Offres Alternance IA / Big Data Europe
+Recherche Alternance IA / Big Data Europe
 </h2>
 
 <p>
@@ -36,11 +32,13 @@ Mastère Spécialisé Expert Big Data et IA
     if not jobs:
 
 
-        html += """
+        html+="""
+
 
 <h3>
-Aucune offre alternance compatible trouvée
+Aucune offre compatible aujourd'hui
 </h3>
+
 
 """
 
@@ -48,7 +46,7 @@ Aucune offre alternance compatible trouvée
     for job in jobs:
 
 
-        html += f"""
+        html+=f"""
 
 <hr>
 
@@ -67,7 +65,7 @@ Lieu :
 <br>
 
 Contrat :
-{job.get('contract','Non précisé')}
+{job.get('contract','')}
 
 <br>
 
@@ -78,12 +76,12 @@ Score :
 
 
 <a href="{job['link']}">
-
-Postuler
-
+Candidater
 </a>
+
 
 """
 
 
-    return subject, html
+
+    return subject,html
