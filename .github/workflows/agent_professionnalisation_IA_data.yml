@@ -6,6 +6,7 @@ on:
   schedule:
 
     # Tous les jours à 8h00 UTC
+
     - cron: "0 8 * * *"
 
 
@@ -15,10 +16,19 @@ on:
 
 jobs:
 
+
   search_jobs:
 
 
     runs-on: ubuntu-latest
+
+
+
+    defaults:
+
+      run:
+
+        working-directory: agent_professionnalisation_IA_data_PRO
 
 
 
@@ -47,11 +57,36 @@ jobs:
 
           python -m pip install --upgrade pip
 
-          pip install -r agent_professionnalisation_IA_data_PRO/requirements.txt
+          pip install -r requirements.txt
 
 
 
-      - name: Check secrets availability
+      - name: Verify project structure
+
+        run: |
+
+          echo "Current directory:"
+
+          pwd
+
+
+          echo "Files:"
+
+          ls -la
+
+
+          echo "Source:"
+
+          ls -la src
+
+
+          echo "Agent package:"
+
+          ls -la src/agent_jobs
+
+
+
+      - name: Check secrets
 
         env:
 
@@ -63,31 +98,35 @@ jobs:
 
         run: |
 
+
           if [ -z "$EMAIL_SENDER" ]; then
 
-            echo "EMAIL_SENDER absent"
+            echo "ERROR: EMAIL_SENDER absent"
 
             exit 1
 
           fi
+
 
 
           if [ -z "$EMAIL_PASSWORD" ]; then
 
-            echo "EMAIL_PASSWORD absent"
+            echo "ERROR: EMAIL_PASSWORD absent"
 
             exit 1
 
           fi
+
 
 
           if [ -z "$EMAIL_RECEIVER" ]; then
 
-            echo "EMAIL_RECEIVER absent"
+            echo "ERROR: EMAIL_RECEIVER absent"
 
             exit 1
 
           fi
+
 
 
           echo "Secrets email OK"
@@ -96,9 +135,11 @@ jobs:
 
       - name: Run Agent IA Data
 
-        working-directory: agent_professionnalisation_IA_data_PRO
-
         env:
+
+
+          PYTHONPATH: src
+
 
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
 
@@ -107,11 +148,14 @@ jobs:
           EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
 
 
+
           FRANCE_TRAVAIL_CLIENT_ID: ${{ secrets.FRANCE_TRAVAIL_CLIENT_ID }}
 
           FRANCE_TRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCE_TRAVAIL_CLIENT_SECRET }}
 
 
+
         run: |
+
 
           python -m agent_jobs.main
