@@ -2,6 +2,8 @@ COMPANIES = [
 
     "OpenAI",
 
+    "Anthropic",
+
     "NVIDIA",
 
     "Google",
@@ -44,6 +46,7 @@ COMPANIES = [
 
 def search_company_jobs():
 
+
     jobs=[]
 
 
@@ -53,22 +56,35 @@ def search_company_jobs():
         jobs.append({
 
             "title":
-            "AI Data Engineer",
+            "AI Engineer / Data Engineer",
+
 
             "company":
             company,
 
+
             "location":
             "Europe",
 
+
             "description":
-            "AI Big Data Machine Learning",
+            """
+            Artificial Intelligence,
+            Big Data,
+            Machine Learning,
+            Deep Learning,
+            Data Engineering
+            """,
+
 
             "contract":
             "Graduate Junior",
 
+
             "link":
-            "https://careers.google.com"
+            "https://www.google.com/search?q="
+            + company
+            + "+careers"
 
         })
 

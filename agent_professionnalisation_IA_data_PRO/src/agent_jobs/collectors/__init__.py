@@ -1,5 +1,3 @@
-# Collectors package
-
 from .france_travail import search_france_travail
 from .apec import search_apec
 from .hellowork import search_hellowork
