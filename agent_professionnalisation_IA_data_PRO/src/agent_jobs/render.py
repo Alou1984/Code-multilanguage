@@ -5,83 +5,174 @@ from datetime import datetime
 def render_email(jobs):
 
 
-    subject=(
+    date = datetime.now().strftime("%d/%m/%Y")
 
-        "Alternance IA Data Europe - "
 
-        +datetime.now().strftime("%d/%m/%Y")
-
+    subject = (
+        "Offres Alternance IA / Big Data Europe - "
+        + date
     )
 
 
+    html = f"""
 
-    html="""
+<html>
+
+<body>
 
 <h2>
 Recherche Alternance IA / Big Data Europe
 </h2>
 
+
 <p>
-Mastère Spécialisé Expert Big Data et IA
+<b>Mastère Spécialisé Expert Big Data et IA</b>
 </p>
 
-"""
 
+<p>
+Date de recherche : {date}
+</p>
+
+
+<hr>
+
+"""
 
 
     if not jobs:
 
 
-        html+="""
-
+        html += """
 
 <h3>
-Aucune offre compatible aujourd'hui
+Aucune offre compatible trouvée aujourd'hui.
 </h3>
 
+
+<p>
+Critères recherchés :
+</p>
+
+<ul>
+
+<li>Data Engineer</li>
+
+<li>Big Data Engineer</li>
+
+<li>AI Engineer</li>
+
+<li>Machine Learning Engineer</li>
+
+<li>MLOps Engineer</li>
+
+<li>LLM Engineer</li>
+
+<li>Alternance / Apprentissage / Graduate Program</li>
+
+<li>France / Europe</li>
+
+</ul>
 
 """
 
 
-    for job in jobs:
+    else:
 
 
-        html+=f"""
-
-<hr>
+        html += f"""
 
 <h3>
-{job['title']}
+{len(jobs)} offres détectées
 </h3>
 
-Entreprise :
-{job['company']}
+"""
+
+
+        for index, job in enumerate(jobs, start=1):
+
+
+            html += f"""
+
+<table border="0" cellpadding="5">
+
+
+<tr>
+
+<td>
+
+<h3>
+#{index} - {job.get('title','Non renseigné')}
+</h3>
+
+
+<b>Entreprise :</b>
+
+{job.get('company','Non renseigné')}
+
 
 <br>
 
-Lieu :
-{job['location']}
+
+<b>Localisation :</b>
+
+{job.get('location','Europe')}
+
 
 <br>
 
-Contrat :
-{job.get('contract','')}
+
+<b>Contrat :</b>
+
+{job.get('contract','Non indiqué')}
+
 
 <br>
 
-Score :
-{job.get('score',0)}
+
+<b>Score IA/Data :</b>
+
+{job.get('score',0)}/100
+
 
 <br><br>
 
 
-<a href="{job['link']}">
-Candidater
+<a href="{job.get('link','#')}">
+
+Voir l'offre et candidater
+
 </a>
+
+
+</td>
+
+</tr>
+
+
+</table>
+
+
+<hr>
 
 
 """
 
 
+    html += """
 
-    return subject,html
+<p>
+
+Agent automatique de recherche emploi IA/Data.
+
+</p>
+
+
+</body>
+
+</html>
+
+"""
+
+
+    return subject, html

@@ -14,9 +14,7 @@ def main():
     )
 
 
-
-    jobs=search_jobs()
-
+    jobs = search_jobs()
 
 
     print(
@@ -25,27 +23,21 @@ def main():
     )
 
 
-
-    jobs=score_jobs(jobs)
-
+    jobs = score_jobs(jobs)
 
 
     print(
-        "SCORE OK:",
-        len(jobs)
+        "SCORE TERMINE"
     )
 
 
-
-    jobs=filter_jobs(jobs)
-
+    jobs = filter_jobs(jobs)
 
 
     print(
-        "FINAL:",
+        "ENVOI:",
         len(jobs)
     )
-
 
 
     for job in jobs[:10]:
@@ -62,7 +54,7 @@ def main():
 
 
 
-    subject,html=render_email(jobs)
+    subject,html = render_email(jobs)
 
 
 
@@ -72,7 +64,7 @@ def main():
 
         html=html,
 
-        text="Rapport IA Data"
+        text="Rapport offres IA Data"
 
     )
 

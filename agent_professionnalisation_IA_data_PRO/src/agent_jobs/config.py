@@ -1,20 +1,19 @@
 TARGET_ROLES = [
 
     "data engineer",
-    "data engineering",
     "big data",
     "data scientist",
 
     "ai engineer",
-    "ai software engineer",
-
+    "machine learning engineer",
     "machine learning",
-    "deep learning",
 
     "mlops",
 
     "llm",
     "generative ai",
+
+    "deep learning",
 
     "computer vision",
 
@@ -44,9 +43,7 @@ TARGET_SKILLS = [
 
     "kubernetes",
 
-    "data pipeline",
-
-    "machine learning"
+    "data pipeline"
 
 ]
 
@@ -57,20 +54,20 @@ EUROPE_KEYWORDS = [
     "french",
 
     "paris",
-    "toulouse",
     "grenoble",
+    "toulouse",
     "lyon",
-    "bordeaux",
 
     "switzerland",
     "suisse",
+
     "geneva",
     "lausanne",
-    "zurich",
 
     "luxembourg",
 
     "germany",
+
     "belgium",
 
     "europe",
@@ -89,8 +86,6 @@ CONTRACT_KEYWORDS = [
 
     "apprentissage",
 
-    "professionalization",
-
     "professionnalisation",
 
     "graduate",
@@ -105,6 +100,8 @@ CONTRACT_KEYWORDS = [
 
     "trainee",
 
+    "intern",
+
     "stage"
 
 ]
@@ -118,9 +115,9 @@ FORBIDDEN_KEYWORDS = [
 
     "commercial",
 
-    "hr",
-
     "human resources",
+
+    "hr",
 
     "finance",
 
@@ -136,6 +133,39 @@ FORBIDDEN_KEYWORDS = [
 
     "lead",
 
-    "architect"
+    "manager"
+
+]
+
+
+TARGET_COMPANIES = [
+
+    "edf",
+
+    "airbus",
+
+    "safran",
+
+    "thales",
+
+    "framatome",
+
+    "eramet",
+
+    "totalenergies",
+
+    "stmicroelectronics",
+
+    "schneider",
+
+    "siemens",
+
+    "bosch",
+
+    "alstom",
+
+    "dataiku",
+
+    "mistral"
 
 ]

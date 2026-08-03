@@ -1,6 +1,5 @@
 from .config import (
     TARGET_ROLES,
-    EUROPE_KEYWORDS,
     FORBIDDEN_KEYWORDS
 )
 
@@ -13,10 +12,9 @@ def filter_jobs(jobs):
 
 
     print(
-        "DEBUT FILTRE",
+        "FILTRAGE:",
         len(jobs)
     )
-
 
 
     for job in jobs:
@@ -32,15 +30,7 @@ def filter_jobs(jobs):
 
             +" "
 
-            +job.get("location","")
-
-            +" "
-
             +job.get("company","")
-
-            +" "
-
-            +job.get("contract","")
 
         ).lower()
 
@@ -52,7 +42,7 @@ def filter_jobs(jobs):
 
 
 
-        # métier IA/Data
+        # Vérification IA/Data
 
         if not any(
 
@@ -62,55 +52,19 @@ def filter_jobs(jobs):
 
         ):
 
-
-            print(
-                "ROLE REFUSE:",
-                job.get("title")
-            )
-
-
             continue
 
 
 
-        # Europe
-
-        if not any(
-
-            place in text
-
-            for place in EUROPE_KEYWORDS
-
-        ):
-
-
-            print(
-                "PAYS REFUSE:",
-                job.get("title"),
-                job.get("location")
-            )
-
-
-            continue
-
-
-
-        # hors domaine
+        # Exclusion hors domaine
 
         if any(
 
-            bad in text
+            word in text
 
-            for bad in FORBIDDEN_KEYWORDS
+            for word in FORBIDDEN_KEYWORDS
 
         ):
-
-
-            print(
-                "MOT REFUSE:",
-                job.get("title")
-            )
-
 
             continue
 
@@ -129,4 +83,4 @@ def filter_jobs(jobs):
     )
 
 
-    return results
+    return results[:30]

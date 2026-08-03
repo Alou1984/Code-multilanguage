@@ -31,6 +31,7 @@ def normalize(job):
 
 
 
+
 def search_jobs():
 
 
@@ -56,14 +57,13 @@ def search_jobs():
 
         try:
 
-
             result = collector()
 
 
             print(
-                "COLLECTEUR",
+                "SOURCE:",
                 collector.__name__,
-                ":",
+                "RESULTATS:",
                 len(result)
             )
 
@@ -76,7 +76,7 @@ def search_jobs():
 
 
             print(
-                "ERREUR",
+                "ERREUR:",
                 collector.__name__,
                 e
             )
@@ -86,16 +86,10 @@ def search_jobs():
     final=[]
 
 
-
     for job in jobs:
 
 
         job=normalize(job)
-
-
-        if not job["link"]:
-
-            continue
 
 
 
@@ -111,8 +105,7 @@ def search_jobs():
 
     print(
 
-        "TOTAL OFFRES BRUTES:",
-
+        "TOTAL OFFRES:",
         len(final)
 
     )
