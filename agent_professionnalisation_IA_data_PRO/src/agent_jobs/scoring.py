@@ -1,8 +1,9 @@
 from .config import (
     TARGET_SKILLS,
     EUROPE_LOCATIONS,
-    CONTRACT_WORDS,
-    TARGET_COMPANIES
+    VALID_CONTRACTS,
+    TARGET_COMPANIES,
+    FORBIDDEN_TERMS
 )
 
 
@@ -10,29 +11,35 @@ from .config import (
 def score_offer(job):
 
 
-    text=(
+    text = (
 
         job.get("title","")
 
-        +" "
+        + " "
 
-        +job.get("description","")
+        + job.get("description","")
 
-        +" "
+        + " "
 
-        +job.get("location","")
+        + job.get("location","")
 
-        +" "
+        + " "
 
-        +job.get("company","")
+        + job.get("company","")
+
+        + " "
+
+        + job.get("contract","")
 
     ).lower()
 
 
 
-    score=0
+    score = 0
 
 
+
+    # Compétences IA/Data
 
     for skill in TARGET_SKILLS:
 
@@ -42,6 +49,8 @@ def score_offer(job):
 
 
 
+    # Europe
+
     for location in EUROPE_LOCATIONS:
 
         if location in text:
@@ -50,13 +59,17 @@ def score_offer(job):
 
 
 
-    for contract in CONTRACT_WORDS:
+    # Contrat recherché
+
+    for contract in VALID_CONTRACTS:
 
         if contract in text:
 
-            score += 40
+            score += 100
 
 
+
+    # Entreprise cible
 
     for company in TARGET_COMPANIES:
 
@@ -66,7 +79,17 @@ def score_offer(job):
 
 
 
-    job["score"]=score
+    # Pénalité senior
+
+    for word in FORBIDDEN_TERMS:
+
+        if word in text:
+
+            score -= 100
+
+
+
+    job["score"] = score
 
 
     return job

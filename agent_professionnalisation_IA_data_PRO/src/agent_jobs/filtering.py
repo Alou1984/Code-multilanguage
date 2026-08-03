@@ -1,28 +1,65 @@
-from .config import BLOCKED_COMPANIES
+from .config import (
+    VALID_CONTRACTS,
+    FORBIDDEN_TERMS
+)
 
 
 
 def filter_jobs(jobs):
 
 
-    result=[]
+    selected = []
+
 
 
     for job in jobs:
 
 
-        company = job.get(
-            "company",
-            ""
+        text = (
+
+            job.get("title","")
+
+            + " "
+
+            + job.get("description","")
+
+            + " "
+
+            + job.get("contract","")
+
         ).lower()
 
 
 
+        # Pas de lien = suppression
+
+        if not job.get("link"):
+
+            continue
+
+
+
+        # Pas de contrat compatible = suppression
+
+        if not any(
+
+            contract in text
+
+            for contract in VALID_CONTRACTS
+
+        ):
+
+            continue
+
+
+
+        # Senior supprimé
+
         if any(
 
-            bad in company
+            word in text
 
-            for bad in BLOCKED_COMPANIES
+            for word in FORBIDDEN_TERMS
 
         ):
 
@@ -30,35 +67,11 @@ def filter_jobs(jobs):
 
 
 
-        if not job.get(
-            "title"
-        ):
-
-            continue
+        selected.append(job)
 
 
 
-        if not job.get(
-            "link"
-        ):
-
-            continue
-
-
-
-        if not job["link"].startswith(
-            "http"
-        ):
-
-            continue
-
-
-
-        result.append(job)
-
-
-
-    result.sort(
+    selected.sort(
 
         key=lambda x:
 
@@ -72,5 +85,4 @@ def filter_jobs(jobs):
     )
 
 
-
-    return result[:20]
+    return selected[:20]

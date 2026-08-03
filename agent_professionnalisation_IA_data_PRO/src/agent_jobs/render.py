@@ -7,7 +7,7 @@ def render_email(jobs):
 
     subject = (
 
-        "Offres IA Data Europe - "
+        "Alternance IA Data Europe - "
 
         +
 
@@ -19,10 +19,10 @@ def render_email(jobs):
 
 
 
-    html="""
+    html = """
 
 <h2>
-Offres IA / Big Data Europe
+Offres Alternance IA / Big Data Europe
 </h2>
 
 <p>
@@ -39,7 +39,7 @@ Mastère Spécialisé Expert Big Data et IA
         html += """
 
 <h3>
-Aucune offre réelle trouvée aujourd'hui
+Aucune offre alternance compatible trouvée
 </h3>
 
 """
@@ -52,7 +52,9 @@ Aucune offre réelle trouvée aujourd'hui
 
 <hr>
 
-<h3>{job['title']}</h3>
+<h3>
+{job['title']}
+</h3>
 
 Entreprise :
 {job['company']}
@@ -64,16 +66,24 @@ Lieu :
 
 <br>
 
+Contrat :
+{job.get('contract','Non précisé')}
+
+<br>
+
 Score :
 {job.get('score',0)}
 
 <br><br>
 
+
 <a href="{job['link']}">
-Voir l'offre
+
+Postuler
+
 </a>
 
 """
 
 
-    return subject,html
+    return subject, html

@@ -2,13 +2,17 @@ TARGET_SKILLS = [
 
     "data engineer",
     "big data",
+    "data science",
+
     "python",
-    "spark",
     "sql",
+    "spark",
 
     "machine learning",
     "deep learning",
+
     "llm",
+    "large language model",
     "generative ai",
 
     "gpu",
@@ -16,9 +20,8 @@ TARGET_SKILLS = [
     "nvidia",
 
     "mlops",
-    "kubernetes",
 
-    "robotique",
+    "robotics",
     "embedded",
 
     "aéronautique",
@@ -37,20 +40,17 @@ EUROPE_LOCATIONS = [
     "france",
     "paris",
     "ile-de-france",
+
     "grenoble",
     "toulouse",
     "lyon",
 
     "suisse",
-    "geneva",
+    "geneve",
     "lausanne",
     "zurich",
 
     "luxembourg",
-
-    "germany",
-    "belgium",
-    "netherlands",
 
     "europe",
     "emea"
@@ -58,28 +58,73 @@ EUROPE_LOCATIONS = [
 ]
 
 
-CONTRACT_WORDS = [
+# Contrats acceptés UNIQUEMENT
+
+VALID_CONTRACTS = [
 
     "alternance",
+
     "apprentissage",
+
+    "contrat de professionnalisation",
+
     "professionnalisation",
+
+    "graduate program",
+
     "graduate",
+
     "junior",
+
+    "entry level",
+
     "trainee",
-    "intern"
+
+    "intern",
+
+    "internship",
+
+    "stage"
+
+]
+
+
+# Termes interdits
+
+FORBIDDEN_TERMS = [
+
+    "senior",
+
+    "staff",
+
+    "principal",
+
+    "lead",
+
+    "director",
+
+    "manager",
+
+    "architect",
+
+    "expert",
+
+    "10 years",
+
+    "15 years"
 
 ]
 
 
 TARGET_COMPANIES = [
 
+    "edf",
+
     "airbus",
 
     "safran",
 
     "thales",
-
-    "edf",
 
     "framatome",
 
@@ -95,27 +140,10 @@ TARGET_COMPANIES = [
 
     "bosch",
 
-    "abb",
-
     "alstom",
-
-    "michelin",
 
     "dataiku",
 
     "mistral"
-
-]
-
-
-BLOCKED_COMPANIES = [
-
-    "databricks",
-
-    "openai",
-
-    "anthropic",
-
-    "scale ai"
 
 ]

@@ -5,21 +5,50 @@ from .collectors.france_travail import search_france_travail
 
 
 
+def normalize(job):
+
+
+    return {
+
+        "title":
+        job.get("title",""),
+
+        "company":
+        job.get("company",""),
+
+        "location":
+        job.get("location",""),
+
+        "description":
+        job.get("description",""),
+
+        "contract":
+        job.get("contract",""),
+
+        "link":
+        job.get("link","")
+
+    }
+
+
+
+
 def search_jobs():
 
 
     jobs=[]
 
 
+
     collectors=[
+
+        search_france_travail,
 
         search_greenhouse,
 
         search_lever,
 
-        search_teamtailor,
-
-        search_france_travail
+        search_teamtailor
 
     ]
 
@@ -31,7 +60,7 @@ def search_jobs():
         try:
 
 
-            result=collector()
+            result = collector()
 
 
             print(
@@ -51,9 +80,47 @@ def search_jobs():
 
 
             print(
+
+                "Erreur",
+
                 collector.__name__,
+
                 e
+
             )
 
 
-    return jobs
+
+    final=[]
+
+
+
+    for job in jobs:
+
+
+        job = normalize(job)
+
+
+
+        if not job["link"].startswith(
+            "http"
+        ):
+
+            continue
+
+
+
+        final.append(job)
+
+
+
+    print(
+
+        "Offres avant filtre:",
+
+        len(final)
+
+    )
+
+
+    return final
