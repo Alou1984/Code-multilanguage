@@ -5,37 +5,33 @@ from datetime import datetime
 def render_email(jobs):
 
 
-    date = datetime.now().strftime("%d/%m/%Y")
+    date=datetime.now().strftime("%d/%m/%Y")
 
 
-    subject = (
-        "Offres Alternance IA / Big Data Europe - "
-        + date
+    subject=(
+
+        "Offres IA Big Data Europe - "
+
+        +date
+
     )
 
 
-    html = f"""
-
-<html>
-
-<body>
+    html=f"""
 
 <h2>
-Recherche Alternance IA / Big Data Europe
+Recherche IA / Big Data Europe
 </h2>
 
 
 <p>
-<b>Mastère Spécialisé Expert Big Data et IA</b>
+Mastère Spécialisé Expert Big Data et IA
 </p>
 
 
 <p>
-Date de recherche : {date}
+Date : {date}
 </p>
-
-
-<hr>
 
 """
 
@@ -46,133 +42,56 @@ Date de recherche : {date}
         html += """
 
 <h3>
-Aucune offre compatible trouvée aujourd'hui.
+Aucune offre compatible aujourd'hui.
 </h3>
 
-
 <p>
-Critères recherchés :
+Le moteur a exécuté la recherche mais aucune offre IA/Data exploitable n'a été retenue.
 </p>
-
-<ul>
-
-<li>Data Engineer</li>
-
-<li>Big Data Engineer</li>
-
-<li>AI Engineer</li>
-
-<li>Machine Learning Engineer</li>
-
-<li>MLOps Engineer</li>
-
-<li>LLM Engineer</li>
-
-<li>Alternance / Apprentissage / Graduate Program</li>
-
-<li>France / Europe</li>
-
-</ul>
 
 """
 
 
-    else:
+
+    for job in jobs:
 
 
         html += f"""
 
-<h3>
-{len(jobs)} offres détectées
-</h3>
+<hr>
 
-"""
-
-
-        for index, job in enumerate(jobs, start=1):
-
-
-            html += f"""
-
-<table border="0" cellpadding="5">
-
-
-<tr>
-
-<td>
 
 <h3>
-#{index} - {job.get('title','Non renseigné')}
+{job.get('title')}
 </h3>
 
 
-<b>Entreprise :</b>
-
-{job.get('company','Non renseigné')}
-
-
-<br>
-
-
-<b>Localisation :</b>
-
-{job.get('location','Europe')}
+Entreprise :
+{job.get('company')}
 
 
 <br>
 
 
-<b>Contrat :</b>
-
-{job.get('contract','Non indiqué')}
+Localisation :
+{job.get('location')}
 
 
 <br>
 
 
-<b>Score IA/Data :</b>
-
-{job.get('score',0)}/100
+Score :
+{job.get('score')}
 
 
 <br><br>
 
 
-<a href="{job.get('link','#')}">
-
-Voir l'offre et candidater
-
+<a href="{job.get('link')}">
+Voir l'offre
 </a>
 
-
-</td>
-
-</tr>
-
-
-</table>
-
-
-<hr>
-
-
 """
 
 
-    html += """
-
-<p>
-
-Agent automatique de recherche emploi IA/Data.
-
-</p>
-
-
-</body>
-
-</html>
-
-"""
-
-
-    return subject, html
+    return subject,html

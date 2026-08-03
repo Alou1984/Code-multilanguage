@@ -10,7 +10,7 @@ def main():
 
 
     print(
-        "=== AGENT IA DATA ==="
+        "=== AGENT PROFESSIONNALISATION IA DATA ==="
     )
 
 
@@ -35,7 +35,7 @@ def main():
 
 
     print(
-        "ENVOI:",
+        "OFFRES FINALES:",
         len(jobs)
     )
 
@@ -44,18 +44,16 @@ def main():
 
         print(
 
-            job["title"],
+            job.get("title"),
 
-            job["company"],
+            job.get("company"),
 
-            job["score"]
+            job.get("score")
 
         )
 
 
-
     subject,html = render_email(jobs)
-
 
 
     send_email(
@@ -64,7 +62,7 @@ def main():
 
         html=html,
 
-        text="Rapport offres IA Data"
+        text="Rapport quotidien IA Data"
 
     )
 

@@ -31,7 +31,6 @@ def normalize(job):
 
 
 
-
 def search_jobs():
 
 
@@ -51,21 +50,36 @@ def search_jobs():
     ]
 
 
-
     for collector in collectors:
 
 
         try:
 
+
             result = collector()
 
 
             print(
+
                 "SOURCE:",
+
                 collector.__name__,
-                "RESULTATS:",
+
+                "=>",
+
                 len(result)
+
             )
+
+
+            for item in result[:3]:
+
+                print(
+                    "EXEMPLE:",
+                    item.get("title"),
+                    item.get("company"),
+                    item.get("location")
+                )
 
 
             jobs.extend(result)
@@ -76,9 +90,13 @@ def search_jobs():
 
 
             print(
-                "ERREUR:",
+
+                "ERREUR",
+
                 collector.__name__,
+
                 e
+
             )
 
 
@@ -93,19 +111,16 @@ def search_jobs():
 
 
 
-        if not job["link"].startswith("http"):
+        if job["link"].startswith("http"):
 
-            continue
-
-
-
-        final.append(job)
+            final.append(job)
 
 
 
     print(
 
-        "TOTAL OFFRES:",
+        "TOTAL OFFRES VALIDES:",
+
         len(final)
 
     )

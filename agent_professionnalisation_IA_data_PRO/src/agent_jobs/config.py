@@ -1,23 +1,23 @@
 TARGET_ROLES = [
 
     "data engineer",
-    "big data",
+    "big data engineer",
     "data scientist",
 
     "ai engineer",
-    "machine learning engineer",
     "machine learning",
+    "machine learning engineer",
+
+    "deep learning",
 
     "mlops",
 
     "llm",
     "generative ai",
 
-    "deep learning",
-
     "computer vision",
 
-    "embedded ai",
+    "embedded",
 
     "robotics"
 
@@ -58,16 +58,16 @@ EUROPE_KEYWORDS = [
     "toulouse",
     "lyon",
 
-    "switzerland",
     "suisse",
+    "switzerland",
 
     "geneva",
     "lausanne",
+    "zurich",
 
     "luxembourg",
 
     "germany",
-
     "belgium",
 
     "europe",
@@ -80,17 +80,13 @@ CONTRACT_KEYWORDS = [
 
     "alternance",
 
-    "apprentice",
-
-    "apprenticeship",
-
     "apprentissage",
+
+    "apprentice",
 
     "professionnalisation",
 
     "graduate",
-
-    "graduate program",
 
     "junior",
 
@@ -100,9 +96,9 @@ CONTRACT_KEYWORDS = [
 
     "trainee",
 
-    "intern",
+    "stage",
 
-    "stage"
+    "intern"
 
 ]
 
@@ -121,7 +117,12 @@ FORBIDDEN_KEYWORDS = [
 
     "finance",
 
-    "account manager",
+    "account manager"
+
+]
+
+
+SENIOR_KEYWORDS = [
 
     "senior",
 
@@ -131,41 +132,8 @@ FORBIDDEN_KEYWORDS = [
 
     "director",
 
-    "lead",
+    "head",
 
     "manager"
-
-]
-
-
-TARGET_COMPANIES = [
-
-    "edf",
-
-    "airbus",
-
-    "safran",
-
-    "thales",
-
-    "framatome",
-
-    "eramet",
-
-    "totalenergies",
-
-    "stmicroelectronics",
-
-    "schneider",
-
-    "siemens",
-
-    "bosch",
-
-    "alstom",
-
-    "dataiku",
-
-    "mistral"
 
 ]

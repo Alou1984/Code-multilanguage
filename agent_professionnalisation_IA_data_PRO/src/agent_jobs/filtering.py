@@ -12,7 +12,7 @@ def filter_jobs(jobs):
 
 
     print(
-        "FILTRAGE:",
+        "DEBUT FILTRE:",
         len(jobs)
     )
 
@@ -32,6 +32,10 @@ def filter_jobs(jobs):
 
             +job.get("company","")
 
+            +" "
+
+            +job.get("location","")
+
         ).lower()
 
 
@@ -42,7 +46,7 @@ def filter_jobs(jobs):
 
 
 
-        # Vérification IA/Data
+        # IA/Data obligatoire
 
         if not any(
 
@@ -52,19 +56,37 @@ def filter_jobs(jobs):
 
         ):
 
+
+            print(
+
+                "REFUS ROLE:",
+
+                job.get("title")
+
+            )
+
             continue
 
 
 
-        # Exclusion hors domaine
+        # suppression métiers hors sujet
 
         if any(
 
-            word in text
+            bad in text
 
-            for word in FORBIDDEN_KEYWORDS
+            for bad in FORBIDDEN_KEYWORDS
 
         ):
+
+
+            print(
+
+                "REFUS METIER:",
+
+                job.get("title")
+
+            )
 
             continue
 
