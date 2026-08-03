@@ -4,8 +4,10 @@ name: Agent Recherche Emploi IA Data
 on:
 
   schedule:
-    # 06h00 UTC = 08h00 France en été
-    - cron: "0 6 * * *"
+
+    # Tous les jours à 8h00 UTC
+    - cron: "0 8 * * *"
+
 
   workflow_dispatch:
 
@@ -13,18 +15,10 @@ on:
 
 jobs:
 
-
-  recherche_emploi:
+  search_jobs:
 
 
     runs-on: ubuntu-latest
-
-
-    defaults:
-
-      run:
-
-        working-directory: agent_professionnalisation_IA_data_PRO
 
 
 
@@ -53,74 +47,71 @@ jobs:
 
           python -m pip install --upgrade pip
 
-          pip install -r requirements.txt
+          pip install -r agent_professionnalisation_IA_data_PRO/requirements.txt
 
 
 
-      - name: Verify project
-
-        run: |
-
-          pwd
-
-          ls -la
-
-          find src -type f
-
-
-
-      - name: Test SERPAPI secret
+      - name: Check secrets availability
 
         env:
 
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
 
         run: |
 
-          if [ -z "$SERPAPI_API_KEY" ]; then
+          if [ -z "$EMAIL_SENDER" ]; then
 
-            echo "SERPAPI_API_KEY absent"
+            echo "EMAIL_SENDER absent"
 
             exit 1
 
-          else
+          fi
 
-            echo "SERPAPI_API_KEY OK"
+
+          if [ -z "$EMAIL_PASSWORD" ]; then
+
+            echo "EMAIL_PASSWORD absent"
+
+            exit 1
 
           fi
+
+
+          if [ -z "$EMAIL_RECEIVER" ]; then
+
+            echo "EMAIL_RECEIVER absent"
+
+            exit 1
+
+          fi
+
+
+          echo "Secrets email OK"
 
 
 
       - name: Run Agent IA Data
 
+        working-directory: agent_professionnalisation_IA_data_PRO
+
         env:
 
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
 
-          PYTHONPATH: src
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
 
-
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
-
-
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
 
 
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          FRANCE_TRAVAIL_CLIENT_ID: ${{ secrets.FRANCE_TRAVAIL_CLIENT_ID }}
+
+          FRANCE_TRAVAIL_CLIENT_SECRET: ${{ secrets.FRANCE_TRAVAIL_CLIENT_SECRET }}
 
 
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-
-
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-
-
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-
-
-          EMAIL_TO: papalassane2003@yahoo.fr
-
-
-
-        run:
+        run: |
 
           python -m agent_jobs.main
