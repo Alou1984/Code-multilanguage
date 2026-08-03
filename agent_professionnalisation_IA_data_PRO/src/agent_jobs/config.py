@@ -8,13 +8,11 @@ TARGET_ROLES = [
     "machine learning engineer",
     "machine learning",
 
-    "mlops engineer",
     "mlops",
+    "mlops engineer",
 
-    "llm engineer",
     "llm",
-
-    "generative ai",
+    "large language model",
 
     "deep learning",
 
@@ -22,7 +20,7 @@ TARGET_ROLES = [
 
     "embedded ai",
 
-    "robotics"
+    "software engineer"
 
 ]
 
@@ -44,11 +42,7 @@ TARGET_SKILLS = [
     "azure",
     "gcp",
 
-    "kubernetes",
-
-    "data pipeline",
-
-    "big data"
+    "kubernetes"
 
 ]
 
@@ -56,27 +50,18 @@ TARGET_SKILLS = [
 EUROPE_KEYWORDS = [
 
     "france",
-
     "french",
 
     "paris",
-
-    "ile-de-france",
-
     "grenoble",
-
     "toulouse",
-
     "lyon",
 
+    "switzerland",
     "suisse",
 
-    "switzerland",
-
     "geneva",
-
     "lausanne",
-
     "zurich",
 
     "luxembourg",
@@ -86,7 +71,6 @@ EUROPE_KEYWORDS = [
     "belgium",
 
     "europe",
-
     "emea"
 
 ]
@@ -96,15 +80,15 @@ CONTRACT_KEYWORDS = [
 
     "alternance",
 
-    "apprentissage",
-
     "apprentice",
+
+    "apprenticeship",
+
+    "apprentissage",
 
     "professionnalisation",
 
     "graduate",
-
-    "graduate program",
 
     "junior",
 
@@ -114,9 +98,9 @@ CONTRACT_KEYWORDS = [
 
     "trainee",
 
-    "stage",
+    "intern",
 
-    "intern"
+    "stage"
 
 ]
 
@@ -127,9 +111,7 @@ FORBIDDEN_KEYWORDS = [
 
     "sales",
 
-    "commercial",
-
-    "finance",
+    "business development",
 
     "account executive",
 
@@ -137,13 +119,17 @@ FORBIDDEN_KEYWORDS = [
 
     "customer support",
 
+    "finance",
+
+    "accounting",
+
     "human resources",
 
     "hr",
 
-    "audit",
+    "legal",
 
-    "legal"
+    "audit"
 
 ]
 
@@ -156,14 +142,10 @@ SENIOR_KEYWORDS = [
 
     "principal",
 
-    "lead",
-
     "director",
 
     "head",
 
-    "manager",
-
-    "architect"
+    "manager"
 
 ]

@@ -12,12 +12,10 @@ def filter_jobs(jobs):
     results=[]
 
 
-
     print(
         "DEBUT FILTRE:",
         len(jobs)
     )
-
 
 
     for job in jobs:
@@ -34,17 +32,17 @@ def filter_jobs(jobs):
 
             job.get("title","")
 
-            + " "
+            +" "
 
-            + job.get("description","")
+            +job.get("description","")
 
-            + " "
+            +" "
 
-            + job.get("company","")
+            +job.get("company","")
 
-            + " "
+            +" "
 
-            + job.get("location","")
+            +job.get("location","")
 
         ).lower()
 
@@ -56,13 +54,13 @@ def filter_jobs(jobs):
 
 
 
-        # supprimer senior
+        # Senior seulement si le titre commence par senior
 
         if any(
 
-            word in title
+            title.startswith(x)
 
-            for word in SENIOR_KEYWORDS
+            for x in SENIOR_KEYWORDS
 
         ):
 
@@ -75,7 +73,7 @@ def filter_jobs(jobs):
 
 
 
-        # supprimer hors domaine
+        # Métiers interdits
 
         if any(
 
@@ -94,7 +92,7 @@ def filter_jobs(jobs):
 
 
 
-        # IA/Data obligatoire
+        # Poste IA/Data
 
         if not any(
 

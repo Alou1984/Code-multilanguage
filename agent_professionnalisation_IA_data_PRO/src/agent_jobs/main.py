@@ -14,8 +14,7 @@ def main():
     )
 
 
-
-    jobs = search_jobs()
+    jobs=search_jobs()
 
 
     print(
@@ -24,13 +23,10 @@ def main():
     )
 
 
-
-    jobs = score_jobs(jobs)
-
+    jobs=score_jobs(jobs)
 
 
-    jobs = filter_jobs(jobs)
-
+    jobs=filter_jobs(jobs)
 
 
     print(
@@ -39,26 +35,21 @@ def main():
     )
 
 
-
     for job in jobs[:10]:
 
         print(
 
-            job.get("title"),
+            job["title"],
 
-            "|",
+            job["company"],
 
-            job.get("company"),
-
-            "|",
-
-            job.get("score")
+            job["score"]
 
         )
 
 
 
-    subject,html = render_email(jobs)
+    subject,html=render_email(jobs)
 
 
 
@@ -74,6 +65,6 @@ def main():
 
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
 
     main()

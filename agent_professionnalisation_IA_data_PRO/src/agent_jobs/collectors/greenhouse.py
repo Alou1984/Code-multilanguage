@@ -1,17 +1,20 @@
 import requests
 
 
+
 COMPANIES=[
+
+    "mistral",
+
+    "huggingface",
+
+    "dataiku",
 
     "airbus",
 
     "safran",
 
-    "thales",
-
-    "dataiku",
-
-    "mistral"
+    "thales"
 
 ]
 
@@ -21,6 +24,7 @@ def search_greenhouse():
 
 
     jobs=[]
+
 
 
     for company in COMPANIES:
@@ -49,7 +53,6 @@ def search_greenhouse():
             )
 
 
-
             if response.status_code != 200:
 
                 continue
@@ -64,6 +67,43 @@ def search_greenhouse():
                 "jobs",
                 []
             ):
+
+
+                title=job.get(
+                    "title",
+                    ""
+                ).lower()
+
+
+
+                allowed=[
+
+                    "data",
+
+                    "machine learning",
+
+                    "ai",
+
+                    "ml",
+
+                    "software engineer",
+
+                    "research"
+
+                ]
+
+
+
+                if not any(
+
+                    word in title
+
+                    for word in allowed
+
+                ):
+
+                    continue
+
 
 
                 jobs.append({
@@ -101,12 +141,11 @@ def search_greenhouse():
                 })
 
 
-
         except Exception as e:
 
 
             print(
-                "Greenhouse",
+                "Greenhouse error",
                 company,
                 e
             )
