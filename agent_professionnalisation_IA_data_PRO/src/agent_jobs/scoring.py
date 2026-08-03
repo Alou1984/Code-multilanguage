@@ -2,7 +2,7 @@ from .config import (
     TARGET_SKILLS,
     CONTRACT_KEYWORDS,
     EUROPE_KEYWORDS,
-    SENIOR_KEYWORDS
+    TARGET_ROLES
 )
 
 
@@ -24,13 +24,21 @@ def score_offer(job):
 
         +" "
 
-        +job.get("contract","")
+        +job.get("company","")
 
     ).lower()
 
 
 
     score=0
+
+
+
+    for role in TARGET_ROLES:
+
+        if role in text:
+
+            score +=30
 
 
 
@@ -42,27 +50,19 @@ def score_offer(job):
 
 
 
+    for contract in CONTRACT_KEYWORDS:
+
+        if contract in text:
+
+            score +=50
+
+
+
     for place in EUROPE_KEYWORDS:
 
         if place in text:
 
             score +=20
-
-
-
-    for contract in CONTRACT_KEYWORDS:
-
-        if contract in text:
-
-            score +=40
-
-
-
-    for senior in SENIOR_KEYWORDS:
-
-        if senior in text:
-
-            score -=50
 
 
 
@@ -77,17 +77,17 @@ def score_offer(job):
 def score_jobs(jobs):
 
 
-    scored=[]
+    result=[]
 
 
     for job in jobs:
 
-        scored.append(
+        result.append(
             score_offer(job)
         )
 
 
-    scored.sort(
+    result.sort(
 
         key=lambda x:
 
@@ -98,4 +98,4 @@ def score_jobs(jobs):
     )
 
 
-    return scored
+    return result

@@ -1,139 +1,130 @@
-TARGET_ROLES = [
-
-    "data engineer",
-    "big data engineer",
-    "data scientist",
-
-    "ai engineer",
-    "machine learning",
-    "machine learning engineer",
-
-    "deep learning",
-
-    "mlops",
-
-    "llm",
-    "generative ai",
-
-    "computer vision",
-
-    "embedded",
-
-    "robotics"
-
-]
+from .config import (
+    TARGET_ROLES,
+    FORBIDDEN_KEYWORDS,
+    SENIOR_KEYWORDS
+)
 
 
-TARGET_SKILLS = [
 
-    "python",
-    "sql",
-    "spark",
-
-    "pytorch",
-    "tensorflow",
-
-    "gpu",
-    "cuda",
-    "nvidia",
-
-    "aws",
-    "azure",
-    "gcp",
-
-    "kubernetes",
-
-    "data pipeline"
-
-]
+def filter_jobs(jobs):
 
 
-EUROPE_KEYWORDS = [
-
-    "france",
-    "french",
-
-    "paris",
-    "grenoble",
-    "toulouse",
-    "lyon",
-
-    "suisse",
-    "switzerland",
-
-    "geneva",
-    "lausanne",
-    "zurich",
-
-    "luxembourg",
-
-    "germany",
-    "belgium",
-
-    "europe",
-    "emea"
-
-]
+    results=[]
 
 
-CONTRACT_KEYWORDS = [
-
-    "alternance",
-
-    "apprentissage",
-
-    "apprentice",
-
-    "professionnalisation",
-
-    "graduate",
-
-    "junior",
-
-    "entry level",
-
-    "early career",
-
-    "trainee",
-
-    "stage",
-
-    "intern"
-
-]
+    print(
+        "DEBUT FILTRE:",
+        len(jobs)
+    )
 
 
-FORBIDDEN_KEYWORDS = [
-
-    "marketing",
-
-    "sales",
-
-    "commercial",
-
-    "human resources",
-
-    "hr",
-
-    "finance",
-
-    "account manager"
-
-]
+    for job in jobs:
 
 
-SENIOR_KEYWORDS = [
+        title = job.get(
+            "title",
+            ""
+        ).lower()
 
-    "senior",
 
-    "staff",
 
-    "principal",
+        text=(
 
-    "director",
+            job.get("title","")
 
-    "head",
+            +" "
 
-    "manager"
+            +job.get("description","")
 
-]
+            +" "
+
+            +job.get("company","")
+
+            +" "
+
+            +job.get("location","")
+
+        ).lower()
+
+
+
+        if not job.get("link"):
+
+            continue
+
+
+
+        # suppression senior
+
+        if any(
+
+            word in title
+
+            for word in SENIOR_KEYWORDS
+
+        ):
+
+
+            print(
+                "REFUS SENIOR:",
+                job.get("title")
+            )
+
+            continue
+
+
+
+        # suppression métiers hors sujet
+
+        if any(
+
+            word in text
+
+            for word in FORBIDDEN_KEYWORDS
+
+        ):
+
+
+            print(
+                "REFUS METIER:",
+                job.get("title")
+            )
+
+            continue
+
+
+
+        # rôle IA/Data obligatoire
+
+        if not any(
+
+            role in text
+
+            for role in TARGET_ROLES
+
+        ):
+
+
+            print(
+                "REFUS ROLE:",
+                job.get("title")
+            )
+
+            continue
+
+
+
+        results.append(job)
+
+
+
+    print(
+
+        "APRES FILTRE:",
+
+        len(results)
+
+    )
+
+
+    return results

@@ -1,6 +1,7 @@
 from .config import (
     TARGET_ROLES,
-    FORBIDDEN_KEYWORDS
+    FORBIDDEN_KEYWORDS,
+    SENIOR_KEYWORDS
 )
 
 
@@ -15,6 +16,7 @@ def filter_jobs(jobs):
         "DEBUT FILTRE:",
         len(jobs)
     )
+
 
 
     for job in jobs:
@@ -40,13 +42,62 @@ def filter_jobs(jobs):
 
 
 
+        title = job.get(
+            "title",
+            ""
+        ).lower()
+
+
+
+        # URL obligatoire
+
         if not job.get("link"):
 
             continue
 
 
 
-        # IA/Data obligatoire
+        # suppression senior
+
+        if any(
+
+            word in title
+
+            for word in SENIOR_KEYWORDS
+
+        ):
+
+
+            print(
+                "REFUS SENIOR:",
+                job.get("title")
+            )
+
+            continue
+
+
+
+        # suppression métiers hors cible
+
+        if any(
+
+            word in text
+
+            for word in FORBIDDEN_KEYWORDS
+
+        ):
+
+
+            print(
+                "REFUS METIER:",
+                job.get("title")
+            )
+
+            continue
+
+
+
+        # rôle IA/Data obligatoire
 
         if not any(
 
@@ -58,34 +109,8 @@ def filter_jobs(jobs):
 
 
             print(
-
                 "REFUS ROLE:",
-
                 job.get("title")
-
-            )
-
-            continue
-
-
-
-        # suppression métiers hors sujet
-
-        if any(
-
-            bad in text
-
-            for bad in FORBIDDEN_KEYWORDS
-
-        ):
-
-
-            print(
-
-                "REFUS METIER:",
-
-                job.get("title")
-
             )
 
             continue

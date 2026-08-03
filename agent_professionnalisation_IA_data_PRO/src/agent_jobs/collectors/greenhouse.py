@@ -1,7 +1,7 @@
 import requests
 
 
-COMPANIES = [
+COMPANIES=[
 
     "airbus",
 
@@ -11,9 +11,7 @@ COMPANIES = [
 
     "dataiku",
 
-    "qonto",
-
-    "backmarket"
+    "mistral"
 
 ]
 
@@ -28,10 +26,13 @@ def search_greenhouse():
     for company in COMPANIES:
 
 
-        url = (
+        url=(
 
-            f"https://boards-api.greenhouse.io/v1/boards/"
-            f"{company}/jobs"
+            "https://boards-api.greenhouse.io/v1/boards/"
+
+            +company+
+
+            "/jobs"
 
         )
 
@@ -43,9 +44,10 @@ def search_greenhouse():
 
                 url,
 
-                timeout=15
+                timeout=20
 
             )
+
 
 
             if response.status_code != 200:
@@ -87,6 +89,9 @@ def search_greenhouse():
                     "description":
                     "",
 
+                    "contract":
+                    "",
+
                     "link":
                     job.get(
                         "absolute_url",
@@ -94,6 +99,7 @@ def search_greenhouse():
                     )
 
                 })
+
 
 
         except Exception as e:
@@ -104,6 +110,7 @@ def search_greenhouse():
                 company,
                 e
             )
+
 
 
     return jobs

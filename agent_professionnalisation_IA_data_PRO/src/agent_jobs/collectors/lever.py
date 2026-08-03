@@ -6,11 +6,9 @@ COMPANIES=[
 
     "dataiku",
 
-    "qonto",
+    "mistral",
 
-    "backmarket",
-
-    "mistral"
+    "backmarket"
 
 ]
 
@@ -27,8 +25,11 @@ def search_lever():
 
         url=(
 
-            f"https://api.lever.co/v0/postings/"
-            f"{company}?mode=json"
+            "https://api.lever.co/v0/postings/"
+
+            +company
+
+            +"?mode=json"
 
         )
 
@@ -36,17 +37,40 @@ def search_lever():
         try:
 
 
-            data=requests.get(
+            response=requests.get(
 
                 url,
 
-                timeout=15
+                timeout=20
 
-            ).json()
+            )
+
+
+
+            data=response.json()
+
+
+
+            if not isinstance(data,list):
+
+                continue
 
 
 
             for job in data:
+
+
+                if not isinstance(job,dict):
+
+                    continue
+
+
+
+                categories = job.get(
+                    "categories",
+                    {}
+                )
+
 
 
                 jobs.append({
@@ -61,10 +85,7 @@ def search_lever():
                     company,
 
                     "location":
-                    job.get(
-                        "categories",
-                        {}
-                    ).get(
+                    categories.get(
                         "location",
                         ""
                     ),
@@ -74,6 +95,9 @@ def search_lever():
                         "descriptionPlain",
                         ""
                     ),
+
+                    "contract":
+                    "",
 
                     "link":
                     job.get(
@@ -92,6 +116,7 @@ def search_lever():
                 company,
                 e
             )
+
 
 
     return jobs

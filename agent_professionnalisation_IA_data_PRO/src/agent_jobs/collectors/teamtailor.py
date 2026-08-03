@@ -1,57 +1,92 @@
 import requests
 
 
-COMPANIES = [
+
+COMPANIES=[
 
     "airbus",
+
     "qonto",
-    "doctolib",
-    "backmarket",
-    "deezer"
+
+    "backmarket"
 
 ]
 
 
+
 def search_teamtailor():
 
-    jobs = []
+
+    jobs=[]
+
 
 
     for company in COMPANIES:
 
 
-        url = (
-            f"https://{company}.teamtailor.com/api/jobs"
+        url=(
+
+            "https://"
+
+            +company
+
+            +".teamtailor.com/api/v1/jobs"
+
         )
 
 
         try:
 
-            response = requests.get(
+
+            response=requests.get(
+
                 url,
-                timeout=20
+
+                timeout=20,
+
+                headers={
+
+                    "Accept":
+                    "application/json"
+
+                }
+
             )
 
 
-            data = response.json()
+            if response.status_code != 200:
+
+                continue
 
 
-            for job in data.get(
+
+            try:
+
+                data=response.json()
+
+            except:
+
+                continue
+
+
+
+            for item in data.get(
                 "data",
                 []
             ):
 
 
-                attributes = job.get(
+                attrs=item.get(
                     "attributes",
                     {}
                 )
 
 
+
                 jobs.append({
 
                     "title":
-                    attributes.get(
+                    attrs.get(
                         "title",
                         ""
                     ),
@@ -60,19 +95,22 @@ def search_teamtailor():
                     company,
 
                     "location":
-                    attributes.get(
+                    attrs.get(
                         "location",
                         ""
                     ),
 
                     "description":
-                    attributes.get(
+                    attrs.get(
                         "description",
                         ""
                     ),
 
+                    "contract":
+                    "",
+
                     "link":
-                    attributes.get(
+                    attrs.get(
                         "url",
                         ""
                     )
@@ -82,8 +120,9 @@ def search_teamtailor():
 
         except Exception as e:
 
+
             print(
-                "Teamtailor:",
+                "Teamtailor",
                 company,
                 e
             )
