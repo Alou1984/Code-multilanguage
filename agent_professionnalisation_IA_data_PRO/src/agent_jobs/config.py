@@ -1,6 +1,7 @@
-# ==========================
-# Mastère Spécialisé Expert Big Data et IA
-# ==========================
+# =====================================
+# CONFIGURATION AGENT IA DATA
+# Mastère Spécialisé Expert Big Data IA
+# =====================================
 
 
 TARGET_ROLES = [
@@ -12,6 +13,8 @@ TARGET_ROLES = [
     "data scientist",
 
     "ai engineer",
+
+    "artificial intelligence",
 
     "machine learning engineer",
 
@@ -55,9 +58,9 @@ TARGET_SKILLS = [
 
     "tensorflow",
 
-    "cuda",
-
     "gpu",
+
+    "cuda",
 
     "nvidia",
 
@@ -67,13 +70,13 @@ TARGET_SKILLS = [
 
     "gcp",
 
-    "kubernetes",
-
     "docker",
+
+    "kubernetes",
 
     "data pipeline",
 
-    "cloud"
+    "big data"
 
 ]
 
@@ -111,8 +114,6 @@ TARGET_CONTRACTS = [
 
 TARGET_LOCATIONS = [
 
-    # France
-
     "france",
 
     "ile-de-france",
@@ -121,11 +122,9 @@ TARGET_LOCATIONS = [
 
     "grenoble",
 
-    "lyon",
-
     "toulouse",
 
-    "bordeaux",
+    "lyon",
 
     "centre-val de loire",
 
@@ -136,11 +135,9 @@ TARGET_LOCATIONS = [
     "aube",
 
 
-    # Suisse
+    "suisse",
 
     "switzerland",
-
-    "suisse",
 
     "geneva",
 
@@ -149,26 +146,18 @@ TARGET_LOCATIONS = [
     "zurich",
 
 
-    # Luxembourg
-
     "luxembourg",
 
-
-    # Europe
 
     "europe",
 
     "emea",
 
 
-    # UK
-
     "uk",
 
     "united kingdom",
 
-
-    # USA
 
     "usa",
 
@@ -184,11 +173,15 @@ FORBIDDEN_KEYWORDS = [
 
     "sales",
 
+    "commercial",
+
     "account executive",
 
     "business development",
 
     "customer support",
+
+    "customer success",
 
     "finance",
 
@@ -204,53 +197,81 @@ FORBIDDEN_KEYWORDS = [
 
 
 
-COMPANY_PRIORITY = [
+LOW_PRIORITY_KEYWORDS = [
+
+    "senior",
+
+    "staff",
+
+    "principal",
+
+    "director",
+
+    "head",
+
+    "manager",
+
+    "architect"
+
+]
+
+
+
+PRIORITY_COMPANIES = [
 
     # IA
 
-    "OpenAI",
+    "openai",
 
-    "Anthropic",
+    "anthropic",
 
-    "NVIDIA",
+    "nvidia",
 
-    "Mistral AI",
+    "mistral",
 
-    "Hugging Face",
+    "hugging face",
 
-    "Dataiku",
-
-
-    # Industrie
-
-    "Airbus",
-
-    "Safran",
-
-    "Thales",
-
-    "EDF",
-
-    "Framatome",
-
-    "TotalEnergies",
-
-    "STMicroelectronics",
-
-    "Schneider Electric",
-
-    "Siemens",
+    "dataiku",
 
 
-    # Energie Mining
+    # Aerospace
 
-    "BP",
+    "airbus",
 
-    "Shell",
+    "safran",
 
-    "BHP",
+    "thales",
 
-    "Rio Tinto"
+    "dassault",
+
+
+    # Energy
+
+    "edf",
+
+    "totalenergies",
+
+    "bp",
+
+    "shell",
+
+
+    # Nuclear / Industry
+
+    "framatome",
+
+    "stmicroelectronics",
+
+    "siemens",
+
+    "schneider electric",
+
+
+    # Mining
+
+    "bhp",
+
+    "rio tinto"
 
 ]
 
