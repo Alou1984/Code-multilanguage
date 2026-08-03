@@ -1,57 +1,31 @@
-from .collectors.france_travail import search_france_travail
 from .collectors.greenhouse import search_greenhouse
 from .collectors.lever import search_lever
 from .collectors.teamtailor import search_teamtailor
+from .collectors.france_travail import search_france_travail
 
 
 
-def enrich_contract(job):
+def normalize(job):
 
 
-    text=(
+    return {
 
-        job.get("title","")
+        "title":
+        job.get("title",""),
 
-        +" "
+        "company":
+        job.get("company",""),
 
-        +job.get("description","")
+        "location":
+        job.get("location",""),
 
-    ).lower()
+        "description":
+        job.get("description",""),
 
+        "link":
+        job.get("link","")
 
-
-    contracts=[
-
-        "alternance",
-
-        "apprentissage",
-
-        "professionnalisation",
-
-        "graduate",
-
-        "junior",
-
-        "stage"
-
-    ]
-
-
-
-    for contract in contracts:
-
-
-        if contract in text:
-
-            job["contract"]=contract
-
-            return job
-
-
-
-    job["contract"]=""
-
-    return job
+    }
 
 
 
@@ -82,35 +56,90 @@ def search_jobs():
         try:
 
 
-            jobs.extend(
+            result = collector()
 
-                collector()
+
+
+            print(
+
+                "SOURCE:",
+
+                collector.__name__,
+
+                "NB:",
+
+                len(result)
 
             )
+
+
+            jobs.extend(result)
+
 
 
         except Exception as e:
 
 
-            print(e)
+            print(
+
+                "ERREUR",
+
+                collector.__name__,
+
+                e
+
+            )
 
 
 
     final=[]
 
 
+    seen=set()
+
+
 
     for job in jobs:
 
 
-        job=enrich_contract(job)
+        job=normalize(job)
 
 
 
-        if job.get("link","").startswith("http"):
+        if not job["link"].startswith("http"):
+
+            continue
+
+
+
+        key=(
+
+            job["title"],
+
+            job["company"],
+
+            job["link"]
+
+        )
+
+
+
+        if key not in seen:
+
+
+            seen.add(key)
 
             final.append(job)
 
+
+
+    print(
+
+        "TOTAL AVANT FILTRE:",
+
+        len(final)
+
+    )
 
 
     return final

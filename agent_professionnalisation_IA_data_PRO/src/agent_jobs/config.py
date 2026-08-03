@@ -1,25 +1,24 @@
 TARGET_ROLES = [
 
     "data engineer",
-    "big data engineer",
+    "big data",
+    "data scientist",
 
     "ai engineer",
 
-    "machine learning engineer",
+    "machine learning",
+    "deep learning",
 
-    "ml engineer",
+    "mlops",
 
-    "mlops engineer",
+    "llm",
+    "generative ai",
 
-    "llm engineer",
+    "cloud ai",
 
-    "deep learning engineer",
+    "embedded ai",
 
-    "data scientist",
-
-    "cloud ai engineer",
-
-    "embedded ai engineer"
+    "robotics"
 
 ]
 
@@ -29,30 +28,24 @@ TARGET_SKILLS = [
     "python",
     "sql",
     "spark",
+    "hadoop",
 
-    "machine learning",
-    "deep learning",
-
-    "llm",
-    "large language model",
+    "tensorflow",
+    "pytorch",
 
     "gpu",
     "cuda",
     "nvidia",
 
-    "mlops",
+    "aws",
+    "azure",
+    "gcp",
 
     "kubernetes",
 
-    "robotics",
-
-    "embedded",
-
-    "aws",
-
     "data pipeline",
 
-    "big data"
+    "computer vision"
 
 ]
 
@@ -60,62 +53,55 @@ TARGET_SKILLS = [
 EUROPE_LOCATIONS = [
 
     "france",
-
     "paris",
-
     "ile-de-france",
 
     "grenoble",
-
     "toulouse",
-
     "lyon",
 
-    "bordeaux",
-
     "suisse",
-
     "geneve",
-
     "lausanne",
-
     "zurich",
 
     "luxembourg",
 
-    "europe",
+    "belgium",
+    "germany",
 
+    "europe",
     "emea"
 
 ]
 
 
-VALID_CONTRACTS = [
+CONTRACT_WORDS = [
 
     "alternance",
 
     "apprentissage",
 
-    "contrat professionnalisation",
-
     "professionnalisation",
-
-    "graduate program",
 
     "graduate",
 
+    "graduate program",
+
     "junior",
+
+    "entry level",
 
     "early career",
 
-    "entry level",
+    "trainee",
 
     "stage"
 
 ]
 
 
-FORBIDDEN_ROLES = [
+FORBIDDEN_WORDS = [
 
     "marketing",
 
@@ -123,20 +109,13 @@ FORBIDDEN_ROLES = [
 
     "commercial",
 
-    "business development",
-
     "human resources",
 
     "hr",
 
     "finance",
 
-    "account manager"
-
-]
-
-
-FORBIDDEN_LEVELS = [
+    "account manager",
 
     "senior",
 
@@ -144,13 +123,9 @@ FORBIDDEN_LEVELS = [
 
     "principal",
 
-    "lead",
-
     "director",
 
-    "architect",
-
-    "manager"
+    "lead architect"
 
 ]
 

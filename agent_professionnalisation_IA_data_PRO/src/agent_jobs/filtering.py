@@ -1,9 +1,7 @@
 from .config import (
     TARGET_ROLES,
     EUROPE_LOCATIONS,
-    VALID_CONTRACTS,
-    FORBIDDEN_ROLES,
-    FORBIDDEN_LEVELS
+    FORBIDDEN_WORDS
 )
 
 
@@ -11,30 +9,33 @@ from .config import (
 def filter_jobs(jobs):
 
 
-    results=[]
-
+    results = []
 
 
     for job in jobs:
 
 
-        text=(
+        text = (
 
             job.get("title","")
 
-            +" "
+            + " "
 
-            +job.get("description","")
+            + job.get("description","")
 
-            +" "
+            + " "
 
-            +job.get("location","")
+            + job.get("location","")
+
+            + " "
+
+            + job.get("company","")
 
         ).lower()
 
 
 
-        # lien obligatoire
+        # URL obligatoire
 
         if not job.get("link"):
 
@@ -42,7 +43,13 @@ def filter_jobs(jobs):
 
 
 
-        # métier IA/Data obligatoire
+        if not job["link"].startswith("http"):
+
+            continue
+
+
+
+        # Poste IA/Data obligatoire
 
         if not any(
 
@@ -56,7 +63,7 @@ def filter_jobs(jobs):
 
 
 
-        # Europe obligatoire
+        # Europe prioritaire
 
         if not any(
 
@@ -70,41 +77,13 @@ def filter_jobs(jobs):
 
 
 
-        # contrat obligatoire
-
-        if not any(
-
-            contract in text
-
-            for contract in VALID_CONTRACTS
-
-        ):
-
-            continue
-
-
-
-        # métiers interdits
+        # suppression métiers hors cible
 
         if any(
 
             word in text
 
-            for word in FORBIDDEN_ROLES
-
-        ):
-
-            continue
-
-
-
-        # niveau interdit
-
-        if any(
-
-            word in text
-
-            for word in FORBIDDEN_LEVELS
+            for word in FORBIDDEN_WORDS
 
         ):
 
@@ -116,4 +95,4 @@ def filter_jobs(jobs):
 
 
 
-    return results[:20]
+    return results
