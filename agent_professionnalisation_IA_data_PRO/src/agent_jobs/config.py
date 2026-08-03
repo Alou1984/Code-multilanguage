@@ -1,10 +1,12 @@
 TARGET_ROLES = [
 
     "data engineer",
+    "data engineering",
     "big data",
     "data scientist",
 
     "ai engineer",
+    "ai software engineer",
 
     "machine learning",
     "deep learning",
@@ -14,7 +16,7 @@ TARGET_ROLES = [
     "llm",
     "generative ai",
 
-    "cloud ai",
+    "computer vision",
 
     "embedded ai",
 
@@ -28,10 +30,9 @@ TARGET_SKILLS = [
     "python",
     "sql",
     "spark",
-    "hadoop",
 
-    "tensorflow",
     "pytorch",
+    "tensorflow",
 
     "gpu",
     "cuda",
@@ -45,30 +46,32 @@ TARGET_SKILLS = [
 
     "data pipeline",
 
-    "computer vision"
+    "machine learning"
 
 ]
 
 
-EUROPE_LOCATIONS = [
+EUROPE_KEYWORDS = [
 
     "france",
+    "french",
+
     "paris",
-    "ile-de-france",
-
-    "grenoble",
     "toulouse",
+    "grenoble",
     "lyon",
+    "bordeaux",
 
+    "switzerland",
     "suisse",
-    "geneve",
+    "geneva",
     "lausanne",
     "zurich",
 
     "luxembourg",
 
-    "belgium",
     "germany",
+    "belgium",
 
     "europe",
     "emea"
@@ -76,11 +79,17 @@ EUROPE_LOCATIONS = [
 ]
 
 
-CONTRACT_WORDS = [
+CONTRACT_KEYWORDS = [
 
     "alternance",
 
+    "apprentice",
+
+    "apprenticeship",
+
     "apprentissage",
+
+    "professionalization",
 
     "professionnalisation",
 
@@ -101,7 +110,7 @@ CONTRACT_WORDS = [
 ]
 
 
-FORBIDDEN_WORDS = [
+FORBIDDEN_KEYWORDS = [
 
     "marketing",
 
@@ -109,9 +118,9 @@ FORBIDDEN_WORDS = [
 
     "commercial",
 
-    "human resources",
-
     "hr",
+
+    "human resources",
 
     "finance",
 
@@ -125,39 +134,8 @@ FORBIDDEN_WORDS = [
 
     "director",
 
-    "lead architect"
+    "lead",
 
-]
-
-
-TARGET_COMPANIES = [
-
-    "edf",
-
-    "airbus",
-
-    "safran",
-
-    "thales",
-
-    "framatome",
-
-    "eramet",
-
-    "totalenergies",
-
-    "stmicroelectronics",
-
-    "schneider",
-
-    "siemens",
-
-    "bosch",
-
-    "alstom",
-
-    "dataiku",
-
-    "mistral"
+    "architect"
 
 ]

@@ -1,8 +1,7 @@
 from .config import (
     TARGET_SKILLS,
-    CONTRACT_WORDS,
-    TARGET_COMPANIES,
-    EUROPE_LOCATIONS
+    CONTRACT_KEYWORDS,
+    EUROPE_KEYWORDS
 )
 
 
@@ -10,94 +9,79 @@ from .config import (
 def score_offer(job):
 
 
-    text = (
+    text=(
 
         job.get("title","")
 
-        + " "
+        +" "
 
-        + job.get("description","")
+        +job.get("description","")
 
-        + " "
+        +" "
 
-        + job.get("location","")
+        +job.get("location","")
 
-        + " "
+        +" "
 
-        + job.get("company","")
+        +job.get("contract","")
 
     ).lower()
 
 
 
-    score = 0
+    score=0
 
 
-
-    # IA/Data
 
     for skill in TARGET_SKILLS:
 
         if skill in text:
 
-            score += 10
+            score +=10
 
 
 
-    # Europe
+    for country in EUROPE_KEYWORDS:
 
-    for location in EUROPE_LOCATIONS:
+        if country in text:
 
-        if location in text:
-
-            score += 20
+            score +=20
 
 
 
-    # Contrat recherché
-
-    for contract in CONTRACT_WORDS:
+    for contract in CONTRACT_KEYWORDS:
 
         if contract in text:
 
-            score += 50
+            score +=50
 
 
 
-    # Entreprises ciblées
+    job["score"]=score
 
-    for company in TARGET_COMPANIES:
-
-        if company in text:
-
-            score += 20
-
-
-
-    job["score"] = score
 
 
     return job
 
 
 
-
 def score_jobs(jobs):
 
 
-    scored = []
+    result=[]
 
 
     for job in jobs:
 
-        scored.append(
+        result.append(
 
             score_offer(job)
 
         )
 
 
-    scored.sort(
+
+    result.sort(
 
         key=lambda x:
 
@@ -108,4 +92,4 @@ def score_jobs(jobs):
     )
 
 
-    return scored
+    return result

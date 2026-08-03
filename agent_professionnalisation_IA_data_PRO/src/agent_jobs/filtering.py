@@ -1,7 +1,7 @@
 from .config import (
     TARGET_ROLES,
-    EUROPE_LOCATIONS,
-    FORBIDDEN_WORDS
+    EUROPE_KEYWORDS,
+    FORBIDDEN_KEYWORDS
 )
 
 
@@ -9,33 +9,42 @@ from .config import (
 def filter_jobs(jobs):
 
 
-    results = []
+    results=[]
+
+
+    print(
+        "DEBUT FILTRE",
+        len(jobs)
+    )
+
 
 
     for job in jobs:
 
 
-        text = (
+        text=(
 
             job.get("title","")
 
-            + " "
+            +" "
 
-            + job.get("description","")
+            +job.get("description","")
 
-            + " "
+            +" "
 
-            + job.get("location","")
+            +job.get("location","")
 
-            + " "
+            +" "
 
-            + job.get("company","")
+            +job.get("company","")
+
+            +" "
+
+            +job.get("contract","")
 
         ).lower()
 
 
-
-        # URL obligatoire
 
         if not job.get("link"):
 
@@ -43,13 +52,7 @@ def filter_jobs(jobs):
 
 
 
-        if not job["link"].startswith("http"):
-
-            continue
-
-
-
-        # Poste IA/Data obligatoire
+        # métier IA/Data
 
         if not any(
 
@@ -59,33 +62,55 @@ def filter_jobs(jobs):
 
         ):
 
+
+            print(
+                "ROLE REFUSE:",
+                job.get("title")
+            )
+
+
             continue
 
 
 
-        # Europe prioritaire
+        # Europe
 
         if not any(
 
             place in text
 
-            for place in EUROPE_LOCATIONS
+            for place in EUROPE_KEYWORDS
 
         ):
+
+
+            print(
+                "PAYS REFUSE:",
+                job.get("title"),
+                job.get("location")
+            )
+
 
             continue
 
 
 
-        # suppression métiers hors cible
+        # hors domaine
 
         if any(
 
-            word in text
+            bad in text
 
-            for word in FORBIDDEN_WORDS
+            for bad in FORBIDDEN_KEYWORDS
 
         ):
+
+
+            print(
+                "MOT REFUSE:",
+                job.get("title")
+            )
+
 
             continue
 
@@ -93,6 +118,15 @@ def filter_jobs(jobs):
 
         results.append(job)
 
+
+
+    print(
+
+        "APRES FILTRE:",
+
+        len(results)
+
+    )
 
 
     return results

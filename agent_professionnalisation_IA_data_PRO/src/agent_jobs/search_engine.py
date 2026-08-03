@@ -7,7 +7,6 @@ from .collectors.france_travail import search_france_travail
 
 def normalize(job):
 
-
     return {
 
         "title":
@@ -22,11 +21,13 @@ def normalize(job):
         "description":
         job.get("description",""),
 
+        "contract":
+        job.get("contract",""),
+
         "link":
         job.get("link","")
 
     }
-
 
 
 
@@ -59,17 +60,11 @@ def search_jobs():
             result = collector()
 
 
-
             print(
-
-                "SOURCE:",
-
+                "COLLECTEUR",
                 collector.__name__,
-
-                "NB:",
-
+                ":",
                 len(result)
-
             )
 
 
@@ -81,21 +76,14 @@ def search_jobs():
 
 
             print(
-
                 "ERREUR",
-
                 collector.__name__,
-
                 e
-
             )
 
 
 
     final=[]
-
-
-    seen=set()
 
 
 
@@ -105,6 +93,11 @@ def search_jobs():
         job=normalize(job)
 
 
+        if not job["link"]:
+
+            continue
+
+
 
         if not job["link"].startswith("http"):
 
@@ -112,30 +105,13 @@ def search_jobs():
 
 
 
-        key=(
-
-            job["title"],
-
-            job["company"],
-
-            job["link"]
-
-        )
-
-
-
-        if key not in seen:
-
-
-            seen.add(key)
-
-            final.append(job)
+        final.append(job)
 
 
 
     print(
 
-        "TOTAL AVANT FILTRE:",
+        "TOTAL OFFRES BRUTES:",
 
         len(final)
 

@@ -10,38 +10,59 @@ def main():
 
 
     print(
-        "=== AGENT IA DATA START ==="
+        "=== AGENT IA DATA ==="
     )
 
 
 
-    jobs = search_jobs()
+    jobs=search_jobs()
+
 
 
     print(
-        "Collectées:",
+        "COLLECTE:",
         len(jobs)
     )
 
 
 
-    jobs = score_jobs(jobs)
-
-
-    jobs = filter_jobs(jobs)
+    jobs=score_jobs(jobs)
 
 
 
     print(
-        "Envoyées:",
+        "SCORE OK:",
         len(jobs)
     )
 
 
 
-    subject,html = render_email(
-        jobs
+    jobs=filter_jobs(jobs)
+
+
+
+    print(
+        "FINAL:",
+        len(jobs)
     )
+
+
+
+    for job in jobs[:10]:
+
+        print(
+
+            job["title"],
+
+            job["company"],
+
+            job["score"]
+
+        )
+
+
+
+    subject,html=render_email(jobs)
 
 
 
@@ -51,7 +72,7 @@ def main():
 
         html=html,
 
-        text="Rapport quotidien IA Data"
+        text="Rapport IA Data"
 
     )
 
