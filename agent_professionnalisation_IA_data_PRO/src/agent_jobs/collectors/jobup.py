@@ -1,4 +1,4 @@
-def search_workday():
+def search_jobup():
 
     return [
 
@@ -8,19 +8,19 @@ def search_workday():
             "Machine Learning Engineer",
 
             "company":
-            "Workday Companies",
+            "JobUp Suisse",
 
             "location":
-            "Europe",
+            "Switzerland",
 
             "description":
-            "AI ML Data",
+            "AI Data Engineering",
 
             "contract":
-            "Graduate",
+            "Junior",
 
             "link":
-            "https://www.workday.com"
+            "https://www.jobup.ch"
 
         }
 

@@ -1,26 +1,26 @@
-def search_workday():
+def search_jobs_ch():
 
     return [
 
         {
 
             "title":
-            "Machine Learning Engineer",
+            "Data Engineer",
 
             "company":
-            "Workday Companies",
+            "Jobs.ch",
 
             "location":
-            "Europe",
+            "Switzerland",
 
             "description":
-            "AI ML Data",
+            "Big Data Machine Learning",
 
             "contract":
             "Graduate",
 
             "link":
-            "https://www.workday.com"
+            "https://www.jobs.ch"
 
         }
 

@@ -1,26 +1,26 @@
-def search_workday():
+def search_jobteaser():
 
     return [
 
         {
 
             "title":
-            "Machine Learning Engineer",
+            "Graduate Data Engineer",
 
             "company":
-            "Workday Companies",
+            "JobTeaser",
 
             "location":
-            "Europe",
+            "France",
 
             "description":
-            "AI ML Data",
+            "Graduate Program Big Data",
 
             "contract":
             "Graduate",
 
             "link":
-            "https://www.workday.com"
+            "https://www.jobteaser.com"
 
         }
 

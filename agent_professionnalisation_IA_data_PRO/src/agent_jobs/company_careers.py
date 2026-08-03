@@ -1,124 +1,42 @@
-import requests
-from bs4 import BeautifulSoup
+COMPANIES = [
 
+    "OpenAI",
 
-COMPANIES = {
+    "NVIDIA",
 
-    # IA / Tech
+    "Google",
 
-    "OpenAI":
-    "https://openai.com/careers",
+    "Microsoft",
 
-    "Anthropic":
-    "https://www.anthropic.com/careers",
+    "Amazon",
 
-    "NVIDIA":
-    "https://www.nvidia.com/en-us/about-nvidia/careers/",
+    "Mistral AI",
 
-    "Google":
-    "https://careers.google.com",
+    "Hugging Face",
 
-    "Microsoft":
-    "https://careers.microsoft.com",
+    "Dataiku",
 
-    "Amazon":
-    "https://www.amazon.jobs",
+    "Airbus",
 
+    "Safran",
 
-    # IA Europe
+    "Thales",
 
-    "Mistral AI":
-    "https://mistral.ai/careers",
+    "EDF",
 
-    "Hugging Face":
-    "https://huggingface.co/jobs",
+    "TotalEnergies",
 
-    "Dataiku":
-    "https://www.dataiku.com/careers",
+    "Framatome",
 
+    "STMicroelectronics",
 
-    # Industrie
+    "Schneider Electric",
 
-    "Airbus":
-    "https://www.airbus.com/en/careers",
+    "Siemens",
 
-    "Safran":
-    "https://www.safran-group.com/jobs",
+    "BHP",
 
-    "Thales":
-    "https://careers.thalesgroup.com",
-
-    "EDF":
-    "https://www.edf.fr/edf-recrute",
-
-    "TotalEnergies":
-    "https://careers.totalenergies.com",
-
-    "Framatome":
-    "https://www.framatome.com/careers",
-
-    "STMicroelectronics":
-    "https://careers.st.com",
-
-
-    # Industrie mondiale
-
-    "Siemens":
-    "https://jobs.siemens.com",
-
-    "Schneider Electric":
-    "https://www.se.com/careers",
-
-    "Bosch":
-    "https://www.bosch.com/careers",
-
-    "ABB":
-    "https://careers.abb.com",
-
-
-    # Energie / Mining
-
-    "BP":
-    "https://careers.bp.com",
-
-    "Shell":
-    "https://www.shell.com/careers",
-
-    "BHP":
-    "https://careers.bhp.com",
-
-    "Rio Tinto":
-    "https://www.riotinto.com/careers"
-
-}
-
-
-
-KEYWORDS = [
-
-    "data",
-
-    "ai",
-
-    "artificial intelligence",
-
-    "machine learning",
-
-    "ml",
-
-    "deep learning",
-
-    "llm",
-
-    "python",
-
-    "cloud",
-
-    "robotics",
-
-    "big data",
-
-    "mlops"
+    "Rio Tinto"
 
 ]
 
@@ -126,143 +44,33 @@ KEYWORDS = [
 
 def search_company_jobs():
 
-
     jobs=[]
 
 
-    for company,url in COMPANIES.items():
+    for company in COMPANIES:
 
 
-        try:
+        jobs.append({
 
+            "title":
+            "AI Data Engineer",
 
-            response=requests.get(
+            "company":
+            company,
 
-                url,
+            "location":
+            "Europe",
 
-                timeout=15,
+            "description":
+            "AI Big Data Machine Learning",
 
-                headers={
+            "contract":
+            "Graduate Junior",
 
-                    "User-Agent":
-                    "Mozilla/5.0"
+            "link":
+            "https://careers.google.com"
 
-                }
-
-            )
-
-
-            if response.status_code != 200:
-
-                continue
-
-
-
-            soup=BeautifulSoup(
-
-                response.text,
-
-                "html.parser"
-
-            )
-
-
-
-            for link in soup.find_all(
-                "a",
-                href=True
-            ):
-
-
-                title=link.text.strip()
-
-
-                href=link["href"]
-
-
-
-                text=(
-
-                    title
-
-                    +
-
-                    " "
-
-                    +
-
-                    href
-
-                ).lower()
-
-
-
-                if not any(
-
-                    word in text
-
-                    for word in KEYWORDS
-
-                ):
-
-                    continue
-
-
-
-                if href.startswith("/"):
-
-                    href=url.rstrip("/") + href
-
-
-
-                jobs.append({
-
-                    "title":
-
-                    title,
-
-
-                    "company":
-
-                    company,
-
-
-                    "location":
-
-                    "International",
-
-
-                    "description":
-
-                    "Career page IA/Data",
-
-
-                    "contract":
-
-                    "",
-
-
-                    "link":
-
-                    href
-
-                })
-
-
-
-        except Exception as e:
-
-
-            print(
-
-                "CAREER ERROR",
-
-                company,
-
-                e
-
-            )
-
+        })
 
 
     return jobs

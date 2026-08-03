@@ -1,4 +1,4 @@
-def search_workday():
+def search_hellowork():
 
     return [
 
@@ -8,19 +8,19 @@ def search_workday():
             "Machine Learning Engineer",
 
             "company":
-            "Workday Companies",
+            "HelloWork",
 
             "location":
-            "Europe",
+            "France",
 
             "description":
-            "AI ML Data",
+            "IA Machine Learning Data",
 
             "contract":
-            "Graduate",
+            "Junior",
 
             "link":
-            "https://www.workday.com"
+            "https://www.hellowork.com"
 
         }
 

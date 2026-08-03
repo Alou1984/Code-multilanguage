@@ -1,20 +1,13 @@
 import requests
 
 
-
-COMPANIES=[
-
-    "mistral",
-
-    "huggingface",
+COMPANIES = [
 
     "dataiku",
 
-    "airbus",
+    "mistral",
 
-    "safran",
-
-    "thales"
+    "huggingface"
 
 ]
 
@@ -22,33 +15,30 @@ COMPANIES=[
 
 def search_greenhouse():
 
-
     jobs=[]
-
 
 
     for company in COMPANIES:
 
 
-        url=(
-
-            "https://boards-api.greenhouse.io/v1/boards/"
-
-            +company+
-
-            "/jobs"
-
-        )
-
-
         try:
+
+            url=(
+
+                "https://boards-api.greenhouse.io/v1/boards/"
+
+                +company+
+
+                "/jobs"
+
+            )
 
 
             response=requests.get(
 
                 url,
 
-                timeout=20
+                timeout=10
 
             )
 
@@ -58,52 +48,13 @@ def search_greenhouse():
                 continue
 
 
-
             data=response.json()
-
 
 
             for job in data.get(
                 "jobs",
                 []
             ):
-
-
-                title=job.get(
-                    "title",
-                    ""
-                ).lower()
-
-
-
-                allowed=[
-
-                    "data",
-
-                    "machine learning",
-
-                    "ai",
-
-                    "ml",
-
-                    "software engineer",
-
-                    "research"
-
-                ]
-
-
-
-                if not any(
-
-                    word in title
-
-                    for word in allowed
-
-                ):
-
-                    continue
-
 
 
                 jobs.append({
@@ -118,13 +69,7 @@ def search_greenhouse():
                     company,
 
                     "location":
-                    job.get(
-                        "location",
-                        {}
-                    ).get(
-                        "name",
-                        ""
-                    ),
+                    "",
 
                     "description":
                     "",
@@ -143,13 +88,10 @@ def search_greenhouse():
 
         except Exception as e:
 
-
             print(
-                "Greenhouse error",
-                company,
+                "Greenhouse:",
                 e
             )
-
 
 
     return jobs

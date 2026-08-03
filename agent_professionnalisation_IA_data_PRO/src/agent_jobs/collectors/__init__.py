@@ -1,19 +1,19 @@
-"""
-Agent Recherche Emploi IA Data
+# Collectors package
 
-Objectif :
-Recherche automatique d'opportunités :
-- Data Engineering
-- Big Data
-- Intelligence Artificielle
-- Machine Learning
-- LLM
-- MLOps
+from .france_travail import search_france_travail
+from .apec import search_apec
+from .hellowork import search_hellowork
+from .welcome_to_jungle import search_wttj
+from .jobteaser import search_jobteaser
 
-Cible :
-Mastère Spécialisé Expert Big Data et IA
-Septembre 2026
-"""
+from .jobup import search_jobup
+from .jobs_ch import search_jobs_ch
 
+from .moovijob import search_moovijob
+from .jobs_lu import search_jobs_lu
 
-__version__ = "2.0.0"
+from .company_careers import search_company_jobs
+from .workday import search_workday
+
+from .greenhouse import search_greenhouse
+from .lever import search_lever

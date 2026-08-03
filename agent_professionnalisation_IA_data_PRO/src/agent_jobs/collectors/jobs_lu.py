@@ -1,26 +1,26 @@
-def search_workday():
+def search_jobs_lu():
 
     return [
 
         {
 
             "title":
-            "Machine Learning Engineer",
+            "Data Engineer",
 
             "company":
-            "Workday Companies",
+            "Jobs.lu",
 
             "location":
-            "Europe",
+            "Luxembourg",
 
             "description":
-            "AI ML Data",
+            "Data Platform Big Data",
 
             "contract":
             "Graduate",
 
             "link":
-            "https://www.workday.com"
+            "https://www.jobs.lu"
 
         }
 

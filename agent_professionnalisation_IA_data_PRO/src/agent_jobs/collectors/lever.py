@@ -16,39 +16,36 @@ COMPANIES=[
 
 def search_lever():
 
-
     jobs=[]
 
 
     for company in COMPANIES:
 
 
-        url=(
-
-            "https://api.lever.co/v0/postings/"
-
-            +company
-
-            +"?mode=json"
-
-        )
-
-
         try:
+
+
+            url=(
+
+                "https://api.lever.co/v0/postings/"
+
+                +company+
+
+                "?mode=json"
+
+            )
 
 
             response=requests.get(
 
                 url,
 
-                timeout=20
+                timeout=10
 
             )
 
 
-
             data=response.json()
-
 
 
             if not isinstance(data,list):
@@ -58,19 +55,6 @@ def search_lever():
 
 
             for job in data:
-
-
-                if not isinstance(job,dict):
-
-                    continue
-
-
-
-                categories = job.get(
-                    "categories",
-                    {}
-                )
-
 
 
                 jobs.append({
@@ -85,10 +69,7 @@ def search_lever():
                     company,
 
                     "location":
-                    categories.get(
-                        "location",
-                        ""
-                    ),
+                    "",
 
                     "description":
                     job.get(
@@ -110,13 +91,10 @@ def search_lever():
 
         except Exception as e:
 
-
             print(
-                "Lever",
-                company,
+                "Lever:",
                 e
             )
-
 
 
     return jobs
