@@ -13,30 +13,54 @@ def send_email(
 ):
 
 
-    sender=os.getenv(
+    sender = os.getenv(
         "EMAIL_SENDER"
     )
 
-    password=os.getenv(
+
+    password = os.getenv(
         "EMAIL_PASSWORD"
     )
 
-    receiver=os.getenv(
+
+    receiver = os.getenv(
         "EMAIL_RECEIVER"
     )
 
 
 
-    msg=MIMEMultipart(
+    if not sender:
+
+        raise Exception(
+            "EMAIL_SENDER manquant dans GitHub Secrets"
+        )
+
+
+    if not password:
+
+        raise Exception(
+            "EMAIL_PASSWORD manquant dans GitHub Secrets"
+        )
+
+
+    if not receiver:
+
+        raise Exception(
+            "EMAIL_RECEIVER manquant dans GitHub Secrets"
+        )
+
+
+
+    msg = MIMEMultipart(
         "alternative"
     )
 
 
-    msg["Subject"]=subject
+    msg["Subject"] = subject
 
-    msg["From"]=sender
+    msg["From"] = sender
 
-    msg["To"]=receiver
+    msg["To"] = receiver
 
 
 
@@ -61,13 +85,16 @@ def send_email(
 
 
 
-    with smtplib.SMTP_SSL(
+    try:
 
-        "smtp.gmail.com",
 
-        465
+        server=smtplib.SMTP_SSL(
 
-    ) as server:
+            "smtp.gmail.com",
+
+            465
+
+        )
 
 
         server.login(
@@ -90,9 +117,25 @@ def send_email(
         )
 
 
+        server.quit()
 
-    print(
 
-        "Email envoyé avec succès"
 
-    )
+        print(
+            "Email envoyé avec succès"
+        )
+
+
+
+    except Exception as e:
+
+
+        print(
+
+            "ERREUR EMAIL:",
+
+            e
+
+        )
+
+        raise
