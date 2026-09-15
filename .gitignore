@@ -1,7 +1,10 @@
 # Python
+.venv/
+.venv-1/
+.venv-2/
 __pycache__/
 *.pyc
-.venv/
+.env
 
 # Rust
 target/
