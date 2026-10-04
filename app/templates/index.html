@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SensorLog - Monitoring</title>
+
+    <!-- Bibliothèque utilisée pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .upload {
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .upload h2 {
+            margin-top: 0;
+        }
+
+        input[type="file"] {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 11px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .graphs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .graph {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .graph h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        @media (max-width: 900px) {
+
+            .graphs {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <h1>
+        SensorLog
+    </h1>
+
+    <p class="subtitle">
+        Importation et monitoring des relevés de capteurs
+    </p>
+
+
+    <!-- =================================================
+         IMPORTATION DES CSV
+         ================================================= -->
+
+    <div class="upload">
+
+        <h2>
+            Charger un fichier de relevés
+        </h2>
+
+        <p>
+            Capteurs disponibles :
+            température, hygrométrie,
+            CO₂, COV, vent et UV.
+        </p>
+
+        <input
+            type="file"
+            id="csvFile"
+            accept=".csv"
+        >
+
+        <button onclick="uploadFile()">
+            Charger le fichier
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+
+    <!-- =================================================
+         GRAPHIQUES
+         ================================================= -->
+
+    <div class="graphs">
+
+        <div class="graph">
+
+            <h2>
+                🌡️ Température
+            </h2>
+
+            <canvas id="temperatureChart"></canvas>
+
+        </div>
+
+
+        <div class="graph">
+
+            <h2>
+                💧 Hygrométrie
+            </h2>
+
+            <canvas id="hygroChart"></canvas>
+
+        </div>
+
+
+        <div class="graph">
+
+            <h2>
+                🫧 CO₂
+            </h2>
+
+            <canvas id="co2Chart"></canvas>
+
+        </div>
+
+
+        <div class="graph">
+
+            <h2>
+                🧪 COV
+            </h2>
+
+            <canvas id="covChart"></canvas>
+
+        </div>
+
+
+        <div class="graph">
+
+            <h2>
+                💨 Vitesse du vent
+            </h2>
+
+            <canvas id="windSpeedChart"></canvas>
+
+        </div>
+
+
+        <div class="graph">
+
+            <h2>
+                ☀️ Indice UV
+            </h2>
+
+            <canvas id="uvChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // =================================================
+        // Stockage des graphiques
+        // =================================================
+
+        let charts = {};
+
+
+        // =================================================
+        // Importation d'un fichier CSV
+        // =================================================
+
+        async function uploadFile() {
+
+            const fileInput =
+                document.getElementById("csvFile");
+
+            const message =
+                document.getElementById("message");
+
+
+            if (!fileInput.files.length) {
+
+                message.textContent =
+                    "Veuillez sélectionner un fichier CSV.";
+
+                return;
+            }
+
+
+            const file =
+                fileInput.files[0];
+
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "file",
+                file
+            );
+
+
+            message.textContent =
+                "Chargement du fichier...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/upload",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    message.textContent =
+                        result.error ||
+                        "Erreur lors du chargement.";
+
+                    return;
+                }
+
+
+                message.textContent =
+                    result.message +
+                    " : " +
+                    result.count +
+                    " relevé(s) importé(s).";
+
+
+                loadReadings();
+
+            }
+
+
+            catch (error) {
+
+                message.textContent =
+                    "Erreur de connexion au serveur.";
+
+                console.error(error);
+
+            }
+
+        }
+
+
+        // =================================================
+        // Récupération des données depuis Flask
+        // =================================================
+
+        async function loadReadings() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/readings",
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                const readings =
+                    await response.json();
+
+
+                const sensors = {
+
+                    temperature: [],
+                    hygro: [],
+                    co2: [],
+                    cov: [],
+                    wind_speed: [],
+                    uv: []
+
+                };
+
+
+                readings.forEach(
+                    reading => {
+
+                        if (
+                            sensors[reading.sensor]
+                        ) {
+
+                            sensors[reading.sensor].push(
+                                reading
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                createChart(
+                    "temperatureChart",
+                    "temperature",
+                    sensors.temperature,
+                    "Température (°C)"
+                );
+
+
+                createChart(
+                    "hygroChart",
+                    "hygro",
+                    sensors.hygro,
+                    "Hygrométrie (%)"
+                );
+
+
+                createChart(
+                    "co2Chart",
+                    "co2",
+                    sensors.co2,
+                    "CO₂ (ppm)"
+                );
+
+
+                createChart(
+                    "covChart",
+                    "cov",
+                    sensors.cov,
+                    "COV (mg/m³)"
+                );
+
+
+                createChart(
+                    "windSpeedChart",
+                    "wind_speed",
+                    sensors.wind_speed,
+                    "Vitesse du vent (m/s)"
+                );
+
+
+                createChart(
+                    "uvChart",
+                    "uv",
+                    sensors.uv,
+                    "Indice UV"
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Erreur lors du chargement des relevés :",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // =================================================
+        // Création d'un graphique
+        // =================================================
+
+        function createChart(
+            canvasId,
+            sensorName,
+            readings,
+            label
+        ) {
+
+            const canvas =
+                document.getElementById(canvasId);
+
+
+            // Supprime l'ancien graphique.
+
+            if (
+                charts[sensorName]
+            ) {
+
+                charts[sensorName].destroy();
+
+            }
+
+
+            // Les données arrivent du plus récent
+            // vers le plus ancien.
+            //
+            // On les inverse pour obtenir :
+            // ancien -> nouveau.
+
+            const orderedReadings =
+                [...readings].reverse();
+
+
+            // =================================================
+            // BALAYAGE DE 25 VALEURS
+            // =================================================
+            //
+            // On conserve uniquement les 25 valeurs
+            // les plus récentes.
+            //
+            // Quand une nouvelle valeur arrive :
+            // - elle entre à droite ;
+            // - la plus ancienne sort à gauche.
+            //
+
+            const last25Readings =
+                orderedReadings.slice(-25);
+
+
+            // Dates affichées sur l'axe horizontal.
+
+            const labels =
+                last25Readings.map(
+                    reading =>
+                        new Date(
+                            reading.created_at
+                        ).toLocaleTimeString(
+                            "fr-FR"
+                        )
+                );
+
+
+            // Valeurs affichées sur l'axe vertical.
+
+            const values =
+                last25Readings.map(
+                    reading =>
+                        Number(reading.value)
+                );
+
+
+            // Création du graphique.
+
+            charts[sensorName] =
+                new Chart(
+                    canvas,
+                    {
+
+                        type: "line",
+
+                        data: {
+
+                            labels: labels,
+
+                            datasets: [
+
+                                {
+
+                                    label: label,
+
+                                    data: values,
+
+                                    tension: 0.2,
+
+                                    borderWidth: 2,
+
+                                    pointRadius: 2
+
+                                }
+
+                            ]
+
+                        },
+
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: true,
+
+                            animation: false,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero: false
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        // =================================================
+        // Chargement initial
+        // =================================================
+
+        loadReadings();
+
+
+        // =================================================
+        // ACTUALISATION AUTOMATIQUE
+        // =================================================
+
+        // Une nouvelle lecture arrive environ toutes
+        // les 5 secondes.
+        //
+        // Le graphique est donc actualisé toutes
+        // les 5 secondes.
+        //
+        // Il conserve toujours les 25 valeurs
+        // les plus récentes.
+
+        setInterval(
+            loadReadings,
+            5000
+        );
+
+    </script>
+
+</body>
+
+</html>

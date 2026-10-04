@@ -1,0 +1,129 @@
+services:
+
+  # --------------------------------------------------
+  # Application Flask
+  # --------------------------------------------------
+  web:
+    build: .
+
+    ports:
+      - "5000:5000"
+
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: sensorlog
+      DB_USER: sensorlog
+      DB_PASSWORD: sensorlog
+
+      # Adresse de Kafka dans le réseau Docker
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - db
+      - kafka
+
+
+  # --------------------------------------------------
+  # Base de données MySQL
+  # --------------------------------------------------
+  db:
+    image: mysql:5.7
+
+    environment:
+      MYSQL_DATABASE: sensorlog
+      MYSQL_USER: sensorlog
+      MYSQL_PASSWORD: sensorlog
+      MYSQL_ROOT_PASSWORD: rootpassword
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+  # --------------------------------------------------
+  # Zookeeper
+  # --------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+
+  # --------------------------------------------------
+  # Kafka
+  # --------------------------------------------------
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+
+    depends_on:
+      - zookeeper
+
+    environment:
+      KAFKA_BROKER_ID: 1
+
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      # Les autres conteneurs utilisent kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      # Un seul broker dans notre projet
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+      # Création automatique du topic
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+
+  # --------------------------------------------------
+  # Simulateur de capteurs
+  # --------------------------------------------------
+  simulator:
+    build:
+      context: ./simulator
+
+    environment:
+      # Le simulateur communique avec Kafka
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - kafka
+
+
+  # --------------------------------------------------
+  # Consumer Kafka
+  #
+  # Reçoit les mesures Kafka et les enregistre
+  # dans MySQL.
+  # --------------------------------------------------
+  consumer:
+    build:
+      context: ./consumer
+
+    environment:
+      # Adresse de MySQL
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: sensorlog
+      DB_USER: sensorlog
+      DB_PASSWORD: sensorlog
+
+      # Adresse de Kafka
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+    depends_on:
+      - db
+      - kafka
+
+
+# --------------------------------------------------
+# Volumes persistants
+# --------------------------------------------------
+volumes:
+
+  # Conservation des données MySQL
+  mysql_data:
